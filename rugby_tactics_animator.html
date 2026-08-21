@@ -1,0 +1,1224 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Animateur de stratégies de rugby</title>
+<style>
+  :root{
+    --teamA:#14213d;
+    --teamB:#c1121f;
+    --pitch1:#2f7d4f;
+    --pitch2:#2a7148;
+    --ink:#1b1b1b;
+    --paper:#f6f5f1;
+    --panel:#ffffff;
+    --line:#e2e0d8;
+    --accent:#d98324;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    background:var(--paper);
+    color:var(--ink);
+  }
+  header{
+    padding:18px 24px 10px;
+  }
+  header h1{
+    margin:0 0 4px;
+    font-size:1.4rem;
+  }
+  header p{
+    margin:0;
+    color:#555;
+    font-size:.92rem;
+  }
+  .app{
+    display:flex;
+    gap:18px;
+    padding:10px 24px 28px;
+    align-items:flex-start;
+    flex-wrap:wrap;
+  }
+  .pitch-col{
+    flex:1 1 640px;
+    min-width:320px;
+  }
+  .pitch-wrap{
+    background:var(--panel);
+    border-radius:14px;
+    padding:12px;
+    box-shadow:0 1px 3px rgba(0,0,0,.08);
+  }
+  svg#pitch{
+    width:100%;
+    height:auto;
+    display:block;
+    border-radius:8px;
+    cursor:default;
+  }
+  .player{cursor:grab;}
+  .player.dragging{cursor:grabbing;}
+  .player.selected circle{
+    stroke:#ffd23f;
+    stroke-width:3.5;
+    filter:drop-shadow(0 0 4px rgba(255,210,63,.9));
+  }
+  .editing .player{cursor:grab;}
+  .caption-bar{
+    margin-top:10px;
+    background:var(--panel);
+    border-radius:12px;
+    padding:14px 16px;
+    box-shadow:0 1px 3px rgba(0,0,0,.08);
+  }
+  .caption-bar .phase-tag{
+    display:inline-block;
+    background:var(--accent);
+    color:#fff;
+    font-size:.75rem;
+    font-weight:700;
+    padding:2px 8px;
+    border-radius:20px;
+    margin-bottom:6px;
+  }
+  .caption-bar h3{
+    margin:0 0 4px;
+    font-size:1.05rem;
+  }
+  .caption-bar p{
+    margin:0;
+    color:#444;
+    font-size:.92rem;
+    line-height:1.4;
+  }
+  .progress-track{
+    height:5px;
+    background:var(--line);
+    border-radius:3px;
+    margin-top:10px;
+    overflow:hidden;
+  }
+  .progress-fill{
+    height:100%;
+    width:0%;
+    background:var(--accent);
+    border-radius:3px;
+    transition:width .05s linear;
+  }
+  .side-col{
+    flex:0 0 340px;
+    min-width:300px;
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+  }
+  .panel{
+    background:var(--panel);
+    border-radius:12px;
+    padding:14px 16px;
+    box-shadow:0 1px 3px rgba(0,0,0,.08);
+  }
+  .panel h2{
+    font-size:.82rem;
+    text-transform:uppercase;
+    letter-spacing:.04em;
+    color:#777;
+    margin:0 0 10px;
+  }
+  select, input[type=text], textarea{
+    width:100%;
+    padding:7px 9px;
+    border:1px solid var(--line);
+    border-radius:7px;
+    font-size:.9rem;
+    font-family:inherit;
+    background:#fdfdfc;
+  }
+  textarea{resize:vertical;min-height:52px;}
+  label.field{
+    display:block;
+    font-size:.78rem;
+    color:#666;
+    margin:8px 0 3px;
+  }
+  .controls-row{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    flex-wrap:wrap;
+  }
+  button{
+    font-family:inherit;
+    border:1px solid var(--line);
+    background:#fff;
+    border-radius:8px;
+    padding:7px 10px;
+    font-size:.85rem;
+    cursor:pointer;
+    color:var(--ink);
+  }
+  button:hover{background:#f1f0eb;}
+  button.primary{
+    background:var(--ink);
+    color:#fff;
+    border-color:var(--ink);
+  }
+  button.primary:hover{opacity:.9;}
+  button.ghost{background:transparent;}
+  button:disabled{opacity:.35;cursor:not-allowed;}
+  .icon-btn{
+    width:36px;
+    height:34px;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    font-size:1rem;
+    padding:0;
+  }
+  .phase-list{
+    display:flex;
+    flex-direction:column;
+    gap:4px;
+    max-height:190px;
+    overflow-y:auto;
+  }
+  .phase-item{
+    text-align:left;
+    display:flex;
+    gap:8px;
+    align-items:center;
+    padding:7px 9px;
+    border-radius:7px;
+    border:1px solid transparent;
+    background:transparent;
+    font-size:.83rem;
+  }
+  .phase-item .num{
+    width:20px;height:20px;border-radius:50%;
+    background:var(--line);
+    display:inline-flex;align-items:center;justify-content:center;
+    font-size:.7rem;font-weight:700;flex:none;
+  }
+  .phase-item.active{
+    background:#fdf1e3;
+    border-color:var(--accent);
+  }
+  .phase-item.active .num{background:var(--accent);color:#fff;}
+  .lib-list{
+    display:flex;
+    flex-direction:column;
+    gap:4px;
+    max-height:220px;
+    overflow-y:auto;
+  }
+  .lib-item{
+    display:flex;
+    align-items:center;
+    gap:4px;
+    border-radius:7px;
+    border:1px solid transparent;
+    background:transparent;
+  }
+  .lib-item.active{
+    background:#fdf1e3;
+    border-color:var(--accent);
+  }
+  .lib-item .lib-load{
+    flex:1;
+    text-align:left;
+    border:none;
+    background:transparent;
+    padding:6px 8px;
+    font-size:.83rem;
+    line-height:1.25;
+  }
+  .lib-item .lib-load:hover{background:#f1f0eb;}
+  .lib-item small{color:#888;font-size:.72rem;}
+  .lib-empty{
+    font-size:.82rem;
+    color:#888;
+    padding:6px 2px;
+  }
+  .toggle-row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    font-size:.86rem;
+    padding:4px 0;
+  }
+  .swatch{
+    display:inline-flex;align-items:center;gap:6px;font-size:.8rem;color:#555;
+  }
+  .swatch i{
+    width:12px;height:12px;border-radius:50%;display:inline-block;
+  }
+  .legend-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:2px 12px;
+    font-size:.78rem;
+    color:#555;
+  }
+  .legend-grid b{color:var(--ink);}
+  details summary{
+    cursor:pointer;
+    font-size:.85rem;
+    color:#444;
+    margin-bottom:6px;
+  }
+  .editor-box{
+    border-top:1px dashed var(--line);
+    margin-top:10px;
+    padding-top:10px;
+    display:none;
+  }
+  .editor-box.on{display:block;}
+  .hint{
+    font-size:.76rem;
+    color:#888;
+    line-height:1.4;
+    margin-top:6px;
+  }
+  .file-row{display:flex;gap:8px;margin-top:8px;}
+  .file-row button{flex:1;}
+  input[type=file]{display:none;}
+  .traj{
+    stroke:#fff;
+    stroke-width:2.2;
+    stroke-dasharray:5 5;
+    fill:none;
+    opacity:.85;
+    marker-end:url(#arrowhead);
+  }
+  .traj.def{
+    stroke:#ffd9d9;
+    opacity:.6;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🏉 Animateur de stratégies de rugby</h1>
+  <p>Faites défiler les phases de jeu pour expliquer les déplacements des joueurs (par poste) et du ballon. Activez le mode édition pour créer vos propres stratégies.</p>
+</header>
+
+<div class="app">
+
+  <div class="pitch-col">
+    <div class="pitch-wrap">
+      <svg id="pitch" viewBox="0 0 1120 700" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <marker id="arrowhead" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+            <path d="M0,0 L6,3 L0,6 Z" fill="#ffffff"></path>
+          </marker>
+        </defs>
+        <g id="pitchStatic"></g>
+        <g id="trajLayer"></g>
+        <g id="defenseLayer"></g>
+        <g id="attackLayer"></g>
+        <g id="ballLayer"></g>
+      </svg>
+    </div>
+
+    <div class="caption-bar">
+      <div class="phase-tag" id="phaseTag">Phase 1 / 6</div>
+      <h3 id="phaseLabel">—</h3>
+      <p id="phaseNote">—</p>
+      <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+    </div>
+  </div>
+
+  <div class="side-col">
+
+    <div class="panel">
+      <h2>Stratégie</h2>
+      <select id="playSelect">
+        <option value="" disabled selected>— Aucune stratégie sélectionnée —</option>
+      </select>
+      <label class="field">Nom de la stratégie</label>
+      <input type="text" id="playName" />
+    </div>
+
+    <div class="panel">
+      <div class="toggle-row" style="margin-bottom:4px;">
+        <h2 style="margin:0;">Ma bibliothèque</h2>
+        <button id="btnLibCollapse" class="icon-btn" style="width:28px;height:26px;padding:0;" title="Réduire">▾</button>
+      </div>
+      <div class="controls-row">
+        <button id="btnLibSave" style="flex:1;">💾 Enregistrer</button>
+      </div>
+      <div id="libraryBody">
+        <div class="controls-row" style="margin-top:6px;">
+          <button id="btnLibNew" class="ghost">🆕 Nouveau</button>
+          <button id="btnLibSaveCopy" class="ghost">📄 Copie</button>
+        </div>
+        <div class="controls-row" style="margin-top:6px;">
+          <button id="btnLibDelete" class="ghost">🗑 Supprimer</button>
+        </div>
+        <label class="field">Stratégies sauvegardées</label>
+        <div class="lib-list" id="libraryList"></div>
+        <div class="hint">Sauvegardées dans ce navigateur (cet ordinateur). Utilisez Exporter/Importer JSON pour les transférer ailleurs ou les partager.</div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h2>Lecture</h2>
+      <div class="controls-row">
+        <button class="icon-btn" id="btnRestart" title="Revenir au début">⏮</button>
+        <button class="icon-btn" id="btnPrev" title="Phase précédente">⏪</button>
+        <button class="icon-btn primary" id="btnPlay" title="Lecture / Pause">▶️</button>
+        <button class="icon-btn" id="btnNext" title="Phase suivante">⏩</button>
+        <select id="speedSelect" style="width:auto;">
+          <option value="0.5">0.5×</option>
+          <option value="1" selected>1×</option>
+          <option value="1.75">1.75×</option>
+        </select>
+      </div>
+      <div class="hint">Astuce : ← / → pour changer de phase, espace pour lecture/pause.</div>
+
+      <label class="field">Phases</label>
+      <div class="phase-list" id="phaseList"></div>
+
+      <div class="toggle-row">
+        <span>Afficher la défense</span>
+        <input type="checkbox" id="toggleDefense" checked>
+      </div>
+      <div class="swatch"><i style="background:var(--teamA)"></i>Équipe qui attaque (bleu)</div>
+      <div class="swatch"><i style="background:var(--teamB)"></i>Défense (rouge)</div>
+    </div>
+
+    <div class="panel">
+      <div class="toggle-row" style="margin-bottom:4px;">
+        <h2 style="margin:0;">Mode édition</h2>
+        <input type="checkbox" id="toggleEdit">
+      </div>
+      <div class="editor-box" id="editorBox">
+        <label class="field">Titre de la phase</label>
+        <input type="text" id="editLabel" />
+
+        <div class="controls-row" style="margin-top:8px;">
+          <button id="btnDuplicate">＋ Dupliquer cette phase</button>
+          <button id="btnDelete">🗑 Supprimer</button>
+        </div>
+        <div class="controls-row" style="margin-top:6px;">
+          <button id="btnBlank" class="ghost">Nouvelle stratégie vierge</button>
+        </div>
+
+        <label class="field">Note pédagogique</label>
+        <textarea id="editNote"></textarea>
+
+        <label class="field">Formations rapides — avants</label>
+        <div class="controls-row">
+          <button id="btnFormScrum">Tous en mêlée</button>
+          <button id="btnFormLineout">Tous en touche</button>
+        </div>
+        <label class="field">Formations rapides — 3/4</label>
+        <div class="controls-row">
+          <button id="btnFormBackUp">Ligne vers le haut</button>
+          <button id="btnFormBackDown">Ligne vers le bas</button>
+        </div>
+
+        <label class="field">Sélection rapide</label>
+        <div class="controls-row">
+          <button id="btnSelForwardsBlue" class="ghost">Avants bleu</button>
+          <button id="btnSelForwardsRed" class="ghost">Avants rouge</button>
+        </div>
+        <div class="controls-row" style="margin-top:6px;">
+          <button id="btnSelBacksBlue" class="ghost">3/4 bleu</button>
+          <button id="btnSelBacksRed" class="ghost">3/4 rouge</button>
+        </div>
+        <div class="hint">Maintenez Maj (Shift) enfoncé en cliquant sur un joueur pour l'ajouter ou le retirer de la sélection.</div>
+
+        <div class="file-row">
+          <button id="btnExport">⬇ Exporter en JSON</button>
+          <button id="btnImportTrigger">⬆ Importer un JSON</button>
+          <input type="file" id="importFile" accept="application/json">
+        </div>
+        <div class="hint">L'export télécharge un fichier .json que vous pouvez conserver et réimporter plus tard (aucune sauvegarde automatique n'est faite dans le navigateur).</div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <details>
+        <summary>Rappel des postes (1 à 15)</summary>
+        <div class="legend-grid" id="legendGrid"></div>
+      </details>
+    </div>
+
+  </div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  const POS_NAMES = {
+    1:"Pilier gauche",2:"Talonneur",3:"Pilier droit",4:"2e ligne",5:"2e ligne",
+    6:"3e ligne aile",7:"3e ligne aile",8:"3e ligne centre",9:"Demi de mêlée",
+    10:"Demi d'ouverture",11:"Ailier",12:"Centre",13:"Centre",14:"Ailier",15:"Arrière"
+  };
+  const NUMS = Object.keys(POS_NAMES).map(Number);
+
+  function clone(o){ return JSON.parse(JSON.stringify(o)); }
+  function pt(x,y){ return {x:x,y:y}; }
+  function clampX(x){ return Math.max(65, Math.min(1055, x)); }
+  function clampY(y){ return Math.max(8, Math.min(692, y)); }
+
+  // ---------- Preset strategies ----------
+  const BLANK_TEMPLATE = {
+    name: "Nouvelle stratégie",
+    phases: [
+      {
+        label: "Position de départ",
+        note: "Placez vos joueurs et le ballon, puis utilisez « Dupliquer cette phase » pour créer les étapes suivantes de votre stratégie.",
+        duration: 1500,
+        carrier: 9,
+        ball: pt(545,350),
+        attack: {
+          1:pt(510,310), 2:pt(520,350), 3:pt(510,390), 4:pt(530,320), 5:pt(530,380),
+          6:pt(500,270), 7:pt(500,430), 8:pt(540,350),
+          9:pt(545,350), 10:pt(580,350), 11:pt(560,120),
+          12:pt(610,300), 13:pt(610,400), 14:pt(560,580), 15:pt(470,350)
+        },
+        defense: {
+          1:pt(600,310), 2:pt(610,350), 3:pt(600,390), 4:pt(620,320), 5:pt(620,380),
+          6:pt(590,270), 7:pt(590,430), 8:pt(630,350),
+          9:pt(635,350), 10:pt(670,350), 11:pt(650,120),
+          12:pt(700,300), 13:pt(700,400), 14:pt(650,580), 15:pt(760,350)
+        }
+      }
+    ]
+  };
+
+  // ---------- Quick formations (edit mode) ----------
+  // Mêlée : lignes 1-2-3 / 4-5 / 6-7 / 8, premières lignes croisées (1 face 3, 3 face 1).
+  const SCRUM_ATTACK = {
+    1:pt(548,336), 2:pt(548,350), 3:pt(548,364),
+    4:pt(528,340), 5:pt(528,360),
+    6:pt(530,330), 7:pt(530,370),
+    8:pt(505,350)
+  };
+  const SCRUM_DEFENSE = {
+    3:pt(572,336), 2:pt(572,350), 1:pt(572,364),
+    4:pt(592,340), 5:pt(592,360),
+    6:pt(590,330), 7:pt(590,370),
+    8:pt(615,350)
+  };
+  // Touche : deux colonnes parallèles depuis la ligne de touche.
+  const LINEOUT_ATTACK = {
+    2:pt(560,20), 7:pt(560,55), 4:pt(560,85), 5:pt(560,115),
+    6:pt(560,145), 8:pt(560,175), 1:pt(560,205), 3:pt(560,235)
+  };
+  const LINEOUT_DEFENSE = {
+    2:pt(580,20), 7:pt(580,55), 4:pt(580,85), 5:pt(580,115),
+    6:pt(580,145), 8:pt(580,175), 1:pt(580,205), 3:pt(580,235)
+  };
+  // Ligne de 3/4 : attaque en profondeur (diagonale), défense alignée à plat.
+  const BACKS_UP_ATTACK = {
+    9:pt(560,345), 10:pt(525,310), 12:pt(480,260), 13:pt(435,205),
+    11:pt(390,130), 14:pt(580,650)
+  };
+  const BACKS_UP_DEFENSE = {
+    9:pt(660,345), 10:pt(660,310), 12:pt(660,260), 13:pt(660,205),
+    11:pt(660,130), 14:pt(660,650)
+  };
+  const BACKS_DOWN_ATTACK = {
+    9:pt(560,355), 10:pt(525,390), 12:pt(480,440), 13:pt(435,495),
+    14:pt(390,570), 11:pt(580,50)
+  };
+  const BACKS_DOWN_DEFENSE = {
+    9:pt(660,355), 10:pt(660,390), 12:pt(660,440), 13:pt(660,495),
+    14:pt(660,570), 11:pt(660,50)
+  };
+
+  // ---------- State ----------
+  let currentPlay = clone(BLANK_TEMPLATE);
+  let resolved = resolvePhases(currentPlay);
+  let currentPhase = 0;
+  let isPlaying = false;
+  let editMode = false;
+  let showDefense = true;
+  let speed = 1;
+  let rafId = null;
+  let transitionStart = null; // performance.now() when current transition began
+  let transitionProgress = 0; // 0..1, used to resume after pause
+  let selectedTokens = [];
+
+  // ---------- Library (localStorage) ----------
+  const LIB_KEY = 'rugbyTacticsLibrary_v1';
+  let library = loadLibrary();
+  let currentLibraryId = null;
+
+  function loadLibrary(){
+    try{
+      const raw = JSON.parse(localStorage.getItem(LIB_KEY));
+      return Array.isArray(raw) ? raw : [];
+    } catch(e){ return []; }
+  }
+  function persistLibrary(){
+    try{ localStorage.setItem(LIB_KEY, JSON.stringify(library)); }
+    catch(e){ alert("Impossible de sauvegarder : le stockage du navigateur est plein ou indisponible."); }
+  }
+  function makeLibId(){ return 'p_' + Date.now().toString(36) + '_' + Math.random().toString(36).slice(2,7); }
+
+  function saveCurrentAsNewEntry(){
+    const id = makeLibId();
+    library.unshift({ id, name: currentPlay.name || 'Stratégie sans nom', phases: clone(currentPlay.phases), updatedAt: Date.now() });
+    persistLibrary();
+    currentLibraryId = id;
+    renderLibraryList();
+  }
+
+  function saveCurrentToLibrary(){
+    if (!currentLibraryId){ saveCurrentAsNewEntry(); return; }
+    const entry = library.find(e=>e.id===currentLibraryId);
+    if (!entry){ saveCurrentAsNewEntry(); return; }
+    entry.name = currentPlay.name || entry.name;
+    entry.phases = clone(currentPlay.phases);
+    entry.updatedAt = Date.now();
+    persistLibrary();
+    renderLibraryList();
+  }
+
+  function loadLibraryEntry(id){
+    const entry = library.find(e=>e.id===id);
+    if (!entry) return;
+    stopPlayback();
+    currentPlay = { name: entry.name, phases: clone(entry.phases) };
+    currentLibraryId = id;
+    afterPlayLoaded();
+  }
+
+  function renameLibraryEntry(id){
+    const entry = library.find(e=>e.id===id);
+    if (!entry) return;
+    const name = prompt('Nouveau nom de la stratégie :', entry.name);
+    if (name === null || !name.trim()) return;
+    entry.name = name.trim();
+    entry.updatedAt = Date.now();
+    persistLibrary();
+    if (currentLibraryId === id){
+      currentPlay.name = entry.name;
+      document.getElementById('playName').value = entry.name;
+    }
+    renderLibraryList();
+  }
+
+  function deleteLibraryEntry(id){
+    const entry = library.find(e=>e.id===id);
+    if (!entry) return;
+    if (!confirm('Supprimer définitivement « ' + entry.name + ' » de la bibliothèque ?')) return;
+    library = library.filter(e=>e.id!==id);
+    persistLibrary();
+    if (currentLibraryId === id) currentLibraryId = null;
+    renderLibraryList();
+  }
+
+  function renderPlaySelectLibraryOptions(){
+    const select = document.getElementById('playSelect');
+    const existing = select.querySelector('#libOptGroup');
+    if (existing) existing.remove();
+    if (library.length > 0){
+      const og = document.createElement('optgroup');
+      og.id = 'libOptGroup';
+      og.label = 'Mes stratégies enregistrées';
+      library.slice().sort((a,b)=> a.name.localeCompare(b.name,'fr')).forEach(entry=>{
+        const opt = document.createElement('option');
+        opt.value = 'lib:' + entry.id;
+        opt.textContent = entry.name;
+        og.appendChild(opt);
+      });
+      select.appendChild(og);
+    }
+    select.value = currentLibraryId ? ('lib:' + currentLibraryId) : '';
+  }
+
+  function renderLibraryList(){
+    renderPlaySelectLibraryOptions();
+    const wrap = document.getElementById('libraryList');
+    wrap.innerHTML = "";
+    if (library.length === 0){
+      const empty = document.createElement('div');
+      empty.className = 'lib-empty';
+      empty.textContent = 'Aucune stratégie sauvegardée pour l\'instant.';
+      wrap.appendChild(empty);
+      return;
+    }
+    const sorted = library.slice().sort((a,b)=> b.updatedAt - a.updatedAt);
+    sorted.forEach(entry=>{
+      const row = document.createElement('div');
+      row.className = 'lib-item' + (entry.id === currentLibraryId ? ' active' : '');
+
+      const loadBtn = document.createElement('button');
+      loadBtn.className = 'lib-load';
+      const date = new Date(entry.updatedAt).toLocaleString('fr-FR', {dateStyle:'short', timeStyle:'short'});
+      loadBtn.innerHTML = entry.name.replace(/[<>&]/g, c=>({'<':'&lt;','>':'&gt;','&':'&amp;'}[c])) + '<br><small>' + entry.phases.length + ' phase(s) · ' + date + '</small>';
+      loadBtn.addEventListener('click', ()=>loadLibraryEntry(entry.id));
+
+      const renameBtn = document.createElement('button');
+      renameBtn.className = 'icon-btn';
+      renameBtn.title = 'Renommer';
+      renameBtn.textContent = '✏️';
+      renameBtn.addEventListener('click', ()=>renameLibraryEntry(entry.id));
+
+      const delBtn = document.createElement('button');
+      delBtn.className = 'icon-btn';
+      delBtn.title = 'Supprimer';
+      delBtn.textContent = '🗑';
+      delBtn.addEventListener('click', ()=>deleteLibraryEntry(entry.id));
+
+      row.appendChild(loadBtn); row.appendChild(renameBtn); row.appendChild(delBtn);
+      wrap.appendChild(row);
+    });
+  }
+
+  function resolvePhases(play){
+    const out = [];
+    let prevAttack = null, prevDefense = null, prevBall = null, prevCarrier = null;
+    play.phases.forEach((ph) => {
+      let attack, defense;
+      if (prevAttack === null){
+        attack = clone(ph.attack || {});
+        defense = clone(ph.defense || {});
+      } else {
+        attack = clone(prevAttack);
+        Object.assign(attack, clone(ph.attack || {}));
+        defense = clone(prevDefense);
+        Object.assign(defense, clone(ph.defense || {}));
+      }
+      const ball = ph.ball ? clone(ph.ball) : clone(prevBall || pt(560,350));
+      const carrier = (ph.carrier !== undefined) ? ph.carrier : prevCarrier;
+      prevAttack = attack; prevDefense = defense; prevBall = ball; prevCarrier = carrier;
+      out.push({
+        attack, defense, ball, carrier,
+        label: ph.label || "", note: ph.note || "", duration: ph.duration || 1500
+      });
+    });
+    return out;
+  }
+
+  // ---------- SVG building ----------
+  const svg = document.getElementById('pitch');
+  const NS = "http://www.w3.org/2000/svg";
+  function el(tag, attrs){
+    const e = document.createElementNS(NS, tag);
+    for (const k in attrs) e.setAttribute(k, attrs[k]);
+    return e;
+  }
+
+  function drawPitchStatic(){
+    const g = document.getElementById('pitchStatic');
+    g.innerHTML = "";
+    // background stripes
+    for (let i=0;i<11;i++){
+      g.appendChild(el('rect',{x:60+i*90.9,y:0,width:90.9,height:700,fill:(i%2===0?'var(--pitch1)':'var(--pitch2)')}));
+    }
+    g.appendChild(el('rect',{x:0,y:0,width:60,height:700,fill:'#245c3c'}));
+    g.appendChild(el('rect',{x:1060,y:0,width:60,height:700,fill:'#245c3c'}));
+
+    function vline(x, dash){
+      const a = {x1:x,y1:0,x2:x,y2:700,stroke:'#ffffff','stroke-width':3,opacity:.9};
+      if (dash) a['stroke-dasharray']='10 8';
+      g.appendChild(el('line',a));
+    }
+    vline(60); vline(1060);       // try lines
+    vline(110); vline(1010);      // 5m lines
+    vline(280); vline(840);       // 22m lines
+    vline(440); vline(680);       // 10m lines
+    vline(560);                   // halfway
+
+    function hline(y,dash){
+      g.appendChild(el('line',{x1:0,y1:y,x2:1120,y2:y,stroke:'#ffffff','stroke-width':1.5,opacity:.5,'stroke-dasharray':dash?'6 6':'0'}));
+    }
+    hline(50, true); hline(650, true);   // 5m from touch
+    hline(150, true); hline(550, true);  // 15m lines
+
+    g.appendChild(el('rect',{x:0,y:0,width:1120,height:700,fill:'none',stroke:'#ffffff','stroke-width':3}));
+
+    // goal posts
+    [60,1060].forEach(x=>{
+      g.appendChild(el('line',{x1:x,y1:330,x2:x,y2:300,stroke:'#fff','stroke-width':3}));
+      g.appendChild(el('line',{x1:x,y1:370,x2:x,y2:400,stroke:'#fff','stroke-width':3}));
+      g.appendChild(el('line',{x1:x,y1:300,x2:x,y2:400,stroke:'#fff','stroke-width':3}));
+    });
+    // corner flags
+    [[60,0],[60,700],[1060,0],[1060,700]].forEach(([x,y])=>{
+      g.appendChild(el('circle',{cx:x,cy:y,r:5,fill:'var(--accent)'}));
+    });
+  }
+
+  function makePlayerToken(num, team){
+    const g = el('g',{class:'player', 'data-num':num, 'data-team':team, transform:'translate(-100,-100)'});
+    g.appendChild(el('circle',{r:16, fill:(team==='attack'?'var(--teamA)':'var(--teamB)'), stroke:'#111', 'stroke-width':1.5}));
+    const t = el('text',{x:0,y:5,'text-anchor':'middle','font-size':13,'font-weight':700,fill:'#fff','font-family':'inherit'});
+    t.textContent = num;
+    g.appendChild(t);
+    return g;
+  }
+
+  const attackLayer = document.getElementById('attackLayer');
+  const defenseLayer = document.getElementById('defenseLayer');
+  const ballLayer = document.getElementById('ballLayer');
+  const trajLayer = document.getElementById('trajLayer');
+
+  const attackTokens = {};
+  const defenseTokens = {};
+  let ballToken = null;
+
+  function buildTokens(){
+    attackLayer.innerHTML = ""; defenseLayer.innerHTML = ""; ballLayer.innerHTML = "";
+    NUMS.forEach(n=>{
+      const a = makePlayerToken(n,'attack'); attackLayer.appendChild(a); attackTokens[n]=a;
+      const d = makePlayerToken(n,'defense'); defenseLayer.appendChild(d); defenseTokens[n]=d;
+    });
+    ballToken = el('g',{id:'ballToken', class:'player', 'data-team':'ball'});
+    ballToken.appendChild(el('ellipse',{rx:11, ry:6.5, fill:'var(--accent)', stroke:'#5a3410','stroke-width':1.2}));
+    ballToken.appendChild(el('line',{x1:-6,y1:0,x2:6,y2:0,stroke:'#fff','stroke-width':1.4}));
+    ballLayer.appendChild(ballToken);
+  }
+
+  function easeInOutQuad(t){ return t<0.5 ? 2*t*t : -1+(4-2*t)*t; }
+  function lerp(a,b,t){ return a+(b-a)*t; }
+
+  function placeToken(g, x, y){ g.setAttribute('transform', 'translate('+x+','+y+')'); }
+
+  function renderState(fromIdx, toIdx, t){
+    const tt = easeInOutQuad(Math.max(0,Math.min(1,t)));
+    const from = resolved[fromIdx], to = resolved[toIdx];
+    NUMS.forEach(n=>{
+      const fa = from.attack[n] || to.attack[n];
+      const ta = to.attack[n] || fa;
+      if (fa && ta) placeToken(attackTokens[n], lerp(fa.x,ta.x,tt), lerp(fa.y,ta.y,tt));
+      const fd = from.defense[n] || to.defense[n];
+      const td = to.defense[n] || fd;
+      if (fd && td) placeToken(defenseTokens[n], lerp(fd.x,td.x,tt), lerp(fd.y,td.y,tt));
+    });
+    defenseLayer.setAttribute('display', showDefense ? '' : 'none');
+    const bx = lerp(from.ball.x, to.ball.x, tt);
+    const by = lerp(from.ball.y, to.ball.y, tt) - Math.sin(tt*Math.PI)*14;
+    placeToken(ballToken, bx, by);
+  }
+
+  function renderTrajectories(fromIdx, toIdx){
+    trajLayer.innerHTML = "";
+    if (fromIdx === toIdx) return;
+    const from = resolved[fromIdx], to = resolved[toIdx];
+    NUMS.forEach(n=>{
+      const fa = from.attack[n], ta = to.attack[n];
+      if (fa && ta && (fa.x!==ta.x || fa.y!==ta.y)){
+        trajLayer.appendChild(el('line',{class:'traj', x1:fa.x,y1:fa.y,x2:ta.x,y2:ta.y}));
+      }
+      const fd = from.defense[n], td = to.defense[n];
+      if (fd && td && (fd.x!==td.x || fd.y!==td.y)){
+        trajLayer.appendChild(el('line',{class:'traj def', x1:fd.x,y1:fd.y,x2:td.x,y2:td.y}));
+      }
+    });
+  }
+
+  function updateCaption(idx){
+    const ph = resolved[idx];
+    document.getElementById('phaseTag').textContent = 'Phase '+(idx+1)+' / '+resolved.length;
+    document.getElementById('phaseLabel').textContent = ph.label;
+    document.getElementById('phaseNote').textContent = ph.note;
+  }
+
+  function updatePhaseList(){
+    const wrap = document.getElementById('phaseList');
+    wrap.innerHTML = "";
+    resolved.forEach((ph, i)=>{
+      const b = document.createElement('button');
+      b.className = 'phase-item' + (i===currentPhase ? ' active' : '');
+      b.innerHTML = '<span class="num">'+(i+1)+'</span><span>'+ (ph.label.replace(/^Phase \d+\s*[-–]\s*/,'')) +'</span>';
+      b.addEventListener('click', ()=>{ goToPhase(i); });
+      wrap.appendChild(b);
+    });
+  }
+
+  function goToPhase(i){
+    stopPlayback();
+    clearFormationSelection();
+    currentPhase = Math.max(0, Math.min(resolved.length-1, i));
+    renderTrajectories(Math.max(0,currentPhase-1), currentPhase);
+    renderState(currentPhase, currentPhase, 0);
+    updateCaption(currentPhase);
+    updatePhaseList();
+    document.getElementById('progressFill').style.width = '0%';
+    syncEditorFields();
+  }
+
+  function stopPlayback(){
+    isPlaying = false;
+    transitionProgress = 0;
+    transitionStart = null;
+    if (rafId){ cancelAnimationFrame(rafId); rafId = null; }
+    document.getElementById('btnPlay').textContent = '▶️';
+  }
+
+  function togglePlay(){
+    if (isPlaying){ stopPlayback(); return; }
+    if (currentPhase >= resolved.length-1){ goToPhase(0); }
+    isPlaying = true;
+    document.getElementById('btnPlay').textContent = '⏸';
+    transitionStart = performance.now() - transitionProgress*(resolved[currentPhase+1] ? resolved[currentPhase+1].duration : 1000)/speed;
+    requestAnimationFrame(playLoop);
+  }
+
+  function playLoop(now){
+    if (!isPlaying) return;
+    if (currentPhase >= resolved.length-1){ stopPlayback(); return; }
+    const target = resolved[currentPhase+1];
+    const elapsed = (now - transitionStart) * speed;
+    let t = elapsed / target.duration;
+    if (t >= 1){
+      currentPhase += 1;
+      transitionProgress = 0;
+      renderState(currentPhase, currentPhase, 0);
+      updateCaption(currentPhase);
+      updatePhaseList();
+      renderTrajectories(Math.max(0,currentPhase-1), currentPhase);
+      document.getElementById('progressFill').style.width = '0%';
+      if (currentPhase >= resolved.length-1){ stopPlayback(); return; }
+      transitionStart = now;
+      rafId = requestAnimationFrame(playLoop);
+      return;
+    }
+    transitionProgress = t;
+    renderTrajectories(currentPhase, currentPhase+1);
+    renderState(currentPhase, currentPhase+1, t);
+    document.getElementById('progressFill').style.width = (t*100)+'%';
+    rafId = requestAnimationFrame(playLoop);
+  }
+
+  // ---------- Controls ----------
+  document.getElementById('btnPlay').addEventListener('click', togglePlay);
+  document.getElementById('btnRestart').addEventListener('click', ()=>goToPhase(0));
+  document.getElementById('btnPrev').addEventListener('click', ()=>goToPhase(currentPhase-1));
+  document.getElementById('btnNext').addEventListener('click', ()=>goToPhase(currentPhase+1));
+  document.getElementById('speedSelect').addEventListener('change', (e)=>{ speed = parseFloat(e.target.value); });
+  document.getElementById('toggleDefense').addEventListener('change', (e)=>{ showDefense = e.target.checked; renderState(currentPhase,currentPhase,0); });
+
+  document.addEventListener('keydown', (e)=>{
+    const tag = document.activeElement.tagName;
+    if (tag==='INPUT' || tag==='TEXTAREA' || tag==='SELECT') return;
+    if (e.code === 'Space'){ e.preventDefault(); togglePlay(); }
+    if (e.code === 'ArrowRight'){ goToPhase(currentPhase+1); }
+    if (e.code === 'ArrowLeft'){ goToPhase(currentPhase-1); }
+  });
+
+  document.getElementById('playSelect').addEventListener('change', (e)=>{
+    const v = e.target.value;
+    if (v.indexOf('lib:') === 0){ loadLibraryEntry(v.slice(4)); }
+  });
+
+  document.getElementById('playName').addEventListener('input', (e)=>{
+    currentPlay.name = e.target.value;
+  });
+
+  function startBlankStrategy(){
+    stopPlayback();
+    currentPlay = clone(BLANK_TEMPLATE);
+    currentLibraryId = null;
+    afterPlayLoaded();
+  }
+
+  document.getElementById('btnLibSave').addEventListener('click', saveCurrentToLibrary);
+  document.getElementById('btnLibSaveCopy').addEventListener('click', saveCurrentAsNewEntry);
+
+  const LIB_COLLAPSE_KEY = 'rugbyTacticsLibraryCollapsed_v1';
+  let libraryCollapsed = false;
+  try{ libraryCollapsed = localStorage.getItem(LIB_COLLAPSE_KEY) === 'true'; } catch(e){}
+
+  function applyLibraryCollapseState(){
+    const body = document.getElementById('libraryBody');
+    const btn = document.getElementById('btnLibCollapse');
+    body.style.display = libraryCollapsed ? 'none' : '';
+    btn.textContent = libraryCollapsed ? '▸' : '▾';
+    btn.title = libraryCollapsed ? 'Agrandir' : 'Réduire';
+  }
+
+  document.getElementById('btnLibCollapse').addEventListener('click', ()=>{
+    libraryCollapsed = !libraryCollapsed;
+    try{ localStorage.setItem(LIB_COLLAPSE_KEY, String(libraryCollapsed)); } catch(e){}
+    applyLibraryCollapseState();
+  });
+
+  applyLibraryCollapseState();
+
+  document.getElementById('btnLibNew').addEventListener('click', ()=>{
+    if (!confirm('Créer une nouvelle stratégie vierge ? Les modifications non enregistrées de la stratégie actuelle seront perdues.')) return;
+    startBlankStrategy();
+    const nameInput = document.getElementById('playName');
+    nameInput.focus(); nameInput.select();
+  });
+
+  document.getElementById('btnLibDelete').addEventListener('click', ()=>{
+    if (!currentLibraryId){
+      alert("Cette stratégie n'est pas encore enregistrée dans la bibliothèque : utilisez d'abord « Enregistrer », ou supprimez une stratégie directement dans la liste ci-dessous.");
+      return;
+    }
+    deleteLibraryEntry(currentLibraryId);
+  });
+
+  function afterPlayLoaded(){
+    resolved = resolvePhases(currentPlay);
+    currentPhase = 0;
+    document.getElementById('playName').value = currentPlay.name;
+    updatePhaseList();
+    renderTrajectories(0,0);
+    renderState(0,0,0);
+    updateCaption(0);
+    document.getElementById('progressFill').style.width = '0%';
+    syncEditorFields();
+    renderLibraryList();
+  }
+
+  // ---------- Edit mode ----------
+  const editorBox = document.getElementById('editorBox');
+  document.getElementById('toggleEdit').addEventListener('change', (e)=>{
+    editMode = e.target.checked;
+    editorBox.classList.toggle('on', editMode);
+    svg.parentElement.classList.toggle('editing', editMode);
+    if (!editMode) clearFormationSelection();
+    syncEditorFields();
+  });
+
+  function syncEditorFields(){
+    if (!editMode) return;
+    const raw = currentPlay.phases[currentPhase] || {};
+    document.getElementById('editLabel').value = resolved[currentPhase].label;
+    document.getElementById('editNote').value = resolved[currentPhase].note;
+  }
+
+  document.getElementById('editLabel').addEventListener('input', (e)=>{
+    currentPlay.phases[currentPhase].label = e.target.value;
+    resolved = resolvePhases(currentPlay);
+    updateCaption(currentPhase);
+    updatePhaseList();
+  });
+  document.getElementById('editNote').addEventListener('input', (e)=>{
+    currentPlay.phases[currentPhase].note = e.target.value;
+    resolved = resolvePhases(currentPlay);
+    updateCaption(currentPhase);
+  });
+
+  document.getElementById('btnDuplicate').addEventListener('click', ()=>{
+    const snap = resolved[currentPhase];
+    const newPhase = {
+      label: 'Nouvelle phase',
+      note: '',
+      duration: 1500,
+      carrier: snap.carrier,
+      ball: clone(snap.ball),
+      attack: clone(snap.attack),
+      defense: clone(snap.defense)
+    };
+    currentPlay.phases.splice(currentPhase+1, 0, newPhase);
+    resolved = resolvePhases(currentPlay);
+    goToPhase(currentPhase+1);
+  });
+
+  document.getElementById('btnDelete').addEventListener('click', ()=>{
+    if (currentPlay.phases.length <= 1) { alert('Une stratégie doit garder au moins une phase.'); return; }
+    currentPlay.phases.splice(currentPhase,1);
+    resolved = resolvePhases(currentPlay);
+    goToPhase(Math.max(0,currentPhase-1));
+  });
+
+  document.getElementById('btnBlank').addEventListener('click', ()=>{
+    if (!confirm('Repartir sur une stratégie vierge ? Les modifications non enregistrées seront perdues.')) return;
+    startBlankStrategy();
+  });
+
+  document.getElementById('btnExport').addEventListener('click', ()=>{
+    const data = JSON.stringify({name: currentPlay.name, phases: currentPlay.phases}, null, 2);
+    const blob = new Blob([data], {type:'application/json'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = (currentPlay.name || 'strategie').toLowerCase().replace(/[^a-z0-9]+/g,'_') + '.json';
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  });
+
+  document.getElementById('btnImportTrigger').addEventListener('click', ()=>{
+    document.getElementById('importFile').click();
+  });
+  document.getElementById('importFile').addEventListener('change', (e)=>{
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(evt){
+      try{
+        const data = JSON.parse(evt.target.result);
+        if (!data.phases || !Array.isArray(data.phases) || !data.phases[0] || !data.phases[0].attack || !data.phases[0].defense || !data.phases[0].ball){
+          throw new Error('format invalide');
+        }
+        currentPlay = { name: data.name || 'Stratégie importée', phases: data.phases };
+        currentLibraryId = null;
+        afterPlayLoaded();
+      } catch(err){
+        alert('Fichier JSON invalide : impossible de charger cette stratégie.');
+      }
+      e.target.value = '';
+    };
+    reader.readAsText(file);
+  });
+
+  // ---------- Drag to edit ----------
+  function svgPoint(evt){
+    const pt0 = svg.createSVGPoint();
+    pt0.x = evt.clientX; pt0.y = evt.clientY;
+    const ctm = svg.getScreenCTM().inverse();
+    return pt0.matrixTransform(ctm);
+  }
+
+  function selectToken(token){
+    if (selectedTokens.indexOf(token) !== -1) return;
+    token.classList.add('selected');
+    selectedTokens.push(token);
+  }
+  function toggleTokenSelection(token){
+    const idx = selectedTokens.indexOf(token);
+    if (idx === -1){ selectToken(token); }
+    else { token.classList.remove('selected'); selectedTokens.splice(idx,1); }
+  }
+  function clearFormationSelection(){
+    selectedTokens.forEach(t=>t.classList.remove('selected'));
+    selectedTokens = [];
+  }
+
+  svg.addEventListener('pointerdown', (e)=>{
+    if (!editMode) return;
+    if (e.target.closest && e.target.closest('.player')) return;
+    clearFormationSelection();
+  });
+
+  const FORWARD_NUMS = [1,2,3,4,5,6,7,8];
+  const BACK_NUMS = [9,10,11,12,13,14];
+
+  function selectGroupByKindAndNums(kind, nums){
+    if (!editMode) return;
+    clearFormationSelection();
+    const tokens = kind === 'attack' ? attackTokens : defenseTokens;
+    nums.forEach(n=>selectToken(tokens[n]));
+  }
+
+  function applyFormation(attackPos, defensePos){
+    if (!editMode) return;
+    const ph = currentPlay.phases[currentPhase];
+    ph.attack = ph.attack || {};
+    ph.defense = ph.defense || {};
+    Object.keys(attackPos).forEach(n=>{ ph.attack[n] = clone(attackPos[n]); });
+    Object.keys(defensePos).forEach(n=>{ ph.defense[n] = clone(defensePos[n]); });
+    resolved = resolvePhases(currentPlay);
+    renderTrajectories(Math.max(0,currentPhase-1), currentPhase);
+    renderState(currentPhase, currentPhase, 0);
+    clearFormationSelection();
+    Object.keys(attackPos).forEach(n=>selectToken(attackTokens[n]));
+    Object.keys(defensePos).forEach(n=>selectToken(defenseTokens[n]));
+  }
+
+  document.getElementById('btnFormScrum').addEventListener('click', ()=>{
+    applyFormation(SCRUM_ATTACK, SCRUM_DEFENSE);
+  });
+  document.getElementById('btnFormLineout').addEventListener('click', ()=>{
+    applyFormation(LINEOUT_ATTACK, LINEOUT_DEFENSE);
+  });
+  document.getElementById('btnFormBackUp').addEventListener('click', ()=>{
+    applyFormation(BACKS_UP_ATTACK, BACKS_UP_DEFENSE);
+  });
+  document.getElementById('btnFormBackDown').addEventListener('click', ()=>{
+    applyFormation(BACKS_DOWN_ATTACK, BACKS_DOWN_DEFENSE);
+  });
+
+  document.getElementById('btnSelForwardsBlue').addEventListener('click', ()=> selectGroupByKindAndNums('attack', FORWARD_NUMS));
+  document.getElementById('btnSelForwardsRed').addEventListener('click', ()=> selectGroupByKindAndNums('defense', FORWARD_NUMS));
+  document.getElementById('btnSelBacksBlue').addEventListener('click', ()=> selectGroupByKindAndNums('attack', BACK_NUMS));
+  document.getElementById('btnSelBacksRed').addEventListener('click', ()=> selectGroupByKindAndNums('defense', BACK_NUMS));
+
+  const tokenMeta = new WeakMap();
+
+  function attachDrag(token, kind, num){
+    tokenMeta.set(token, {kind:kind, num:num});
+    token.addEventListener('pointerdown', (e)=>{
+      if (!editMode) return;
+      if (kind==='defense' && !showDefense) return;
+      if (e.shiftKey){
+        e.preventDefault();
+        toggleTokenSelection(token);
+        return;
+      }
+      e.preventDefault();
+      const group = (selectedTokens.indexOf(token) !== -1 && selectedTokens.length > 1)
+        ? selectedTokens.slice()
+        : [token];
+      token.setPointerCapture(e.pointerId);
+      group.forEach(t=>t.classList.add('dragging'));
+      const start = svgPoint(e);
+      const startPositions = group.map(t=>{
+        const m = /translate\(([-\d.]+),([-\d.]+)\)/.exec(t.getAttribute('transform') || '');
+        return { token:t, x: m?parseFloat(m[1]):0, y: m?parseFloat(m[2]):0 };
+      });
+      const move = (ev)=>{
+        const p = svgPoint(ev);
+        const dx = p.x - start.x, dy = p.y - start.y;
+        startPositions.forEach(sp=>{
+          placeToken(sp.token, clampX(sp.x+dx), clampY(sp.y+dy));
+        });
+      };
+      const up = (ev)=>{
+        const p = svgPoint(ev);
+        const dx = p.x - start.x, dy = p.y - start.y;
+        token.releasePointerCapture(e.pointerId);
+        group.forEach(t=>t.classList.remove('dragging'));
+        token.removeEventListener('pointermove', move);
+        token.removeEventListener('pointerup', up);
+        const ph = currentPlay.phases[currentPhase];
+        startPositions.forEach(sp=>{
+          const x = clampX(sp.x+dx), y = clampY(sp.y+dy);
+          const meta = tokenMeta.get(sp.token);
+          if (!meta) return;
+          if (meta.kind==='ball'){ ph.ball = pt(x,y); }
+          else if (meta.kind==='attack'){ ph.attack = ph.attack || {}; ph.attack[meta.num] = pt(x,y); }
+          else { ph.defense = ph.defense || {}; ph.defense[meta.num] = pt(x,y); }
+        });
+        resolved = resolvePhases(currentPlay);
+        renderTrajectories(Math.max(0,currentPhase-1), currentPhase);
+        renderState(currentPhase, currentPhase, 0);
+      };
+      token.addEventListener('pointermove', move);
+      token.addEventListener('pointerup', up);
+    });
+  }
+
+  function buildLegend(){
+    const g = document.getElementById('legendGrid');
+    g.innerHTML = "";
+    NUMS.forEach(n=>{
+      const d = document.createElement('div');
+      d.innerHTML = '<b>'+n+'</b> '+POS_NAMES[n];
+      g.appendChild(d);
+    });
+  }
+
+  // ---------- Init ----------
+  drawPitchStatic();
+  buildTokens();
+  NUMS.forEach(n=>{ attachDrag(attackTokens[n],'attack',n); attachDrag(defenseTokens[n],'defense',n); });
+  attachDrag(ballToken,'ball',null);
+  buildLegend();
+  if (library.length > 0){
+    const mostRecent = library.slice().sort((a,b)=> b.updatedAt - a.updatedAt)[0];
+    currentPlay = { name: mostRecent.name, phases: clone(mostRecent.phases) };
+    currentLibraryId = mostRecent.id;
+  }
+  afterPlayLoaded();
+
+})();
+</script>
+</body>
+</html>
