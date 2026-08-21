@@ -1659,6 +1659,13 @@ function startApp(teamId, initialLibrary, meta){
       group.forEach(t=>t.classList.remove('dragging'));
       token.removeEventListener('pointermove', move);
       token.removeEventListener('pointerup', up);
+
+      if (Math.hypot(dx,dy) <= 3 && kind === 'cone' && group.length === 1){
+        toggleTokenSelection(token);
+        renderState(currentPhase, currentPhase, 0);
+        return;
+      }
+
       const ph = currentPlay.phases[currentPhase];
       startPositions.forEach(sp=>{
         const x = clampX(sp.x+dx), y = clampY(sp.y+dy);
