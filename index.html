@@ -481,7 +481,7 @@
       <input type="text" id="playName" />
     </div>
 
-    <div class="panel">
+    <div class="panel" id="libraryPanel">
       <div class="toggle-row" style="margin-bottom:4px;">
         <h2 style="margin:0;">Ma bibliothèque</h2>
         <button id="btnLibCollapse" class="icon-btn" style="width:28px;height:26px;padding:0;" title="Réduire">▾</button>
@@ -1597,10 +1597,8 @@ function startApp(teamId, initialLibrary, meta){
     if (!isCoach){
       const editPanel = document.getElementById('toggleEdit').closest('.panel');
       if (editPanel) editPanel.style.display = 'none';
-      ['btnLibNew','btnLibSave','btnLibSaveCopy','btnLibDelete'].forEach(id=>{
-        const b = document.getElementById(id);
-        if (b) b.style.display = 'none';
-      });
+      const libPanel = document.getElementById('libraryPanel');
+      if (libPanel) libPanel.style.display = 'none';
     }
   }
 
