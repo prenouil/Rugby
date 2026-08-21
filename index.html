@@ -351,8 +351,16 @@
     line-height:1.4;
     margin-top:6px;
   }
-  .file-row{display:flex;gap:8px;margin-top:8px;}
-  .file-row button{flex:1;}
+  .file-row{display:flex;flex-direction:column;gap:8px;margin-top:8px;}
+  .editor-columns{
+    display:flex;
+    gap:24px;
+    flex-wrap:wrap;
+  }
+  .editor-col{
+    flex:1 1 220px;
+    min-width:200px;
+  }
   input[type=file]{display:none;}
   .traj{
     stroke:#fff;
@@ -527,48 +535,58 @@
         <input type="checkbox" id="toggleEdit">
       </div>
       <div class="editor-box" id="editorBox">
-        <label class="field">Titre de la phase</label>
-        <input type="text" id="editLabel" />
+        <div class="editor-columns">
 
-        <div class="controls-row" style="margin-top:8px;">
-          <button id="btnDuplicate">＋ Dupliquer cette phase</button>
-          <button id="btnDelete">🗑 Supprimer</button>
-        </div>
-        <div class="controls-row" style="margin-top:6px;">
-          <button id="btnBlank" class="ghost">Nouvelle stratégie vierge</button>
-        </div>
+          <div class="editor-col">
+            <label class="field">Titre de la phase</label>
+            <input type="text" id="editLabel" />
 
-        <label class="field">Note pédagogique</label>
-        <textarea id="editNote"></textarea>
+            <div class="controls-row" style="margin-top:8px;">
+              <button id="btnDuplicate">＋ Dupliquer cette phase</button>
+              <button id="btnDelete">🗑 Supprimer</button>
+            </div>
+            <div class="controls-row" style="margin-top:6px;">
+              <button id="btnBlank" class="ghost">Nouvelle stratégie vierge</button>
+            </div>
 
-        <label class="field">Formations rapides — avants</label>
-        <div class="controls-row">
-          <button id="btnFormScrum">Tous en mêlée</button>
-          <button id="btnFormLineout">Tous en touche</button>
-        </div>
-        <label class="field">Formations rapides — 3/4</label>
-        <div class="controls-row">
-          <button id="btnFormBackUp">Ligne vers le haut</button>
-          <button id="btnFormBackDown">Ligne vers le bas</button>
-        </div>
+            <label class="field">Note pédagogique</label>
+            <textarea id="editNote"></textarea>
+          </div>
 
-        <label class="field">Sélection rapide</label>
-        <div class="controls-row">
-          <button id="btnSelForwardsBlue" class="ghost">Avants bleu</button>
-          <button id="btnSelForwardsRed" class="ghost">Avants rouge</button>
-        </div>
-        <div class="controls-row" style="margin-top:6px;">
-          <button id="btnSelBacksBlue" class="ghost">3/4 bleu</button>
-          <button id="btnSelBacksRed" class="ghost">3/4 rouge</button>
-        </div>
-        <div class="hint">Maintenez Maj (Shift) enfoncé en cliquant sur un joueur pour l'ajouter ou le retirer de la sélection.</div>
+          <div class="editor-col">
+            <label class="field">Formations rapides — avants</label>
+            <div class="controls-row">
+              <button id="btnFormScrum">Tous en mêlée</button>
+              <button id="btnFormLineout">Tous en touche</button>
+            </div>
+            <label class="field">Formations rapides — 3/4</label>
+            <div class="controls-row">
+              <button id="btnFormBackUp">Ligne vers le haut</button>
+              <button id="btnFormBackDown">Ligne vers le bas</button>
+            </div>
 
-        <div class="file-row">
-          <button id="btnExport">⬇ Exporter en JSON</button>
-          <button id="btnImportTrigger">⬆ Importer un JSON</button>
-          <input type="file" id="importFile" accept="application/json">
+            <label class="field">Sélection rapide</label>
+            <div class="controls-row">
+              <button id="btnSelForwardsBlue" class="ghost">Avants bleu</button>
+              <button id="btnSelForwardsRed" class="ghost">Avants rouge</button>
+            </div>
+            <div class="controls-row" style="margin-top:6px;">
+              <button id="btnSelBacksBlue" class="ghost">3/4 bleu</button>
+              <button id="btnSelBacksRed" class="ghost">3/4 rouge</button>
+            </div>
+            <div class="hint">Maintenez Maj (Shift) enfoncé en cliquant sur un joueur pour l'ajouter ou le retirer de la sélection.</div>
+          </div>
+
+          <div class="editor-col">
+            <div class="file-row">
+              <button id="btnExport">⬇ Exporter en JSON</button>
+              <button id="btnImportTrigger">⬆ Importer un JSON</button>
+              <input type="file" id="importFile" accept="application/json">
+            </div>
+            <div class="hint">Vos stratégies sont enregistrées automatiquement sur votre compte. L'export/import JSON sert à les transférer vers un autre compte ou à les partager avec un collègue.</div>
+          </div>
+
         </div>
-        <div class="hint">Vos stratégies sont enregistrées automatiquement sur votre compte. L'export/import JSON sert à les transférer vers un autre compte ou à les partager avec un collègue.</div>
       </div>
     </div>
 
