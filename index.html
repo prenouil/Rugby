@@ -101,6 +101,20 @@
     min-height:1.1em;
     margin-top:10px;
   }
+  .auth-divider{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin:16px 0;
+    color:#999;
+    font-size:.78rem;
+  }
+  .auth-divider::before, .auth-divider::after{
+    content:"";
+    flex:1;
+    height:1px;
+    background:var(--line);
+  }
   .app{
     display:flex;
     gap:18px;
@@ -383,6 +397,8 @@
       <div class="auth-error" id="authError"></div>
       <button type="submit" class="primary" id="authSubmit" style="width:100%;margin-top:14px;">Se connecter</button>
     </form>
+    <div class="auth-divider"><span>ou</span></div>
+    <button type="button" id="btnGoogleSignIn" style="width:100%;">Continuer avec Google</button>
   </div>
 </div>
 
@@ -553,7 +569,7 @@
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
   import {
     getAuth, onAuthStateChanged, signInWithEmailAndPassword,
-    createUserWithEmailAndPassword, signOut
+    createUserWithEmailAndPassword, signOut, GoogleAuthProvider, signInWithPopup
   } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js";
   import {
     getFirestore, collection, doc, setDoc, updateDoc, deleteDoc, getDocs
@@ -596,7 +612,11 @@
     'auth/wrong-password': "Mot de passe incorrect.",
     'auth/invalid-credential': "Email ou mot de passe incorrect.",
     'auth/too-many-requests': "Trop de tentatives, réessayez plus tard.",
-    'auth/missing-password': "Merci de renseigner un mot de passe."
+    'auth/missing-password': "Merci de renseigner un mot de passe.",
+    'auth/popup-closed-by-user': "Fenêtre Google fermée avant la fin de la connexion.",
+    'auth/popup-blocked': "La fenêtre Google a été bloquée par le navigateur. Autorisez les popups pour ce site.",
+    'auth/cancelled-popup-request': "Connexion Google annulée.",
+    'auth/account-exists-with-different-credential': "Un compte existe déjà avec cet email via une autre méthode de connexion."
   };
 
   const overlay = document.getElementById('authOverlay');
@@ -610,6 +630,8 @@
   const submitBtn = document.getElementById('authSubmit');
   const userEmailLabel = document.getElementById('userEmailLabel');
   const btnLogout = document.getElementById('btnLogout');
+  const btnGoogleSignIn = document.getElementById('btnGoogleSignIn');
+  const googleProvider = new GoogleAuthProvider();
 
   let mode = 'login';
   function setMode(m){
@@ -643,6 +665,17 @@
 
   btnLogout.addEventListener('click', ()=>{
     signOut(auth).then(()=> location.reload());
+  });
+
+  btnGoogleSignIn.addEventListener('click', async ()=>{
+    errorBox.textContent = '';
+    btnGoogleSignIn.disabled = true;
+    try{
+      await signInWithPopup(auth, googleProvider);
+    } catch(err){
+      errorBox.textContent = ERROR_MESSAGES[err.code] || ("Erreur : " + err.message);
+    }
+    btnGoogleSignIn.disabled = false;
   });
 
   let appStarted = false;
