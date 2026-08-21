@@ -937,6 +937,7 @@ function startApp(teamId, initialLibrary, meta){
   }
 
   function saveCurrentAsNewEntry(){
+    if (!isCoach) return;
     const id = makeLibId();
     const entry = { id, name: currentPlay.name || 'Stratégie sans nom', phases: clone(currentPlay.phases), updatedAt: Date.now() };
     library.unshift(entry);
@@ -946,6 +947,7 @@ function startApp(teamId, initialLibrary, meta){
   }
 
   function saveCurrentToLibrary(){
+    if (!isCoach) return;
     if (!currentLibraryId){ saveCurrentAsNewEntry(); return; }
     const entry = library.find(e=>e.id===currentLibraryId);
     if (!entry){ saveCurrentAsNewEntry(); return; }
@@ -966,6 +968,7 @@ function startApp(teamId, initialLibrary, meta){
   }
 
   function renameLibraryEntry(id){
+    if (!isCoach) return;
     const entry = library.find(e=>e.id===id);
     if (!entry) return;
     const name = prompt('Nouveau nom de la stratégie :', entry.name);
@@ -981,6 +984,7 @@ function startApp(teamId, initialLibrary, meta){
   }
 
   function deleteLibraryEntry(id){
+    if (!isCoach) return;
     const entry = library.find(e=>e.id===id);
     if (!entry) return;
     if (!confirm('Supprimer définitivement « ' + entry.name + ' » de la bibliothèque ?')) return;
@@ -1031,19 +1035,24 @@ function startApp(teamId, initialLibrary, meta){
       loadBtn.innerHTML = entry.name.replace(/[<>&]/g, c=>({'<':'&lt;','>':'&gt;','&':'&amp;'}[c])) + '<br><small>' + entry.phases.length + ' phase(s) · ' + date + '</small>';
       loadBtn.addEventListener('click', ()=>loadLibraryEntry(entry.id));
 
-      const renameBtn = document.createElement('button');
-      renameBtn.className = 'icon-btn';
-      renameBtn.title = 'Renommer';
-      renameBtn.textContent = '✏️';
-      renameBtn.addEventListener('click', ()=>renameLibraryEntry(entry.id));
+      row.appendChild(loadBtn);
 
-      const delBtn = document.createElement('button');
-      delBtn.className = 'icon-btn';
-      delBtn.title = 'Supprimer';
-      delBtn.textContent = '🗑';
-      delBtn.addEventListener('click', ()=>deleteLibraryEntry(entry.id));
+      if (isCoach){
+        const renameBtn = document.createElement('button');
+        renameBtn.className = 'icon-btn';
+        renameBtn.title = 'Renommer';
+        renameBtn.textContent = '✏️';
+        renameBtn.addEventListener('click', ()=>renameLibraryEntry(entry.id));
 
-      row.appendChild(loadBtn); row.appendChild(renameBtn); row.appendChild(delBtn);
+        const delBtn = document.createElement('button');
+        delBtn.className = 'icon-btn';
+        delBtn.title = 'Supprimer';
+        delBtn.textContent = '🗑';
+        delBtn.addEventListener('click', ()=>deleteLibraryEntry(entry.id));
+
+        row.appendChild(renameBtn); row.appendChild(delBtn);
+      }
+
       wrap.appendChild(row);
     });
   }
