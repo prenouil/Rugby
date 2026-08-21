@@ -35,6 +35,72 @@
     color:#555;
     font-size:.92rem;
   }
+  #appRoot{display:none;}
+  .header-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:16px;
+    flex-wrap:wrap;
+  }
+  .user-bar{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    font-size:.82rem;
+    color:#666;
+    white-space:nowrap;
+  }
+  .auth-overlay{
+    position:fixed;
+    inset:0;
+    background:var(--paper);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+    z-index:1000;
+  }
+  .auth-card{
+    background:var(--panel);
+    border-radius:14px;
+    padding:30px 26px;
+    box-shadow:0 4px 18px rgba(0,0,0,.12);
+    max-width:360px;
+    width:100%;
+  }
+  .auth-card h1{
+    margin:0 0 4px;
+    font-size:1.2rem;
+    text-align:center;
+  }
+  .auth-sub{
+    color:#666;
+    font-size:.85rem;
+    text-align:center;
+    margin:0 0 18px;
+  }
+  .auth-tabs{
+    display:flex;
+    gap:6px;
+    margin-bottom:16px;
+  }
+  .auth-tab{
+    flex:1;
+    padding:8px;
+    border-radius:8px;
+  }
+  .auth-tab.active{
+    background:var(--ink);
+    color:#fff;
+    border-color:var(--ink);
+  }
+  .auth-error{
+    color:#c1121f;
+    font-size:.8rem;
+    min-height:1.1em;
+    margin-top:10px;
+  }
   .app{
     display:flex;
     gap:18px;
@@ -301,9 +367,38 @@
 </head>
 <body>
 
+<div class="auth-overlay" id="authOverlay">
+  <div class="auth-card">
+    <h1>🏉 Animateur de stratégies de rugby</h1>
+    <p class="auth-sub">Connectez-vous pour accéder à vos stratégies.</p>
+    <div class="auth-tabs">
+      <button type="button" class="auth-tab active" id="tabLogin">Se connecter</button>
+      <button type="button" class="auth-tab" id="tabSignup">Créer un compte</button>
+    </div>
+    <form id="authForm">
+      <label class="field">Email</label>
+      <input type="email" id="authEmail" required autocomplete="email" />
+      <label class="field">Mot de passe</label>
+      <input type="password" id="authPassword" required autocomplete="current-password" minlength="6" />
+      <div class="auth-error" id="authError"></div>
+      <button type="submit" class="primary" id="authSubmit" style="width:100%;margin-top:14px;">Se connecter</button>
+    </form>
+  </div>
+</div>
+
+<div id="appRoot">
+
 <header>
-  <h1>🏉 Animateur de stratégies de rugby</h1>
-  <p>Faites défiler les phases de jeu pour expliquer les déplacements des joueurs (par poste) et du ballon. Activez le mode édition pour créer vos propres stratégies.</p>
+  <div class="header-top">
+    <div>
+      <h1>🏉 Animateur de stratégies de rugby</h1>
+      <p>Faites défiler les phases de jeu pour expliquer les déplacements des joueurs (par poste) et du ballon. Activez le mode édition pour créer vos propres stratégies.</p>
+    </div>
+    <div class="user-bar">
+      <span id="userEmailLabel"></span>
+      <button id="btnLogout" class="ghost">Déconnexion</button>
+    </div>
+  </div>
 </header>
 
 <div class="app">
@@ -361,7 +456,7 @@
         </div>
         <label class="field">Stratégies sauvegardées</label>
         <div class="lib-list" id="libraryList"></div>
-        <div class="hint">Sauvegardées dans ce navigateur (cet ordinateur). Utilisez Exporter/Importer JSON pour les transférer ailleurs ou les partager.</div>
+        <div class="hint">Enregistrées sur votre compte, accessibles depuis n'importe quel appareil. Utilisez Exporter/Importer JSON pour les transférer vers un autre compte ou les partager.</div>
       </div>
     </div>
 
@@ -438,7 +533,7 @@
           <button id="btnImportTrigger">⬆ Importer un JSON</button>
           <input type="file" id="importFile" accept="application/json">
         </div>
-        <div class="hint">L'export télécharge un fichier .json que vous pouvez conserver et réimporter plus tard (aucune sauvegarde automatique n'est faite dans le navigateur).</div>
+        <div class="hint">Vos stratégies sont enregistrées automatiquement sur votre compte. L'export/import JSON sert à les transférer vers un autre compte ou à les partager avec un collègue.</div>
       </div>
     </div>
 
@@ -452,8 +547,128 @@
   </div>
 </div>
 
+</div>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
+  import {
+    getAuth, onAuthStateChanged, signInWithEmailAndPassword,
+    createUserWithEmailAndPassword, signOut
+  } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js";
+  import {
+    getFirestore, collection, doc, setDoc, updateDoc, deleteDoc, getDocs
+  } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyDJwYdTiz5UrLiEVOWc0XxRAaDeiCGpIIU",
+    authDomain: "rugby-tactics.firebaseapp.com",
+    projectId: "rugby-tactics",
+    storageBucket: "rugby-tactics.firebasestorage.app",
+    messagingSenderId: "279335703282",
+    appId: "1:279335703282:web:f25310326e7f746502b66b"
+  };
+
+  const fbApp = initializeApp(firebaseConfig);
+  const auth = getAuth(fbApp);
+  const db = getFirestore(fbApp);
+
+  window.__fb = {
+    async fetchLibrary(uid){
+      const snap = await getDocs(collection(db, 'libraries', uid, 'plays'));
+      return snap.docs.map(d => Object.assign({ id: d.id }, d.data()));
+    },
+    async saveEntry(uid, id, data){
+      await setDoc(doc(db, 'libraries', uid, 'plays', id), data);
+    },
+    async renameEntry(uid, id, name, updatedAt){
+      await updateDoc(doc(db, 'libraries', uid, 'plays', id), { name, updatedAt });
+    },
+    async deleteEntry(uid, id){
+      await deleteDoc(doc(db, 'libraries', uid, 'plays', id));
+    }
+  };
+
+  const ERROR_MESSAGES = {
+    'auth/email-already-in-use': "Un compte existe déjà avec cet email.",
+    'auth/invalid-email': "Adresse email invalide.",
+    'auth/weak-password': "Le mot de passe doit contenir au moins 6 caractères.",
+    'auth/user-not-found': "Aucun compte avec cet email.",
+    'auth/wrong-password': "Mot de passe incorrect.",
+    'auth/invalid-credential': "Email ou mot de passe incorrect.",
+    'auth/too-many-requests': "Trop de tentatives, réessayez plus tard.",
+    'auth/missing-password': "Merci de renseigner un mot de passe."
+  };
+
+  const overlay = document.getElementById('authOverlay');
+  const appRoot = document.getElementById('appRoot');
+  const tabLogin = document.getElementById('tabLogin');
+  const tabSignup = document.getElementById('tabSignup');
+  const authForm = document.getElementById('authForm');
+  const emailInput = document.getElementById('authEmail');
+  const passwordInput = document.getElementById('authPassword');
+  const errorBox = document.getElementById('authError');
+  const submitBtn = document.getElementById('authSubmit');
+  const userEmailLabel = document.getElementById('userEmailLabel');
+  const btnLogout = document.getElementById('btnLogout');
+
+  let mode = 'login';
+  function setMode(m){
+    mode = m;
+    tabLogin.classList.toggle('active', m==='login');
+    tabSignup.classList.toggle('active', m==='signup');
+    submitBtn.textContent = m==='login' ? 'Se connecter' : 'Créer le compte';
+    passwordInput.autocomplete = m==='login' ? 'current-password' : 'new-password';
+    errorBox.textContent = '';
+  }
+  tabLogin.addEventListener('click', ()=>setMode('login'));
+  tabSignup.addEventListener('click', ()=>setMode('signup'));
+
+  authForm.addEventListener('submit', async (e)=>{
+    e.preventDefault();
+    errorBox.textContent = '';
+    submitBtn.disabled = true;
+    const email = emailInput.value.trim();
+    const password = passwordInput.value;
+    try{
+      if (mode === 'login'){
+        await signInWithEmailAndPassword(auth, email, password);
+      } else {
+        await createUserWithEmailAndPassword(auth, email, password);
+      }
+    } catch(err){
+      errorBox.textContent = ERROR_MESSAGES[err.code] || ("Erreur : " + err.message);
+    }
+    submitBtn.disabled = false;
+  });
+
+  btnLogout.addEventListener('click', ()=>{
+    signOut(auth).then(()=> location.reload());
+  });
+
+  let appStarted = false;
+  onAuthStateChanged(auth, async (user)=>{
+    if (user){
+      if (appStarted) return;
+      appStarted = true;
+      try{
+        const library = await window.__fb.fetchLibrary(user.uid);
+        userEmailLabel.textContent = user.email;
+        overlay.style.display = 'none';
+        appRoot.style.display = 'block';
+        window.startApp(user.uid, library);
+      } catch(err){
+        appStarted = false;
+        errorBox.textContent = "Impossible de charger vos stratégies : " + err.message;
+      }
+    } else {
+      appRoot.style.display = 'none';
+      overlay.style.display = 'flex';
+    }
+  });
+</script>
+
 <script>
-(function(){
+function startApp(uid, initialLibrary){
   "use strict";
 
   const POS_NAMES = {
@@ -548,29 +763,23 @@
   let transitionProgress = 0; // 0..1, used to resume after pause
   let selectedTokens = [];
 
-  // ---------- Library (localStorage) ----------
-  const LIB_KEY = 'rugbyTacticsLibrary_v1';
-  let library = loadLibrary();
+  // ---------- Library (Firestore, privée par compte) ----------
+  let library = initialLibrary;
   let currentLibraryId = null;
 
-  function loadLibrary(){
-    try{
-      const raw = JSON.parse(localStorage.getItem(LIB_KEY));
-      return Array.isArray(raw) ? raw : [];
-    } catch(e){ return []; }
-  }
-  function persistLibrary(){
-    try{ localStorage.setItem(LIB_KEY, JSON.stringify(library)); }
-    catch(e){ alert("Impossible de sauvegarder : le stockage du navigateur est plein ou indisponible."); }
-  }
   function makeLibId(){ return 'p_' + Date.now().toString(36) + '_' + Math.random().toString(36).slice(2,7); }
+
+  function reportSyncError(err){
+    alert("Impossible de synchroniser avec votre compte : " + (err && err.message ? err.message : 'vérifiez votre connexion internet.'));
+  }
 
   function saveCurrentAsNewEntry(){
     const id = makeLibId();
-    library.unshift({ id, name: currentPlay.name || 'Stratégie sans nom', phases: clone(currentPlay.phases), updatedAt: Date.now() });
-    persistLibrary();
+    const entry = { id, name: currentPlay.name || 'Stratégie sans nom', phases: clone(currentPlay.phases), updatedAt: Date.now() };
+    library.unshift(entry);
     currentLibraryId = id;
     renderLibraryList();
+    window.__fb.saveEntry(uid, id, { name: entry.name, phases: entry.phases, updatedAt: entry.updatedAt }).catch(reportSyncError);
   }
 
   function saveCurrentToLibrary(){
@@ -580,8 +789,8 @@
     entry.name = currentPlay.name || entry.name;
     entry.phases = clone(currentPlay.phases);
     entry.updatedAt = Date.now();
-    persistLibrary();
     renderLibraryList();
+    window.__fb.saveEntry(uid, entry.id, { name: entry.name, phases: entry.phases, updatedAt: entry.updatedAt }).catch(reportSyncError);
   }
 
   function loadLibraryEntry(id){
@@ -600,12 +809,12 @@
     if (name === null || !name.trim()) return;
     entry.name = name.trim();
     entry.updatedAt = Date.now();
-    persistLibrary();
     if (currentLibraryId === id){
       currentPlay.name = entry.name;
       document.getElementById('playName').value = entry.name;
     }
     renderLibraryList();
+    window.__fb.renameEntry(uid, id, entry.name, entry.updatedAt).catch(reportSyncError);
   }
 
   function deleteLibraryEntry(id){
@@ -613,9 +822,9 @@
     if (!entry) return;
     if (!confirm('Supprimer définitivement « ' + entry.name + ' » de la bibliothèque ?')) return;
     library = library.filter(e=>e.id!==id);
-    persistLibrary();
     if (currentLibraryId === id) currentLibraryId = null;
     renderLibraryList();
+    window.__fb.deleteEntry(uid, id).catch(reportSyncError);
   }
 
   function renderPlaySelectLibraryOptions(){
@@ -1217,8 +1426,8 @@
     currentLibraryId = mostRecent.id;
   }
   afterPlayLoaded();
-
-})();
+}
+window.startApp = startApp;
 </script>
 </body>
 </html>
