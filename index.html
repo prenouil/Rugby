@@ -403,6 +403,26 @@
   </div>
 </div>
 
+<div class="auth-overlay" id="teamOverlay" style="display:none;">
+  <div class="auth-card" style="max-width:420px;">
+    <h1>🏉 Rejoindre une équipe</h1>
+    <p class="auth-sub">Rejoignez l'équipe de votre coach avec un code d'invitation, ou créez la vôtre si vous êtes autorisé·e.</p>
+
+    <label class="field">Code d'invitation</label>
+    <input type="text" id="joinCodeInput" placeholder="ex: RUGBY-4F2K" style="text-transform:uppercase;" />
+    <button type="button" id="btnJoinTeam" class="primary" style="width:100%;margin-top:10px;">Rejoindre l'équipe</button>
+
+    <div class="auth-divider"><span>ou</span></div>
+
+    <label class="field">Nom de l'équipe</label>
+    <input type="text" id="createTeamName" placeholder="ex: Rugby Club de..." />
+    <button type="button" id="btnCreateTeam" style="width:100%;margin-top:10px;">Créer une équipe (coach)</button>
+
+    <div class="auth-error" id="teamError"></div>
+    <button type="button" id="btnTeamLogout" class="ghost" style="width:100%;margin-top:16px;font-size:.8rem;">Se déconnecter</button>
+  </div>
+</div>
+
 <div id="appRoot">
 
 <header>
@@ -412,6 +432,7 @@
       <p>Faites défiler les phases de jeu pour expliquer les déplacements des joueurs (par poste) et du ballon. Activez le mode édition pour créer vos propres stratégies.</p>
     </div>
     <div class="user-bar">
+      <span id="teamBadge"></span>
       <span id="userEmailLabel"></span>
       <button id="btnLogout" class="ghost">Déconnexion</button>
     </div>
@@ -445,6 +466,11 @@
   </div>
 
   <div class="side-col">
+
+    <div class="panel" id="teamPanel" style="display:none;">
+      <h2>Équipe</h2>
+      <div class="hint" id="teamInfoText"></div>
+    </div>
 
     <div class="panel">
       <h2>Stratégie</h2>
@@ -574,7 +600,7 @@
     sendPasswordResetEmail
   } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js";
   import {
-    getFirestore, collection, doc, setDoc, updateDoc, deleteDoc, getDocs
+    getFirestore, collection, doc, setDoc, updateDoc, deleteDoc, getDocs, getDoc
   } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
 
   const firebaseConfig = {
@@ -591,20 +617,27 @@
   const db = getFirestore(fbApp);
 
   window.__fb = {
-    async fetchLibrary(uid){
-      const snap = await getDocs(collection(db, 'libraries', uid, 'plays'));
+    async fetchLibrary(teamId){
+      const snap = await getDocs(collection(db, 'teams', teamId, 'plays'));
       return snap.docs.map(d => Object.assign({ id: d.id }, d.data()));
     },
-    async saveEntry(uid, id, data){
-      await setDoc(doc(db, 'libraries', uid, 'plays', id), data);
+    async saveEntry(teamId, id, data){
+      await setDoc(doc(db, 'teams', teamId, 'plays', id), data);
     },
-    async renameEntry(uid, id, name, updatedAt){
-      await updateDoc(doc(db, 'libraries', uid, 'plays', id), { name, updatedAt });
+    async renameEntry(teamId, id, name, updatedAt){
+      await updateDoc(doc(db, 'teams', teamId, 'plays', id), { name, updatedAt });
     },
-    async deleteEntry(uid, id){
-      await deleteDoc(doc(db, 'libraries', uid, 'plays', id));
+    async deleteEntry(teamId, id){
+      await deleteDoc(doc(db, 'teams', teamId, 'plays', id));
     }
   };
+
+  function generateInviteCode(){
+    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+    let code = '';
+    for (let i=0;i<8;i++) code += chars[Math.floor(Math.random()*chars.length)];
+    return code;
+  }
 
   const ERROR_MESSAGES = {
     'auth/email-already-in-use': "Un compte existe déjà avec cet email.",
@@ -635,6 +668,14 @@
   const btnGoogleSignIn = document.getElementById('btnGoogleSignIn');
   const googleProvider = new GoogleAuthProvider();
   const btnForgotPassword = document.getElementById('btnForgotPassword');
+  const teamOverlay = document.getElementById('teamOverlay');
+  const joinCodeInput = document.getElementById('joinCodeInput');
+  const btnJoinTeam = document.getElementById('btnJoinTeam');
+  const createTeamName = document.getElementById('createTeamName');
+  const btnCreateTeam = document.getElementById('btnCreateTeam');
+  const teamError = document.getElementById('teamError');
+  const btnTeamLogout = document.getElementById('btnTeamLogout');
+  const teamBadge = document.getElementById('teamBadge');
 
   let mode = 'login';
   function setMode(m){
@@ -700,31 +741,98 @@
     }
   });
 
+  async function enterTeam(user, teamId){
+    const memberSnap = await getDoc(doc(db, 'teams', teamId, 'members', user.uid));
+    if (!memberSnap.exists()) throw new Error("Vous n'êtes plus membre de cette équipe.");
+    const role = memberSnap.data().role;
+    const teamSnap = await getDoc(doc(db, 'teams', teamId));
+    const teamData = teamSnap.exists() ? teamSnap.data() : { name: 'Équipe' };
+    const library = await window.__fb.fetchLibrary(teamId);
+    userEmailLabel.textContent = user.email;
+    teamBadge.textContent = teamData.name + (role==='coach' ? ' · coach' : ' · joueur');
+    overlay.style.display = 'none';
+    teamOverlay.style.display = 'none';
+    appRoot.style.display = 'block';
+    window.startApp(teamId, library, { role, teamName: teamData.name, inviteCode: teamData.inviteCode });
+  }
+
+  btnJoinTeam.addEventListener('click', async ()=>{
+    const code = joinCodeInput.value.trim().toUpperCase();
+    teamError.textContent = '';
+    if (!code){ teamError.textContent = "Entrez un code d'invitation."; return; }
+    btnJoinTeam.disabled = true;
+    try{
+      const user = auth.currentUser;
+      const codeSnap = await getDoc(doc(db, 'teamsByCode', code));
+      if (!codeSnap.exists()) throw new Error("Code invalide.");
+      const teamId = codeSnap.data().teamId;
+      await setDoc(doc(db, 'teams', teamId, 'members', user.uid), { email: user.email, role: 'player', joinedAt: Date.now() });
+      await setDoc(doc(db, 'users', user.uid), { teamId });
+      await enterTeam(user, teamId);
+    } catch(err){
+      teamError.textContent = ERROR_MESSAGES[err.code] || err.message;
+    }
+    btnJoinTeam.disabled = false;
+  });
+
+  btnCreateTeam.addEventListener('click', async ()=>{
+    const name = createTeamName.value.trim();
+    teamError.textContent = '';
+    if (!name){ teamError.textContent = "Entrez un nom d'équipe."; return; }
+    btnCreateTeam.disabled = true;
+    try{
+      const user = auth.currentUser;
+      const teamRef = doc(collection(db, 'teams'));
+      const inviteCode = generateInviteCode();
+      await setDoc(teamRef, { name, inviteCode, createdAt: Date.now() });
+      await setDoc(doc(db, 'teams', teamRef.id, 'members', user.uid), { email: user.email, role: 'coach', joinedAt: Date.now() });
+      await setDoc(doc(db, 'teamsByCode', inviteCode), { teamId: teamRef.id });
+      await setDoc(doc(db, 'users', user.uid), { teamId: teamRef.id });
+      await enterTeam(user, teamRef.id);
+    } catch(err){
+      teamError.textContent = (err.code === 'permission-denied')
+        ? "Vous n'êtes pas autorisé·e à créer une équipe. Demandez un code d'invitation à votre coach."
+        : (ERROR_MESSAGES[err.code] || err.message);
+    }
+    btnCreateTeam.disabled = false;
+  });
+
+  btnTeamLogout.addEventListener('click', ()=>{
+    signOut(auth).then(()=> location.reload());
+  });
+
   let appStarted = false;
   onAuthStateChanged(auth, async (user)=>{
     if (user){
       if (appStarted) return;
       appStarted = true;
       try{
-        const library = await window.__fb.fetchLibrary(user.uid);
-        userEmailLabel.textContent = user.email;
+        const userSnap = await getDoc(doc(db, 'users', user.uid));
         overlay.style.display = 'none';
-        appRoot.style.display = 'block';
-        window.startApp(user.uid, library);
+        if (userSnap.exists() && userSnap.data().teamId){
+          await enterTeam(user, userSnap.data().teamId);
+        } else {
+          teamOverlay.style.display = 'flex';
+        }
       } catch(err){
         appStarted = false;
-        errorBox.textContent = "Impossible de charger vos stratégies : " + err.message;
+        overlay.style.display = 'flex';
+        errorBox.textContent = "Impossible de charger votre équipe : " + err.message;
       }
     } else {
       appRoot.style.display = 'none';
+      teamOverlay.style.display = 'none';
       overlay.style.display = 'flex';
     }
   });
 </script>
 
 <script>
-function startApp(uid, initialLibrary){
+function startApp(teamId, initialLibrary, meta){
   "use strict";
+  meta = meta || {};
+  const role = meta.role || 'player';
+  const isCoach = role === 'coach';
 
   const POS_NAMES = {
     1:"Pilier gauche",2:"Talonneur",3:"Pilier droit",4:"2e ligne",5:"2e ligne",
@@ -834,7 +942,7 @@ function startApp(uid, initialLibrary){
     library.unshift(entry);
     currentLibraryId = id;
     renderLibraryList();
-    window.__fb.saveEntry(uid, id, { name: entry.name, phases: entry.phases, updatedAt: entry.updatedAt }).catch(reportSyncError);
+    window.__fb.saveEntry(teamId, id, { name: entry.name, phases: entry.phases, updatedAt: entry.updatedAt }).catch(reportSyncError);
   }
 
   function saveCurrentToLibrary(){
@@ -845,7 +953,7 @@ function startApp(uid, initialLibrary){
     entry.phases = clone(currentPlay.phases);
     entry.updatedAt = Date.now();
     renderLibraryList();
-    window.__fb.saveEntry(uid, entry.id, { name: entry.name, phases: entry.phases, updatedAt: entry.updatedAt }).catch(reportSyncError);
+    window.__fb.saveEntry(teamId, entry.id, { name: entry.name, phases: entry.phases, updatedAt: entry.updatedAt }).catch(reportSyncError);
   }
 
   function loadLibraryEntry(id){
@@ -869,7 +977,7 @@ function startApp(uid, initialLibrary){
       document.getElementById('playName').value = entry.name;
     }
     renderLibraryList();
-    window.__fb.renameEntry(uid, id, entry.name, entry.updatedAt).catch(reportSyncError);
+    window.__fb.renameEntry(teamId, id, entry.name, entry.updatedAt).catch(reportSyncError);
   }
 
   function deleteLibraryEntry(id){
@@ -879,7 +987,7 @@ function startApp(uid, initialLibrary){
     library = library.filter(e=>e.id!==id);
     if (currentLibraryId === id) currentLibraryId = null;
     renderLibraryList();
-    window.__fb.deleteEntry(uid, id).catch(reportSyncError);
+    window.__fb.deleteEntry(teamId, id).catch(reportSyncError);
   }
 
   function renderPlaySelectLibraryOptions(){
@@ -1469,12 +1577,31 @@ function startApp(uid, initialLibrary){
     });
   }
 
+  function applyRoleUI(){
+    const teamPanel = document.getElementById('teamPanel');
+    const teamInfoText = document.getElementById('teamInfoText');
+    teamPanel.style.display = '';
+    teamInfoText.innerHTML = '<b>' + (meta.teamName || 'Équipe') + '</b><br>Rôle : ' +
+      (isCoach ? 'Coach (édition)' : 'Joueur (lecture seule)') +
+      (isCoach && meta.inviteCode ? '<br>Code d\'invitation à transmettre : <b>' + meta.inviteCode + '</b>' : '');
+
+    if (!isCoach){
+      const editPanel = document.getElementById('toggleEdit').closest('.panel');
+      if (editPanel) editPanel.style.display = 'none';
+      ['btnLibNew','btnLibSave','btnLibSaveCopy','btnLibDelete'].forEach(id=>{
+        const b = document.getElementById(id);
+        if (b) b.style.display = 'none';
+      });
+    }
+  }
+
   // ---------- Init ----------
   drawPitchStatic();
   buildTokens();
   NUMS.forEach(n=>{ attachDrag(attackTokens[n],'attack',n); attachDrag(defenseTokens[n],'defense',n); });
   attachDrag(ballToken,'ball',null);
   buildLegend();
+  applyRoleUI();
   if (library.length > 0){
     const mostRecent = library.slice().sort((a,b)=> b.updatedAt - a.updatedAt)[0];
     currentPlay = { name: mostRecent.name, phases: clone(mostRecent.phases) };
