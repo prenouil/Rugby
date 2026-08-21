@@ -132,6 +132,9 @@
     padding:12px;
     box-shadow:0 1px 3px rgba(0,0,0,.08);
   }
+  #editModeAnchor:not(:empty){
+    margin-top:10px;
+  }
   svg#pitch{
     width:100%;
     height:auto;
@@ -335,20 +338,6 @@
   .swatch i{
     width:12px;height:12px;border-radius:50%;display:inline-block;
   }
-  .legend-grid{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:2px 12px;
-    font-size:.78rem;
-    color:#555;
-  }
-  .legend-grid b{color:var(--ink);}
-  details summary{
-    cursor:pointer;
-    font-size:.85rem;
-    color:#444;
-    margin-bottom:6px;
-  }
   .editor-box{
     border-top:1px dashed var(--line);
     margin-top:10px;
@@ -463,6 +452,8 @@
       <p id="phaseNote">—</p>
       <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
     </div>
+
+    <div id="editModeAnchor"></div>
   </div>
 
   <div class="side-col">
@@ -529,7 +520,8 @@
       <div class="swatch"><i style="background:var(--teamB)"></i>Défense (rouge)</div>
     </div>
 
-    <div class="panel">
+    <div id="editModeHome"></div>
+    <div class="panel" id="editModePanel">
       <div class="toggle-row" style="margin-bottom:4px;">
         <h2 style="margin:0;">Mode édition</h2>
         <input type="checkbox" id="toggleEdit">
@@ -578,13 +570,6 @@
         </div>
         <div class="hint">Vos stratégies sont enregistrées automatiquement sur votre compte. L'export/import JSON sert à les transférer vers un autre compte ou à les partager avec un collègue.</div>
       </div>
-    </div>
-
-    <div class="panel">
-      <details>
-        <summary>Rappel des postes (1 à 15)</summary>
-        <div class="legend-grid" id="legendGrid"></div>
-      </details>
     </div>
 
   </div>
@@ -1359,11 +1344,15 @@ function startApp(teamId, initialLibrary, meta){
 
   // ---------- Edit mode ----------
   const editorBox = document.getElementById('editorBox');
+  const editModePanel = document.getElementById('editModePanel');
+  const editModeAnchor = document.getElementById('editModeAnchor');
+  const editModeHome = document.getElementById('editModeHome');
   document.getElementById('toggleEdit').addEventListener('change', (e)=>{
     editMode = e.target.checked;
     editorBox.classList.toggle('on', editMode);
     svg.parentElement.classList.toggle('editing', editMode);
-    if (!editMode) clearFormationSelection();
+    if (editMode){ editModeAnchor.appendChild(editModePanel); }
+    else { editModeHome.after(editModePanel); clearFormationSelection(); }
     syncEditorFields();
   });
 
@@ -1576,16 +1565,6 @@ function startApp(teamId, initialLibrary, meta){
     });
   }
 
-  function buildLegend(){
-    const g = document.getElementById('legendGrid');
-    g.innerHTML = "";
-    NUMS.forEach(n=>{
-      const d = document.createElement('div');
-      d.innerHTML = '<b>'+n+'</b> '+POS_NAMES[n];
-      g.appendChild(d);
-    });
-  }
-
   function applyRoleUI(){
     const teamPanel = document.getElementById('teamPanel');
     const teamInfoText = document.getElementById('teamInfoText');
@@ -1607,7 +1586,6 @@ function startApp(teamId, initialLibrary, meta){
   buildTokens();
   NUMS.forEach(n=>{ attachDrag(attackTokens[n],'attack',n); attachDrag(defenseTokens[n],'defense',n); });
   attachDrag(ballToken,'ball',null);
-  buildLegend();
   applyRoleUI();
   if (library.length > 0){
     const mostRecent = library.slice().sort((a,b)=> b.updatedAt - a.updatedAt)[0];
