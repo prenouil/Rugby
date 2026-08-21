@@ -440,7 +440,7 @@
 
   <div class="pitch-col">
     <div class="pitch-wrap">
-      <svg id="pitch" viewBox="0 -60 1120 760" xmlns="http://www.w3.org/2000/svg">
+      <svg id="pitch" viewBox="0 0 1120 700" xmlns="http://www.w3.org/2000/svg">
         <defs>
           <marker id="arrowhead" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
             <path d="M0,0 L6,3 L0,6 Z" fill="#ffffff"></path>
@@ -1154,17 +1154,22 @@ function startApp(teamId, initialLibrary, meta){
     return g;
   }
 
-  function makeConeToken(color){
+  function makeConeToken(color, isOrigin){
     const g = el('g',{class:'player', transform:'translate(-100,-100)'});
-    g.appendChild(el('circle',{r:11, fill:color, stroke:'#333', 'stroke-width':1.5}));
+    if (isOrigin){
+      g.appendChild(el('circle',{r:15, fill:'#ffffff', stroke:'#333', 'stroke-width':1.5}));
+      g.appendChild(el('circle',{r:11, fill:color}));
+    } else {
+      g.appendChild(el('circle',{r:11, fill:color, stroke:'#333', 'stroke-width':1.5}));
+    }
     return g;
   }
 
   const CONE_ORIGINS = [
-    { color:'#f2c94c', x:250, y:-32 },
-    { color:'#eb5757', x:470, y:-32 },
-    { color:'#27ae60', x:650, y:-32 },
-    { color:'#2f80ed', x:870, y:-32 }
+    { color:'#f2c94c', x:110, y:660 },
+    { color:'#eb5757', x:150, y:660 },
+    { color:'#27ae60', x:190, y:660 },
+    { color:'#2f80ed', x:230, y:660 }
   ];
   function makeConeId(){ return 'k_' + Date.now().toString(36) + '_' + Math.random().toString(36).slice(2,6); }
 
@@ -1194,7 +1199,7 @@ function startApp(teamId, initialLibrary, meta){
 
   function buildConeOrigins(){
     CONE_ORIGINS.forEach(spec=>{
-      const g = makeConeToken(spec.color);
+      const g = makeConeToken(spec.color, true);
       g.setAttribute('transform', 'translate('+spec.x+','+spec.y+')');
       coneOriginLayer.appendChild(g);
       attachConeOriginSpawn(g, spec);
@@ -1456,6 +1461,7 @@ function startApp(teamId, initialLibrary, meta){
     editMode = e.target.checked;
     editorBox.classList.toggle('on', editMode);
     svg.parentElement.classList.toggle('editing', editMode);
+    coneOriginLayer.setAttribute('display', editMode ? '' : 'none');
     if (editMode){ editModeAnchor.appendChild(editModePanel); }
     else { editModeHome.after(editModePanel); clearFormationSelection(); }
     syncEditorFields();
@@ -1696,6 +1702,7 @@ function startApp(teamId, initialLibrary, meta){
   drawPitchStatic();
   buildTokens();
   buildConeOrigins();
+  coneOriginLayer.setAttribute('display', 'none');
   NUMS.forEach(n=>{ attachDrag(attackTokens[n],'attack',n); attachDrag(defenseTokens[n],'defense',n); });
   attachDrag(ballToken,'ball',null);
   applyRoleUI();
