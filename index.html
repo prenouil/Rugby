@@ -440,13 +440,15 @@
 
   <div class="pitch-col">
     <div class="pitch-wrap">
-      <svg id="pitch" viewBox="0 0 1120 700" xmlns="http://www.w3.org/2000/svg">
+      <svg id="pitch" viewBox="0 -60 1120 760" xmlns="http://www.w3.org/2000/svg">
         <defs>
           <marker id="arrowhead" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
             <path d="M0,0 L6,3 L0,6 Z" fill="#ffffff"></path>
           </marker>
         </defs>
         <g id="pitchStatic"></g>
+        <g id="coneOriginLayer"></g>
+        <g id="coneLayer"></g>
         <g id="trajLayer"></g>
         <g id="defenseLayer"></g>
         <g id="attackLayer"></g>
@@ -1062,23 +1064,31 @@ function startApp(teamId, initialLibrary, meta){
 
   function resolvePhases(play){
     const out = [];
-    let prevAttack = null, prevDefense = null, prevBall = null, prevCarrier = null;
+    let prevAttack = null, prevDefense = null, prevBall = null, prevCarrier = null, prevCones = null;
     play.phases.forEach((ph) => {
-      let attack, defense;
+      let attack, defense, cones;
       if (prevAttack === null){
         attack = clone(ph.attack || {});
         defense = clone(ph.defense || {});
+        cones = clone(ph.cones || {});
+        Object.keys(cones).forEach(k=>{ if (cones[k] === null) delete cones[k]; });
       } else {
         attack = clone(prevAttack);
         Object.assign(attack, clone(ph.attack || {}));
         defense = clone(prevDefense);
         Object.assign(defense, clone(ph.defense || {}));
+        cones = clone(prevCones);
+        const coneOverride = ph.cones || {};
+        Object.keys(coneOverride).forEach(k=>{
+          if (coneOverride[k] === null) delete cones[k];
+          else cones[k] = clone(coneOverride[k]);
+        });
       }
       const ball = ph.ball ? clone(ph.ball) : clone(prevBall || pt(560,350));
       const carrier = (ph.carrier !== undefined) ? ph.carrier : prevCarrier;
-      prevAttack = attack; prevDefense = defense; prevBall = ball; prevCarrier = carrier;
+      prevAttack = attack; prevDefense = defense; prevBall = ball; prevCarrier = carrier; prevCones = cones;
       out.push({
-        attack, defense, ball, carrier,
+        attack, defense, ball, carrier, cones,
         label: ph.label || "", note: ph.note || "", duration: ph.duration || 1500
       });
     });
@@ -1144,13 +1154,30 @@ function startApp(teamId, initialLibrary, meta){
     return g;
   }
 
+  function makeConeToken(color){
+    const g = el('g',{class:'player', transform:'translate(-100,-100)'});
+    g.appendChild(el('circle',{r:11, fill:color, stroke:'#333', 'stroke-width':1.5}));
+    return g;
+  }
+
+  const CONE_ORIGINS = [
+    { color:'#f2c94c', x:250, y:-32 },
+    { color:'#eb5757', x:470, y:-32 },
+    { color:'#27ae60', x:650, y:-32 },
+    { color:'#2f80ed', x:870, y:-32 }
+  ];
+  function makeConeId(){ return 'k_' + Date.now().toString(36) + '_' + Math.random().toString(36).slice(2,6); }
+
   const attackLayer = document.getElementById('attackLayer');
   const defenseLayer = document.getElementById('defenseLayer');
   const ballLayer = document.getElementById('ballLayer');
   const trajLayer = document.getElementById('trajLayer');
+  const coneLayer = document.getElementById('coneLayer');
+  const coneOriginLayer = document.getElementById('coneOriginLayer');
 
   const attackTokens = {};
   const defenseTokens = {};
+  const coneTokens = {};
   let ballToken = null;
 
   function buildTokens(){
@@ -1163,6 +1190,42 @@ function startApp(teamId, initialLibrary, meta){
     ballToken.appendChild(el('ellipse',{rx:11, ry:6.5, fill:'var(--accent)', stroke:'#5a3410','stroke-width':1.2}));
     ballToken.appendChild(el('line',{x1:-6,y1:0,x2:6,y2:0,stroke:'#fff','stroke-width':1.4}));
     ballLayer.appendChild(ballToken);
+  }
+
+  function buildConeOrigins(){
+    CONE_ORIGINS.forEach(spec=>{
+      const g = makeConeToken(spec.color);
+      g.setAttribute('transform', 'translate('+spec.x+','+spec.y+')');
+      coneOriginLayer.appendChild(g);
+      attachConeOriginSpawn(g, spec);
+    });
+  }
+
+  function ensureConeToken(id, color){
+    let token = coneTokens[id];
+    if (token) return token;
+    token = makeConeToken(color);
+    coneLayer.appendChild(token);
+    coneTokens[id] = token;
+    attachDrag(token, 'cone', id);
+    tokenMeta.get(token).color = color;
+    return token;
+  }
+
+  function attachConeOriginSpawn(originEl, spec){
+    originEl.addEventListener('pointerdown', (e)=>{
+      if (!editMode) return;
+      e.preventDefault();
+      const id = makeConeId();
+      const ph = currentPlay.phases[currentPhase];
+      ph.cones = ph.cones || {};
+      ph.cones[id] = { x: clampX(spec.x), y: clampY(spec.y), color: spec.color };
+      resolved = resolvePhases(currentPlay);
+      renderTrajectories(Math.max(0,currentPhase-1), currentPhase);
+      renderState(currentPhase, currentPhase, 0);
+      const newToken = coneTokens[id];
+      if (newToken) startTokenDrag(e, newToken, 'cone', id);
+    });
   }
 
   function easeInOutQuad(t){ return t<0.5 ? 2*t*t : -1+(4-2*t)*t; }
@@ -1185,6 +1248,18 @@ function startApp(teamId, initialLibrary, meta){
     const bx = lerp(from.ball.x, to.ball.x, tt);
     const by = lerp(from.ball.y, to.ball.y, tt) - Math.sin(tt*Math.PI)*14;
     placeToken(ballToken, bx, by);
+
+    const fromCones = from.cones || {}, toCones = to.cones || {};
+    const allConeIds = new Set(Object.keys(fromCones).concat(Object.keys(toCones)));
+    Object.keys(coneTokens).forEach(id=>{
+      if (!allConeIds.has(id)){ coneTokens[id].remove(); delete coneTokens[id]; }
+    });
+    allConeIds.forEach(id=>{
+      const fc = fromCones[id] || toCones[id];
+      const tc = toCones[id] || fc;
+      const token = ensureConeToken(id, fc.color || tc.color);
+      placeToken(token, lerp(fc.x,tc.x,tt), lerp(fc.y,tc.y,tt));
+    });
   }
 
   function renderTrajectories(fromIdx, toIdx){
@@ -1291,6 +1366,18 @@ function startApp(teamId, initialLibrary, meta){
     if (e.code === 'Space'){ e.preventDefault(); togglePlay(); }
     if (e.code === 'ArrowRight'){ goToPhase(currentPhase+1); }
     if (e.code === 'ArrowLeft'){ goToPhase(currentPhase-1); }
+    if ((e.code === 'Delete' || e.code === 'Backspace') && editMode){
+      const toDelete = selectedTokens.filter(t=>{ const m = tokenMeta.get(t); return m && m.kind==='cone'; });
+      if (toDelete.length === 0) return;
+      e.preventDefault();
+      const ph = currentPlay.phases[currentPhase];
+      ph.cones = ph.cones || {};
+      toDelete.forEach(t=>{ const m = tokenMeta.get(t); ph.cones[m.num] = null; });
+      clearFormationSelection();
+      resolved = resolvePhases(currentPlay);
+      renderTrajectories(Math.max(0,currentPhase-1), currentPhase);
+      renderState(currentPhase, currentPhase, 0);
+    }
   });
 
   document.getElementById('playSelect').addEventListener('change', (e)=>{
@@ -1402,7 +1489,8 @@ function startApp(teamId, initialLibrary, meta){
       carrier: snap.carrier,
       ball: clone(snap.ball),
       attack: clone(snap.attack),
-      defense: clone(snap.defense)
+      defense: clone(snap.defense),
+      cones: clone(snap.cones || {})
     };
     currentPlay.phases.splice(currentPhase+1, 0, newPhase);
     resolved = resolvePhases(currentPlay);
@@ -1530,56 +1618,61 @@ function startApp(teamId, initialLibrary, meta){
 
   const tokenMeta = new WeakMap();
 
+  function startTokenDrag(e, token, kind, num){
+    if (kind==='defense' && !showDefense) return;
+    if (e.shiftKey){
+      e.preventDefault();
+      toggleTokenSelection(token);
+      return;
+    }
+    e.preventDefault();
+    const group = (selectedTokens.indexOf(token) !== -1 && selectedTokens.length > 1)
+      ? selectedTokens.slice()
+      : [token];
+    token.setPointerCapture(e.pointerId);
+    group.forEach(t=>t.classList.add('dragging'));
+    const start = svgPoint(e);
+    const startPositions = group.map(t=>{
+      const m = /translate\(([-\d.]+),([-\d.]+)\)/.exec(t.getAttribute('transform') || '');
+      return { token:t, x: m?parseFloat(m[1]):0, y: m?parseFloat(m[2]):0 };
+    });
+    const move = (ev)=>{
+      const p = svgPoint(ev);
+      const dx = p.x - start.x, dy = p.y - start.y;
+      startPositions.forEach(sp=>{
+        placeToken(sp.token, clampX(sp.x+dx), clampY(sp.y+dy));
+      });
+    };
+    const up = (ev)=>{
+      const p = svgPoint(ev);
+      const dx = p.x - start.x, dy = p.y - start.y;
+      token.releasePointerCapture(e.pointerId);
+      group.forEach(t=>t.classList.remove('dragging'));
+      token.removeEventListener('pointermove', move);
+      token.removeEventListener('pointerup', up);
+      const ph = currentPlay.phases[currentPhase];
+      startPositions.forEach(sp=>{
+        const x = clampX(sp.x+dx), y = clampY(sp.y+dy);
+        const meta = tokenMeta.get(sp.token);
+        if (!meta) return;
+        if (meta.kind==='ball'){ ph.ball = pt(x,y); }
+        else if (meta.kind==='attack'){ ph.attack = ph.attack || {}; ph.attack[meta.num] = pt(x,y); }
+        else if (meta.kind==='defense'){ ph.defense = ph.defense || {}; ph.defense[meta.num] = pt(x,y); }
+        else if (meta.kind==='cone'){ ph.cones = ph.cones || {}; ph.cones[meta.num] = { x:x, y:y, color: meta.color }; }
+      });
+      resolved = resolvePhases(currentPlay);
+      renderTrajectories(Math.max(0,currentPhase-1), currentPhase);
+      renderState(currentPhase, currentPhase, 0);
+    };
+    token.addEventListener('pointermove', move);
+    token.addEventListener('pointerup', up);
+  }
+
   function attachDrag(token, kind, num){
     tokenMeta.set(token, {kind:kind, num:num});
     token.addEventListener('pointerdown', (e)=>{
       if (!editMode) return;
-      if (kind==='defense' && !showDefense) return;
-      if (e.shiftKey){
-        e.preventDefault();
-        toggleTokenSelection(token);
-        return;
-      }
-      e.preventDefault();
-      const group = (selectedTokens.indexOf(token) !== -1 && selectedTokens.length > 1)
-        ? selectedTokens.slice()
-        : [token];
-      token.setPointerCapture(e.pointerId);
-      group.forEach(t=>t.classList.add('dragging'));
-      const start = svgPoint(e);
-      const startPositions = group.map(t=>{
-        const m = /translate\(([-\d.]+),([-\d.]+)\)/.exec(t.getAttribute('transform') || '');
-        return { token:t, x: m?parseFloat(m[1]):0, y: m?parseFloat(m[2]):0 };
-      });
-      const move = (ev)=>{
-        const p = svgPoint(ev);
-        const dx = p.x - start.x, dy = p.y - start.y;
-        startPositions.forEach(sp=>{
-          placeToken(sp.token, clampX(sp.x+dx), clampY(sp.y+dy));
-        });
-      };
-      const up = (ev)=>{
-        const p = svgPoint(ev);
-        const dx = p.x - start.x, dy = p.y - start.y;
-        token.releasePointerCapture(e.pointerId);
-        group.forEach(t=>t.classList.remove('dragging'));
-        token.removeEventListener('pointermove', move);
-        token.removeEventListener('pointerup', up);
-        const ph = currentPlay.phases[currentPhase];
-        startPositions.forEach(sp=>{
-          const x = clampX(sp.x+dx), y = clampY(sp.y+dy);
-          const meta = tokenMeta.get(sp.token);
-          if (!meta) return;
-          if (meta.kind==='ball'){ ph.ball = pt(x,y); }
-          else if (meta.kind==='attack'){ ph.attack = ph.attack || {}; ph.attack[meta.num] = pt(x,y); }
-          else { ph.defense = ph.defense || {}; ph.defense[meta.num] = pt(x,y); }
-        });
-        resolved = resolvePhases(currentPlay);
-        renderTrajectories(Math.max(0,currentPhase-1), currentPhase);
-        renderState(currentPhase, currentPhase, 0);
-      };
-      token.addEventListener('pointermove', move);
-      token.addEventListener('pointerup', up);
+      startTokenDrag(e, token, kind, num);
     });
   }
 
@@ -1602,6 +1695,7 @@ function startApp(teamId, initialLibrary, meta){
   // ---------- Init ----------
   drawPitchStatic();
   buildTokens();
+  buildConeOrigins();
   NUMS.forEach(n=>{ attachDrag(attackTokens[n],'attack',n); attachDrag(defenseTokens[n],'defense',n); });
   attachDrag(ballToken,'ball',null);
   applyRoleUI();
