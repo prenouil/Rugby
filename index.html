@@ -396,6 +396,7 @@
       <input type="password" id="authPassword" required autocomplete="current-password" minlength="6" />
       <div class="auth-error" id="authError"></div>
       <button type="submit" class="primary" id="authSubmit" style="width:100%;margin-top:14px;">Se connecter</button>
+      <button type="button" id="btnForgotPassword" class="ghost" style="width:100%;margin-top:8px;font-size:.8rem;">Mot de passe oublié ?</button>
     </form>
     <div class="auth-divider"><span>ou</span></div>
     <button type="button" id="btnGoogleSignIn" style="width:100%;">Continuer avec Google</button>
@@ -569,7 +570,8 @@
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
   import {
     getAuth, onAuthStateChanged, signInWithEmailAndPassword,
-    createUserWithEmailAndPassword, signOut, GoogleAuthProvider, signInWithPopup
+    createUserWithEmailAndPassword, signOut, GoogleAuthProvider, signInWithPopup,
+    sendPasswordResetEmail
   } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js";
   import {
     getFirestore, collection, doc, setDoc, updateDoc, deleteDoc, getDocs
@@ -632,6 +634,7 @@
   const btnLogout = document.getElementById('btnLogout');
   const btnGoogleSignIn = document.getElementById('btnGoogleSignIn');
   const googleProvider = new GoogleAuthProvider();
+  const btnForgotPassword = document.getElementById('btnForgotPassword');
 
   let mode = 'login';
   function setMode(m){
@@ -640,6 +643,8 @@
     tabSignup.classList.toggle('active', m==='signup');
     submitBtn.textContent = m==='login' ? 'Se connecter' : 'Créer le compte';
     passwordInput.autocomplete = m==='login' ? 'current-password' : 'new-password';
+    btnForgotPassword.style.display = m==='login' ? '' : 'none';
+    errorBox.style.color = '#c1121f';
     errorBox.textContent = '';
   }
   tabLogin.addEventListener('click', ()=>setMode('login'));
@@ -647,6 +652,7 @@
 
   authForm.addEventListener('submit', async (e)=>{
     e.preventDefault();
+    errorBox.style.color = '#c1121f';
     errorBox.textContent = '';
     submitBtn.disabled = true;
     const email = emailInput.value.trim();
@@ -676,6 +682,22 @@
       errorBox.textContent = ERROR_MESSAGES[err.code] || ("Erreur : " + err.message);
     }
     btnGoogleSignIn.disabled = false;
+  });
+
+  btnForgotPassword.addEventListener('click', async ()=>{
+    const email = emailInput.value.trim();
+    errorBox.style.color = '#c1121f';
+    if (!email){
+      errorBox.textContent = "Entrez votre email ci-dessus, puis cliquez à nouveau sur ce lien.";
+      return;
+    }
+    try{
+      await sendPasswordResetEmail(auth, email);
+      errorBox.style.color = '#1b7a3d';
+      errorBox.textContent = "Email envoyé (si un compte existe avec cette adresse). Vérifiez vos spams.";
+    } catch(err){
+      errorBox.textContent = ERROR_MESSAGES[err.code] || ("Erreur : " + err.message);
+    }
   });
 
   let appStarted = false;
