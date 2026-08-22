@@ -1148,11 +1148,17 @@ function startApp(teamId, initialLibrary, meta){
 
     g.appendChild(el('rect',{x:0,y:0,width:1120,height:700,fill:'none',stroke:'#ffffff','stroke-width':3}));
 
-    // goal posts (barre transversale sur la ligne d'essai, montants qui reculent dans l'en-but)
+    // goal posts (barre transversale sur la ligne d'essai, montants en perspective avec embouts protégés)
     [[60,-1],[1060,1]].forEach(([x,dir])=>{
-      g.appendChild(el('line',{x1:x,y1:330,x2:x,y2:370,stroke:'#fff','stroke-width':4}));
-      g.appendChild(el('line',{x1:x,y1:330,x2:x+dir*25,y2:330,stroke:'#fff','stroke-width':3}));
-      g.appendChild(el('line',{x1:x,y1:370,x2:x+dir*25,y2:370,stroke:'#fff','stroke-width':3}));
+      const nearTop=328, nearBottom=372, farTop=336, farBottom=364, depth=30;
+      const farX = x + dir*depth;
+      g.appendChild(el('line',{x1:x,y1:nearTop,x2:farX,y2:farTop,stroke:'#eef2f7','stroke-width':3.5,'stroke-linecap':'round'}));
+      g.appendChild(el('line',{x1:x,y1:nearBottom,x2:farX,y2:farBottom,stroke:'#eef2f7','stroke-width':3.5,'stroke-linecap':'round'}));
+      g.appendChild(el('line',{x1:x,y1:nearTop,x2:x,y2:nearBottom,stroke:'#fff','stroke-width':5.5,'stroke-linecap':'round'}));
+      [farTop,farBottom].forEach(y=>{
+        g.appendChild(el('circle',{cx:farX,cy:y,r:5,fill:'#2f80ed',stroke:'#173e78','stroke-width':1.2}));
+        g.appendChild(el('circle',{cx:farX-1.5,cy:y-1.5,r:1.8,fill:'#7fb1f7'}));
+      });
     });
     // corner flags
     [[60,0],[60,700],[1060,0],[1060,700]].forEach(([x,y])=>{
