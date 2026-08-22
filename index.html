@@ -907,25 +907,27 @@ function startApp(teamId, initialLibrary, meta){
     2:pt(580,20), 7:pt(580,55), 4:pt(580,85), 5:pt(580,115),
     6:pt(580,145), 8:pt(580,175), 1:pt(580,205), 3:pt(580,235)
   };
-  // Ligne de 3/4 (hors 9) : attaque en profondeur (diagonale), défense alignée à plat,
-  // à 20m entre les deux 10 (10m réglementaires de recul par rapport à l'action, de chaque côté).
+  // Ligne de 3/4 (hors 9) : attaque en profondeur (diagonale, 15 en suite du 13), défense alignée
+  // à plat, à 20m des 10 (10m réglementaires de recul par rapport à l'action, de chaque côté).
   // 14 (ailier droit) reste du côté droit de son équipe : en bas chez le bleu, en haut chez le rouge
-  // (les deux équipes attaquent en sens opposé). 11 est symétrique.
+  // (les deux équipes attaquent en sens opposé). 11 est symétrique. Comme les 11/14 se retrouvent
+  // sur des côtés opposés selon l'équipe, le 11/14 défensif de chaque côté est lui aussi replacé
+  // à 20m de son vis-à-vis offensif (14 chez le bleu / 11 chez le rouge, et inversement).
   const BACKS_UP_ATTACK = {
-    10:pt(525,310), 12:pt(480,260), 13:pt(435,205),
+    10:pt(525,310), 12:pt(480,260), 13:pt(435,205), 15:pt(410,175),
     11:pt(390,130), 14:pt(580,650)
   };
   const BACKS_UP_DEFENSE = {
     10:pt(725,310), 12:pt(725,260), 13:pt(725,205),
-    14:pt(725,130), 11:pt(725,650)
+    14:pt(590,130), 11:pt(780,650)
   };
   const BACKS_DOWN_ATTACK = {
-    10:pt(525,390), 12:pt(480,440), 13:pt(435,495),
+    10:pt(525,390), 12:pt(480,440), 13:pt(435,495), 15:pt(410,525),
     14:pt(390,570), 11:pt(580,50)
   };
   const BACKS_DOWN_DEFENSE = {
     10:pt(725,390), 12:pt(725,440), 13:pt(725,495),
-    11:pt(725,570), 14:pt(725,50)
+    11:pt(590,570), 14:pt(780,50)
   };
 
   // ---------- State ----------
