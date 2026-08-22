@@ -912,17 +912,18 @@ function startApp(teamId, initialLibrary, meta){
     9:pt(620,128)
   };
   // Ligne de 3/4 (hors 9) : 10-12-13-15 forment la diagonale profonde en attaque, chaque joueur
-  // continuant le pas du précédent (13->15->ailier profond). Rôle fixe par numéro, indépendant du
-  // sens de la formation : chez le bleu, le 14 est l'ailier profond (continue la diagonale 13-15,
-  // de son propre côté du terrain) et le 11 reste à la même profondeur (x) que le 10 ; chez le
-  // rouge c'est l'inverse (11 "profond", 14 aligné avec le 10) puisque le 14/11 "droit" de chaque
-  // équipe est physiquement du côté opposé (les deux équipes attaquent en sens opposé). En défense
-  // la ligne reste plate (pas de diagonale à suivre), donc les deux ailiers défensifs partagent la
-  // même profondeur que le reste de la ligne. Pas de jeu au pied chez les vétérans : le 15 défensif
-  // reste dans la ligne plate au lieu de couvrir en profondeur.
+  // continuant le pas du précédent (13->15->ailier profond). Le rôle "profond" revient à l'ailier
+  // physiquement du même côté que cette diagonale (le haut en formation "vers le haut", le bas en
+  // formation "vers le bas") ; l'autre ailier reste à la même profondeur (x) que le 10. Comme 11
+  // est toujours en haut chez le bleu et 14 toujours en haut chez le rouge (et inversement en bas),
+  // c'est le 11 bleu qui est profond en formation "vers le haut" mais le 14 bleu en formation
+  // "vers le bas" (et inversement pour le rouge). En défense la ligne reste plate (pas de
+  // diagonale à suivre), donc les deux ailiers défensifs partagent la même profondeur que le reste
+  // de la ligne, quelle que soit la formation. Pas de jeu au pied chez les vétérans : le 15
+  // défensif reste dans la ligne plate au lieu de couvrir en profondeur.
   const BACKS_UP_ATTACK = {
     10:pt(525,310), 12:pt(480,260), 13:pt(435,205), 15:pt(413,168),
-    11:pt(525,130), 14:pt(391,650)
+    11:pt(391,130), 14:pt(525,650)
   };
   const BACKS_UP_DEFENSE = {
     10:pt(725,310), 12:pt(725,260), 13:pt(725,205), 15:pt(725,168),
