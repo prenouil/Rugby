@@ -466,43 +466,7 @@
     <div id="editModeAnchor"></div>
   </div>
 
-  <div class="side-col">
-
-    <div class="panel" id="teamPanel" style="display:none;">
-      <h2>Équipe</h2>
-      <div class="hint" id="teamInfoText"></div>
-    </div>
-
-    <div class="panel">
-      <h2>Stratégie</h2>
-      <select id="playSelect">
-        <option value="" disabled selected>— Aucune stratégie sélectionnée —</option>
-      </select>
-      <label class="field">Nom de la stratégie</label>
-      <input type="text" id="playName" />
-    </div>
-
-    <div class="panel" id="libraryPanel">
-      <div class="toggle-row" style="margin-bottom:4px;">
-        <h2 style="margin:0;">Ma bibliothèque</h2>
-        <button id="btnLibCollapse" class="icon-btn" style="width:28px;height:26px;padding:0;" title="Réduire">▾</button>
-      </div>
-      <div class="controls-row">
-        <button id="btnLibSave" style="flex:1;">💾 Enregistrer</button>
-      </div>
-      <div id="libraryBody">
-        <div class="controls-row" style="margin-top:6px;">
-          <button id="btnLibNew" class="ghost">🆕 Nouveau</button>
-          <button id="btnLibSaveCopy" class="ghost">📄 Copie</button>
-        </div>
-        <div class="controls-row" style="margin-top:6px;">
-          <button id="btnLibDelete" class="ghost">🗑 Supprimer</button>
-        </div>
-        <label class="field">Stratégies sauvegardées</label>
-        <div class="lib-list" id="libraryList"></div>
-        <div class="hint">Enregistrées sur votre compte, accessibles depuis n'importe quel appareil. Utilisez Exporter/Importer JSON pour les transférer vers un autre compte ou les partager.</div>
-      </div>
-    </div>
+  <div class="side-col" id="playbackCol">
 
     <div class="panel">
       <h2>Lecture</h2>
@@ -589,6 +553,47 @@
           </div>
 
         </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="side-col" id="infoCol">
+
+    <div class="panel" id="teamPanel" style="display:none;">
+      <div class="toggle-row" style="margin-bottom:4px;">
+        <h2 style="margin:0;">Équipe <span id="teamNameLabel" style="text-transform:none;letter-spacing:0;color:var(--ink);font-weight:600;"></span></h2>
+        <button id="btnTeamCollapse" class="icon-btn" style="width:28px;height:26px;padding:0;" title="Déplier">▸</button>
+      </div>
+      <div class="hint" id="teamInfoText" style="display:none;"></div>
+    </div>
+
+    <div class="panel">
+      <h2>Stratégie</h2>
+      <select id="playSelect">
+        <option value="" disabled selected>— Aucune stratégie sélectionnée —</option>
+      </select>
+      <label class="field">Nom de la stratégie</label>
+      <input type="text" id="playName" />
+    </div>
+
+    <div class="panel" id="libraryPanel">
+      <div class="toggle-row" style="margin-bottom:4px;">
+        <h2 style="margin:0;">Ma bibliothèque</h2>
+        <button id="btnLibCollapse" class="icon-btn" style="width:28px;height:26px;padding:0;" title="Réduire">▾</button>
+      </div>
+      <div class="controls-row">
+        <button id="btnLibSave" style="flex:1;">💾 Enregistrer</button>
+      </div>
+      <div id="libraryBody">
+        <div class="controls-row" style="margin-top:6px;">
+          <button id="btnLibNew" class="ghost">🆕 Nouveau</button>
+          <button id="btnLibSaveCopy" class="ghost">📄 Copie</button>
+          <button id="btnLibDelete" class="ghost">🗑 Supprimer</button>
+        </div>
+        <label class="field">Stratégies sauvegardées</label>
+        <div class="lib-list" id="libraryList"></div>
+        <div class="hint">Enregistrées sur votre compte, accessibles depuis n'importe quel appareil. Utilisez Exporter/Importer JSON pour les transférer vers un autre compte ou les partager.</div>
       </div>
     </div>
 
@@ -1430,6 +1435,26 @@ function startApp(teamId, initialLibrary, meta){
 
   applyLibraryCollapseState();
 
+  const TEAM_COLLAPSE_KEY = 'rugbyTacticsTeamCollapsed_v1';
+  let teamInfoCollapsed = true;
+  try{ teamInfoCollapsed = localStorage.getItem(TEAM_COLLAPSE_KEY) !== 'false'; } catch(e){}
+
+  function applyTeamCollapseState(){
+    const body = document.getElementById('teamInfoText');
+    const btn = document.getElementById('btnTeamCollapse');
+    body.style.display = teamInfoCollapsed ? 'none' : '';
+    btn.textContent = teamInfoCollapsed ? '▸' : '▾';
+    btn.title = teamInfoCollapsed ? 'Déplier' : 'Replier';
+  }
+
+  document.getElementById('btnTeamCollapse').addEventListener('click', ()=>{
+    teamInfoCollapsed = !teamInfoCollapsed;
+    try{ localStorage.setItem(TEAM_COLLAPSE_KEY, String(teamInfoCollapsed)); } catch(e){}
+    applyTeamCollapseState();
+  });
+
+  applyTeamCollapseState();
+
   document.getElementById('btnLibNew').addEventListener('click', ()=>{
     if (!confirm('Créer une nouvelle stratégie vierge ? Les modifications non enregistrées de la stratégie actuelle seront perdues.')) return;
     startBlankStrategy();
@@ -1704,9 +1729,11 @@ function startApp(teamId, initialLibrary, meta){
 
   function applyRoleUI(){
     const teamPanel = document.getElementById('teamPanel');
+    const teamNameLabel = document.getElementById('teamNameLabel');
     const teamInfoText = document.getElementById('teamInfoText');
     teamPanel.style.display = '';
-    teamInfoText.innerHTML = '<b>' + (meta.teamName || 'Équipe') + '</b><br>Rôle : ' +
+    teamNameLabel.textContent = meta.teamName || 'Équipe';
+    teamInfoText.innerHTML = 'Rôle : ' +
       (isCoach ? 'Coach (édition)' : 'Joueur (lecture seule)') +
       (isCoach && meta.inviteCode ? '<br>Code d\'invitation à transmettre : <b>' + meta.inviteCode + '</b>' : '');
 
