@@ -1148,9 +1148,10 @@ function startApp(teamId, initialLibrary, meta){
 
     g.appendChild(el('rect',{x:0,y:0,width:1120,height:700,fill:'none',stroke:'#ffffff','stroke-width':3}));
 
-    // goal posts (montants en perspective, barre transversale détachée de la ligne d'essai, embouts protégés)
+    // goal posts (montants parallèles, penchés vers le haut et vers l'arrière ; barre transversale détachée de la ligne d'essai)
     [[60,-1],[1060,1]].forEach(([x,dir])=>{
-      const nearTop=328, nearBottom=372, farTop=336, farBottom=364, depth=30;
+      const nearTop=328, nearBottom=372, depth=30, rise=15;
+      const farTop = nearTop - rise, farBottom = nearBottom - rise;
       const farX = x + dir*depth;
       const crossX = x + dir*depth*0.5;
       const crossTop = (nearTop+farTop)/2, crossBottom = (nearBottom+farBottom)/2;
@@ -1158,10 +1159,6 @@ function startApp(teamId, initialLibrary, meta){
       g.appendChild(el('line',{x1:x,y1:nearBottom,x2:farX,y2:farBottom,stroke:'#eef2f7','stroke-width':3.5,'stroke-linecap':'round'}));
       g.appendChild(el('line',{x1:crossX,y1:crossTop,x2:crossX,y2:crossBottom,stroke:'#173e78','stroke-width':7.5,'stroke-linecap':'round'}));
       g.appendChild(el('line',{x1:crossX,y1:crossTop,x2:crossX,y2:crossBottom,stroke:'#fff','stroke-width':5,'stroke-linecap':'round'}));
-      [farTop,farBottom].forEach(y=>{
-        g.appendChild(el('circle',{cx:farX,cy:y,r:5,fill:'#2f80ed',stroke:'#173e78','stroke-width':1.2}));
-        g.appendChild(el('circle',{cx:farX-1.5,cy:y-1.5,r:1.8,fill:'#7fb1f7'}));
-      });
     });
     // corner flags
     [[60,0],[60,700],[1060,0],[1060,700]].forEach(([x,y])=>{
