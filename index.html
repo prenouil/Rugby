@@ -192,8 +192,8 @@
     transition:width .05s linear;
   }
   .side-col{
-    flex:0 0 340px;
-    min-width:300px;
+    flex:0 0 227px;
+    min-width:200px;
     display:flex;
     flex-direction:column;
     gap:14px;
@@ -543,15 +543,6 @@
             <div class="hint">Cliquez sur un joueur pour le sélectionner (un glisser le déplace directement). Maj (Shift) + clic ajoute ou retire un joueur d'une sélection multiple sans le déplacer.</div>
           </div>
 
-          <div class="editor-col">
-            <div class="file-row">
-              <button id="btnExport">⬇ Exporter en JSON</button>
-              <button id="btnImportTrigger">⬆ Importer un JSON</button>
-              <input type="file" id="importFile" accept="application/json">
-            </div>
-            <div class="hint">Vos stratégies sont enregistrées automatiquement sur votre compte. L'export/import JSON sert à les transférer vers un autre compte ou à les partager avec un collègue.</div>
-          </div>
-
         </div>
       </div>
     </div>
@@ -593,6 +584,11 @@
         </div>
         <label class="field">Stratégies sauvegardées</label>
         <div class="lib-list" id="libraryList"></div>
+        <div class="file-row" style="margin-top:8px;">
+          <button id="btnExport">⬇ Exporter en JSON</button>
+          <button id="btnImportTrigger">⬆ Importer un JSON</button>
+          <input type="file" id="importFile" accept="application/json">
+        </div>
         <div class="hint">Enregistrées sur votre compte, accessibles depuis n'importe quel appareil. Utilisez Exporter/Importer JSON pour les transférer vers un autre compte ou les partager.</div>
       </div>
     </div>
