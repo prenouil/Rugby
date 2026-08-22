@@ -893,10 +893,13 @@ function startApp(teamId, initialLibrary, meta){
     8:pt(615,350)
   };
   // Touche : deux colonnes parallèles depuis la ligne de touche.
+  // Le 9 se tient au milieu de la formation, décalé vers son camp, prêt à récupérer le ballon.
   const LINEOUT_ATTACK = {
     2:pt(560,20), 7:pt(560,55), 4:pt(560,85), 5:pt(560,115),
-    6:pt(560,145), 8:pt(560,175), 1:pt(560,205), 3:pt(560,235)
+    6:pt(560,145), 8:pt(560,175), 1:pt(560,205), 3:pt(560,235),
+    9:pt(520,128)
   };
+  const LINEOUT_BALL = pt(545,128);
   const LINEOUT_DEFENSE = {
     2:pt(580,20), 7:pt(580,55), 4:pt(580,85), 5:pt(580,115),
     6:pt(580,145), 8:pt(580,175), 1:pt(580,205), 3:pt(580,235)
@@ -1460,14 +1463,17 @@ function startApp(teamId, initialLibrary, meta){
   const editModePanel = document.getElementById('editModePanel');
   const editModeAnchor = document.getElementById('editModeAnchor');
   const editModeHome = document.getElementById('editModeHome');
-  document.getElementById('toggleEdit').addEventListener('change', (e)=>{
-    editMode = e.target.checked;
+  function applyEditModeUI(){
     editorBox.classList.toggle('on', editMode);
     svg.parentElement.classList.toggle('editing', editMode);
     coneOriginLayer.setAttribute('display', editMode ? '' : 'none');
     if (editMode){ editModeAnchor.appendChild(editModePanel); }
     else { editModeHome.after(editModePanel); clearFormationSelection(); }
     syncEditorFields();
+  }
+  document.getElementById('toggleEdit').addEventListener('change', (e)=>{
+    editMode = e.target.checked;
+    applyEditModeUI();
   });
 
   function syncEditorFields(){
@@ -1612,7 +1618,7 @@ function startApp(teamId, initialLibrary, meta){
     applyFormation(SCRUM_ATTACK, SCRUM_DEFENSE, SCRUM_BALL);
   });
   document.getElementById('btnFormLineout').addEventListener('click', ()=>{
-    applyFormation(LINEOUT_ATTACK, LINEOUT_DEFENSE);
+    applyFormation(LINEOUT_ATTACK, LINEOUT_DEFENSE, LINEOUT_BALL);
   });
   document.getElementById('btnFormBackUp').addEventListener('click', ()=>{
     applyFormation(BACKS_UP_ATTACK, BACKS_UP_DEFENSE);
@@ -1726,6 +1732,12 @@ function startApp(teamId, initialLibrary, meta){
     currentLibraryId = mostRecent.id;
   }
   afterPlayLoaded();
+  if (isCoach){
+    // Mode édition activé par défaut pour le coach (temporaire, le temps de construire les stratégies).
+    editMode = true;
+    document.getElementById('toggleEdit').checked = true;
+    applyEditModeUI();
+  }
 }
 window.startApp = startApp;
 </script>
