@@ -494,6 +494,25 @@
       <div class="swatch"><i style="background:var(--teamB)"></i>Défense (rouge)</div>
     </div>
 
+    <div class="panel" id="phaseEditPanel">
+      <h2>Édition de la phase</h2>
+      <div class="editor-box" id="phaseEditorBox">
+        <label class="field">Titre de la phase</label>
+        <input type="text" id="editLabel" />
+
+        <div class="controls-row" style="margin-top:8px;">
+          <button id="btnDuplicate">＋ Dupliquer cette phase</button>
+          <button id="btnDelete">🗑 Supprimer</button>
+        </div>
+        <div class="controls-row" style="margin-top:6px;">
+          <button id="btnBlank" class="ghost">Nouvelle stratégie vierge</button>
+        </div>
+
+        <label class="field">Note pédagogique</label>
+        <textarea id="editNote"></textarea>
+      </div>
+    </div>
+
     <div id="editModeHome"></div>
     <div class="panel" id="editModePanel">
       <div class="toggle-row" style="margin-bottom:4px;">
@@ -501,49 +520,27 @@
         <input type="checkbox" id="toggleEdit">
       </div>
       <div class="editor-box" id="editorBox">
-        <div class="editor-columns">
-
-          <div class="editor-col">
-            <label class="field">Titre de la phase</label>
-            <input type="text" id="editLabel" />
-
-            <div class="controls-row" style="margin-top:8px;">
-              <button id="btnDuplicate">＋ Dupliquer cette phase</button>
-              <button id="btnDelete">🗑 Supprimer</button>
-            </div>
-            <div class="controls-row" style="margin-top:6px;">
-              <button id="btnBlank" class="ghost">Nouvelle stratégie vierge</button>
-            </div>
-
-            <label class="field">Note pédagogique</label>
-            <textarea id="editNote"></textarea>
-          </div>
-
-          <div class="editor-col">
-            <label class="field">Formations rapides — avants</label>
-            <div class="controls-row">
-              <button id="btnFormScrum">Tous en mêlée</button>
-              <button id="btnFormLineout">Tous en touche</button>
-            </div>
-            <label class="field">Formations rapides — 3/4</label>
-            <div class="controls-row">
-              <button id="btnFormBackUp">Ligne vers le haut</button>
-              <button id="btnFormBackDown">Ligne vers le bas</button>
-            </div>
-
-            <label class="field">Sélection rapide</label>
-            <div class="controls-row">
-              <button id="btnSelForwardsBlue" class="ghost">Avants bleu</button>
-              <button id="btnSelForwardsRed" class="ghost">Avants rouge</button>
-            </div>
-            <div class="controls-row" style="margin-top:6px;">
-              <button id="btnSelBacksBlue" class="ghost">3/4 bleu</button>
-              <button id="btnSelBacksRed" class="ghost">3/4 rouge</button>
-            </div>
-            <div class="hint">Cliquez sur un joueur pour le sélectionner (un glisser le déplace directement). Maj (Shift) + clic ajoute ou retire un joueur d'une sélection multiple sans le déplacer.</div>
-          </div>
-
+        <label class="field">Formations rapides — avants</label>
+        <div class="controls-row">
+          <button id="btnFormScrum">Tous en mêlée</button>
+          <button id="btnFormLineout">Tous en touche</button>
         </div>
+        <label class="field">Formations rapides — 3/4</label>
+        <div class="controls-row">
+          <button id="btnFormBackUp">Ligne vers le haut</button>
+          <button id="btnFormBackDown">Ligne vers le bas</button>
+        </div>
+
+        <label class="field">Sélection rapide</label>
+        <div class="controls-row">
+          <button id="btnSelForwardsBlue" class="ghost">Avants bleu</button>
+          <button id="btnSelForwardsRed" class="ghost">Avants rouge</button>
+        </div>
+        <div class="controls-row" style="margin-top:6px;">
+          <button id="btnSelBacksBlue" class="ghost">3/4 bleu</button>
+          <button id="btnSelBacksRed" class="ghost">3/4 rouge</button>
+        </div>
+        <div class="hint">Cliquez sur un joueur pour le sélectionner (un glisser le déplace directement). Maj (Shift) + clic ajoute ou retire un joueur d'une sélection multiple sans le déplacer.</div>
       </div>
     </div>
 
@@ -1484,8 +1481,10 @@ function startApp(teamId, initialLibrary, meta){
   const editModePanel = document.getElementById('editModePanel');
   const editModeAnchor = document.getElementById('editModeAnchor');
   const editModeHome = document.getElementById('editModeHome');
+  const phaseEditorBox = document.getElementById('phaseEditorBox');
   function applyEditModeUI(){
     editorBox.classList.toggle('on', editMode);
+    phaseEditorBox.classList.toggle('on', editMode);
     svg.parentElement.classList.toggle('editing', editMode);
     coneOriginLayer.setAttribute('display', editMode ? '' : 'none');
     if (editMode){ editModeAnchor.appendChild(editModePanel); }
@@ -1736,6 +1735,8 @@ function startApp(teamId, initialLibrary, meta){
     if (!isCoach){
       const editPanel = document.getElementById('toggleEdit').closest('.panel');
       if (editPanel) editPanel.style.display = 'none';
+      const phaseEditPanel = document.getElementById('phaseEditPanel');
+      if (phaseEditPanel) phaseEditPanel.style.display = 'none';
       const libPanel = document.getElementById('libraryPanel');
       if (libPanel) libPanel.style.display = 'none';
     }
