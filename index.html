@@ -893,7 +893,7 @@ function startApp(teamId, initialLibrary, meta){
     3:pt(572,336), 2:pt(572,350), 1:pt(572,364),
     4:pt(592,340), 5:pt(592,360),
     6:pt(590,330), 7:pt(590,370),
-    8:pt(615,350)
+    8:pt(615,350), 9:pt(655,350)
   };
   // Touche : deux colonnes parallèles depuis la ligne de touche.
   // Le 9 se tient au milieu de la formation, décalé vers son camp, prêt à récupérer le ballon.
@@ -1148,13 +1148,16 @@ function startApp(teamId, initialLibrary, meta){
 
     g.appendChild(el('rect',{x:0,y:0,width:1120,height:700,fill:'none',stroke:'#ffffff','stroke-width':3}));
 
-    // goal posts (barre transversale sur la ligne d'essai, montants en perspective avec embouts protégés)
+    // goal posts (montants en perspective, barre transversale détachée de la ligne d'essai, embouts protégés)
     [[60,-1],[1060,1]].forEach(([x,dir])=>{
       const nearTop=328, nearBottom=372, farTop=336, farBottom=364, depth=30;
       const farX = x + dir*depth;
+      const crossX = x + dir*depth*0.5;
+      const crossTop = (nearTop+farTop)/2, crossBottom = (nearBottom+farBottom)/2;
       g.appendChild(el('line',{x1:x,y1:nearTop,x2:farX,y2:farTop,stroke:'#eef2f7','stroke-width':3.5,'stroke-linecap':'round'}));
       g.appendChild(el('line',{x1:x,y1:nearBottom,x2:farX,y2:farBottom,stroke:'#eef2f7','stroke-width':3.5,'stroke-linecap':'round'}));
-      g.appendChild(el('line',{x1:x,y1:nearTop,x2:x,y2:nearBottom,stroke:'#fff','stroke-width':5.5,'stroke-linecap':'round'}));
+      g.appendChild(el('line',{x1:crossX,y1:crossTop,x2:crossX,y2:crossBottom,stroke:'#173e78','stroke-width':7.5,'stroke-linecap':'round'}));
+      g.appendChild(el('line',{x1:crossX,y1:crossTop,x2:crossX,y2:crossBottom,stroke:'#fff','stroke-width':5,'stroke-linecap':'round'}));
       [farTop,farBottom].forEach(y=>{
         g.appendChild(el('circle',{cx:farX,cy:y,r:5,fill:'#2f80ed',stroke:'#173e78','stroke-width':1.2}));
         g.appendChild(el('circle',{cx:farX-1.5,cy:y-1.5,r:1.8,fill:'#7fb1f7'}));
