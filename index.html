@@ -520,27 +520,32 @@
         <input type="checkbox" id="toggleEdit">
       </div>
       <div class="editor-box" id="editorBox">
-        <label class="field">Formations rapides — avants</label>
-        <div class="controls-row">
-          <button id="btnFormScrum">Tous en mêlée</button>
-          <button id="btnFormLineout">Tous en touche</button>
+        <div class="editor-columns">
+          <div class="editor-col">
+            <label class="field">Formations rapides — avants</label>
+            <div class="controls-row">
+              <button id="btnFormScrum">Tous en mêlée</button>
+              <button id="btnFormLineout">Tous en touche</button>
+            </div>
+            <label class="field">Formations rapides — 3/4</label>
+            <div class="controls-row">
+              <button id="btnFormBackUp">Ligne vers le haut</button>
+              <button id="btnFormBackDown">Ligne vers le bas</button>
+            </div>
+          </div>
+          <div class="editor-col">
+            <label class="field">Sélection rapide</label>
+            <div class="controls-row">
+              <button id="btnSelForwardsBlue" class="ghost">Avants bleu</button>
+              <button id="btnSelForwardsRed" class="ghost">Avants rouge</button>
+            </div>
+            <div class="controls-row" style="margin-top:6px;">
+              <button id="btnSelBacksBlue" class="ghost">3/4 bleu</button>
+              <button id="btnSelBacksRed" class="ghost">3/4 rouge</button>
+            </div>
+            <div class="hint">Cliquez sur un joueur pour le sélectionner (un glisser le déplace directement). Maj (Shift) + clic ajoute ou retire un joueur d'une sélection multiple sans le déplacer.</div>
+          </div>
         </div>
-        <label class="field">Formations rapides — 3/4</label>
-        <div class="controls-row">
-          <button id="btnFormBackUp">Ligne vers le haut</button>
-          <button id="btnFormBackDown">Ligne vers le bas</button>
-        </div>
-
-        <label class="field">Sélection rapide</label>
-        <div class="controls-row">
-          <button id="btnSelForwardsBlue" class="ghost">Avants bleu</button>
-          <button id="btnSelForwardsRed" class="ghost">Avants rouge</button>
-        </div>
-        <div class="controls-row" style="margin-top:6px;">
-          <button id="btnSelBacksBlue" class="ghost">3/4 bleu</button>
-          <button id="btnSelBacksRed" class="ghost">3/4 rouge</button>
-        </div>
-        <div class="hint">Cliquez sur un joueur pour le sélectionner (un glisser le déplace directement). Maj (Shift) + clic ajoute ou retire un joueur d'une sélection multiple sans le déplacer.</div>
       </div>
     </div>
 
@@ -1123,11 +1128,12 @@ function startApp(teamId, initialLibrary, meta){
       if (dash) a['stroke-dasharray']='10 8';
       g.appendChild(el('line',a));
     }
-    vline(60); vline(1060);       // try lines
-    vline(110); vline(1010);      // 5m lines
-    vline(280); vline(840);       // 22m lines
-    vline(440); vline(680);       // 10m lines
-    vline(560);                   // halfway
+    vline(60); vline(1060);              // try lines
+    vline(110, true); vline(1010, true); // 5m lines (depuis la ligne d'essai)
+    vline(280); vline(840);              // 22m lines
+    vline(440); vline(680);              // 10m lines
+    vline(460, true); vline(660, true);  // 40m lines (depuis la ligne d'essai)
+    vline(560);                          // halfway
 
     function hline(y,dash){
       g.appendChild(el('line',{x1:0,y1:y,x2:1120,y2:y,stroke:'#ffffff','stroke-width':1.5,opacity:.5,'stroke-dasharray':dash?'6 6':'0'}));
@@ -1137,11 +1143,11 @@ function startApp(teamId, initialLibrary, meta){
 
     g.appendChild(el('rect',{x:0,y:0,width:1120,height:700,fill:'none',stroke:'#ffffff','stroke-width':3}));
 
-    // goal posts
-    [60,1060].forEach(x=>{
-      g.appendChild(el('line',{x1:x,y1:330,x2:x,y2:300,stroke:'#fff','stroke-width':3}));
-      g.appendChild(el('line',{x1:x,y1:370,x2:x,y2:400,stroke:'#fff','stroke-width':3}));
-      g.appendChild(el('line',{x1:x,y1:300,x2:x,y2:400,stroke:'#fff','stroke-width':3}));
+    // goal posts (barre transversale sur la ligne d'essai, montants qui reculent dans l'en-but)
+    [[60,-1],[1060,1]].forEach(([x,dir])=>{
+      g.appendChild(el('line',{x1:x,y1:330,x2:x,y2:370,stroke:'#fff','stroke-width':4}));
+      g.appendChild(el('line',{x1:x,y1:330,x2:x+dir*25,y2:330,stroke:'#fff','stroke-width':3}));
+      g.appendChild(el('line',{x1:x,y1:370,x2:x+dir*25,y2:370,stroke:'#fff','stroke-width':3}));
     });
     // corner flags
     [[60,0],[60,700],[1060,0],[1060,700]].forEach(([x,y])=>{
