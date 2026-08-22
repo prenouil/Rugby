@@ -576,7 +576,7 @@
               <button id="btnSelBacksBlue" class="ghost">3/4 bleu</button>
               <button id="btnSelBacksRed" class="ghost">3/4 rouge</button>
             </div>
-            <div class="hint">Maintenez Maj (Shift) enfoncé en cliquant sur un joueur pour l'ajouter ou le retirer de la sélection.</div>
+            <div class="hint">Cliquez sur un joueur pour le sélectionner (un glisser le déplace directement). Maj (Shift) + clic ajoute ou retire un joueur d'une sélection multiple sans le déplacer.</div>
           </div>
 
           <div class="editor-col">
@@ -883,8 +883,9 @@ function startApp(teamId, initialLibrary, meta){
     1:pt(548,336), 2:pt(548,350), 3:pt(548,364),
     4:pt(528,340), 5:pt(528,360),
     6:pt(530,330), 7:pt(530,370),
-    8:pt(505,350)
+    8:pt(505,350), 9:pt(465,350)
   };
+  const SCRUM_BALL = pt(490,350);
   const SCRUM_DEFENSE = {
     3:pt(572,336), 2:pt(572,350), 1:pt(572,364),
     4:pt(592,340), 5:pt(592,360),
@@ -900,22 +901,24 @@ function startApp(teamId, initialLibrary, meta){
     2:pt(580,20), 7:pt(580,55), 4:pt(580,85), 5:pt(580,115),
     6:pt(580,145), 8:pt(580,175), 1:pt(580,205), 3:pt(580,235)
   };
-  // Ligne de 3/4 : attaque en profondeur (diagonale), défense alignée à plat.
+  // Ligne de 3/4 (hors 9) : attaque en profondeur (diagonale), défense alignée à plat.
+  // 14 (ailier droit) reste du côté droit de son équipe : en bas chez le bleu, en haut chez le rouge
+  // (les deux équipes attaquent en sens opposé). 11 est symétrique.
   const BACKS_UP_ATTACK = {
-    9:pt(560,345), 10:pt(525,310), 12:pt(480,260), 13:pt(435,205),
+    10:pt(525,310), 12:pt(480,260), 13:pt(435,205),
     11:pt(390,130), 14:pt(580,650)
   };
   const BACKS_UP_DEFENSE = {
-    9:pt(660,345), 10:pt(660,310), 12:pt(660,260), 13:pt(660,205),
-    11:pt(660,130), 14:pt(660,650)
+    10:pt(660,310), 12:pt(660,260), 13:pt(660,205),
+    14:pt(660,130), 11:pt(660,650)
   };
   const BACKS_DOWN_ATTACK = {
-    9:pt(560,355), 10:pt(525,390), 12:pt(480,440), 13:pt(435,495),
+    10:pt(525,390), 12:pt(480,440), 13:pt(435,495),
     14:pt(390,570), 11:pt(580,50)
   };
   const BACKS_DOWN_DEFENSE = {
-    9:pt(660,355), 10:pt(660,390), 12:pt(660,440), 13:pt(660,495),
-    14:pt(660,570), 11:pt(660,50)
+    10:pt(660,390), 12:pt(660,440), 13:pt(660,495),
+    11:pt(660,570), 14:pt(660,50)
   };
 
   // ---------- State ----------
@@ -1580,7 +1583,7 @@ function startApp(teamId, initialLibrary, meta){
   });
 
   const FORWARD_NUMS = [1,2,3,4,5,6,7,8];
-  const BACK_NUMS = [9,10,11,12,13,14];
+  const BACK_NUMS = [10,11,12,13,14];
 
   function selectGroupByKindAndNums(kind, nums){
     if (!editMode) return;
@@ -1589,13 +1592,14 @@ function startApp(teamId, initialLibrary, meta){
     nums.forEach(n=>selectToken(tokens[n]));
   }
 
-  function applyFormation(attackPos, defensePos){
+  function applyFormation(attackPos, defensePos, ballPos){
     if (!editMode) return;
     const ph = currentPlay.phases[currentPhase];
     ph.attack = ph.attack || {};
     ph.defense = ph.defense || {};
     Object.keys(attackPos).forEach(n=>{ ph.attack[n] = clone(attackPos[n]); });
     Object.keys(defensePos).forEach(n=>{ ph.defense[n] = clone(defensePos[n]); });
+    if (ballPos) ph.ball = clone(ballPos);
     resolved = resolvePhases(currentPlay);
     renderTrajectories(Math.max(0,currentPhase-1), currentPhase);
     renderState(currentPhase, currentPhase, 0);
@@ -1605,7 +1609,7 @@ function startApp(teamId, initialLibrary, meta){
   }
 
   document.getElementById('btnFormScrum').addEventListener('click', ()=>{
-    applyFormation(SCRUM_ATTACK, SCRUM_DEFENSE);
+    applyFormation(SCRUM_ATTACK, SCRUM_DEFENSE, SCRUM_BALL);
   });
   document.getElementById('btnFormLineout').addEventListener('click', ()=>{
     applyFormation(LINEOUT_ATTACK, LINEOUT_DEFENSE);
@@ -1660,7 +1664,7 @@ function startApp(teamId, initialLibrary, meta){
       token.removeEventListener('pointermove', move);
       token.removeEventListener('pointerup', up);
 
-      if (Math.hypot(dx,dy) <= 3 && kind === 'cone' && group.length === 1){
+      if (Math.hypot(dx,dy) <= 3 && kind !== 'ball' && group.length === 1){
         toggleTokenSelection(token);
         renderState(currentPhase, currentPhase, 0);
         return;
