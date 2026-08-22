@@ -889,14 +889,14 @@ function startApp(teamId, initialLibrary, meta){
     8:pt(505,350), 9:pt(465,350)
   };
   const SCRUM_BALL = pt(490,350);
-  // Le 9 défenseur suit la progression du ballon dans la mêlée : sur le côté du paquet où le 9
-  // bleu introduit la balle (même côté que 6/1, y plus petit), à hauteur de la 2e ligne, plutôt
-  // que fixe derrière ses avants comme le 9 qui a l'introduction.
+  // Le 9 défenseur suit la progression du ballon dans la mêlée : il se tient au niveau du 6 bleu
+  // (pas du 6 rouge), du côté où le 9 bleu introduit la balle, pour représenter le fait qu'il
+  // suit le ballon plutôt que de rester fixe derrière son propre paquet.
   const SCRUM_DEFENSE = {
     3:pt(572,336), 2:pt(572,350), 1:pt(572,364),
     4:pt(592,340), 5:pt(592,360),
     6:pt(590,330), 7:pt(590,370),
-    8:pt(615,350), 9:pt(605,315)
+    8:pt(615,350), 9:pt(530,315)
   };
   // Touche : deux colonnes parallèles depuis la ligne de touche.
   // Chaque 9 se tient au milieu de la formation, décalé vers son propre camp.
