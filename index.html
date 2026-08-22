@@ -889,14 +889,16 @@ function startApp(teamId, initialLibrary, meta){
     8:pt(505,350), 9:pt(465,350)
   };
   const SCRUM_BALL = pt(490,350);
+  // Le 9 défenseur suit la progression du ballon dans la mêlée : sur le côté du paquet,
+  // à hauteur de la 2e ligne plutôt que fixe derrière ses avants comme le 9 qui a l'introduction.
   const SCRUM_DEFENSE = {
     3:pt(572,336), 2:pt(572,350), 1:pt(572,364),
     4:pt(592,340), 5:pt(592,360),
     6:pt(590,330), 7:pt(590,370),
-    8:pt(615,350), 9:pt(655,350)
+    8:pt(615,350), 9:pt(605,385)
   };
   // Touche : deux colonnes parallèles depuis la ligne de touche.
-  // Le 9 se tient au milieu de la formation, décalé vers son camp, prêt à récupérer le ballon.
+  // Chaque 9 se tient au milieu de la formation, décalé vers son propre camp.
   const LINEOUT_ATTACK = {
     2:pt(560,20), 7:pt(560,55), 4:pt(560,85), 5:pt(560,115),
     6:pt(560,145), 8:pt(560,175), 1:pt(560,205), 3:pt(560,235),
@@ -905,7 +907,8 @@ function startApp(teamId, initialLibrary, meta){
   const LINEOUT_BALL = pt(545,128);
   const LINEOUT_DEFENSE = {
     2:pt(580,20), 7:pt(580,55), 4:pt(580,85), 5:pt(580,115),
-    6:pt(580,145), 8:pt(580,175), 1:pt(580,205), 3:pt(580,235)
+    6:pt(580,145), 8:pt(580,175), 1:pt(580,205), 3:pt(580,235),
+    9:pt(620,128)
   };
   // Ligne de 3/4 (hors 9) : côté ouvert = ligne d'attaque en profondeur (10-12-13-15-ailier),
   // côté non ouvert (fermé) = l'ailier reste au même niveau que le 10. 15 est équidistant du 13
