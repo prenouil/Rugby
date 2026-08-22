@@ -290,6 +290,9 @@
     border-color:var(--accent);
   }
   .phase-item.active .num{background:var(--accent);color:#fff;}
+  .phase-item[draggable=true]{cursor:grab;}
+  .phase-item.dragging{opacity:.4;}
+  .phase-item.drag-over{border-color:var(--accent);background:#fdf1e3;}
   .lib-list{
     display:flex;
     flex-direction:column;
@@ -308,6 +311,15 @@
   .lib-item.active{
     background:#fdf1e3;
     border-color:var(--accent);
+  }
+  .lib-item[draggable=true]{cursor:grab;}
+  .lib-item.dragging{opacity:.4;}
+  .lib-item.drag-over{border-color:var(--accent);background:#fdf1e3;}
+  .lib-handle{
+    color:#bbb;
+    font-size:.9rem;
+    padding:0 2px;
+    flex:none;
   }
   .lib-item .lib-load{
     flex:1;
@@ -485,6 +497,7 @@
 
       <label class="field">Phases</label>
       <div class="phase-list" id="phaseList"></div>
+      <div class="hint" id="phaseReorderHint" style="display:none;">Glissez une phase pour changer son ordre.</div>
 
       <div class="toggle-row">
         <span>Afficher la défense</span>
@@ -591,7 +604,7 @@
           <button id="btnImportTrigger">⬆ Importer un JSON</button>
           <input type="file" id="importFile" accept="application/json">
         </div>
-        <div class="hint">Enregistrées sur votre compte, accessibles depuis n'importe quel appareil. Utilisez Exporter/Importer JSON pour les transférer vers un autre compte ou les partager.</div>
+        <div class="hint">Enregistrées sur votre compte, accessibles depuis n'importe quel appareil. Glissez une stratégie (⠿) pour la réordonner. Utilisez Exporter/Importer JSON pour les transférer vers un autre compte ou les partager.</div>
       </div>
     </div>
 
@@ -634,6 +647,9 @@
     },
     async renameEntry(teamId, id, name, updatedAt){
       await updateDoc(doc(db, 'teams', teamId, 'plays', id), { name, updatedAt });
+    },
+    async reorderEntry(teamId, id, order){
+      await updateDoc(doc(db, 'teams', teamId, 'plays', id), { order });
     },
     async deleteEntry(teamId, id){
       await deleteDoc(doc(db, 'teams', teamId, 'plays', id));
@@ -961,14 +977,47 @@ function startApp(teamId, initialLibrary, meta){
     alert("Impossible de synchroniser avec votre compte : " + (err && err.message ? err.message : 'vérifiez votre connexion internet.'));
   }
 
+  function nextLibraryOrder(){
+    return library.reduce((m,e)=> typeof e.order === 'number' ? Math.max(m, e.order) : m, -1) + 1;
+  }
+
+  function ensureLibraryOrder(){
+    const missing = library.filter(e => typeof e.order !== 'number');
+    if (missing.length === 0) return;
+    missing.sort((a,b)=> b.updatedAt - a.updatedAt);
+    let next = nextLibraryOrder();
+    missing.forEach(e=>{
+      e.order = next++;
+      if (isCoach) window.__fb.reorderEntry(teamId, e.id, e.order).catch(()=>{});
+    });
+  }
+  ensureLibraryOrder();
+
+  function reorderLibrary(draggedId, targetId){
+    if (!isCoach || draggedId === targetId) return;
+    const sorted = library.slice().sort((a,b)=> a.order - b.order);
+    const fromIdx = sorted.findIndex(e=>e.id===draggedId);
+    const toIdx = sorted.findIndex(e=>e.id===targetId);
+    if (fromIdx === -1 || toIdx === -1) return;
+    const [item] = sorted.splice(fromIdx,1);
+    sorted.splice(toIdx,0,item);
+    sorted.forEach((entry,i)=>{
+      if (entry.order !== i){
+        entry.order = i;
+        window.__fb.reorderEntry(teamId, entry.id, i).catch(reportSyncError);
+      }
+    });
+    renderLibraryList();
+  }
+
   function saveCurrentAsNewEntry(){
     if (!isCoach) return;
     const id = makeLibId();
-    const entry = { id, name: currentPlay.name || 'Stratégie sans nom', phases: clone(currentPlay.phases), updatedAt: Date.now() };
+    const entry = { id, name: currentPlay.name || 'Stratégie sans nom', phases: clone(currentPlay.phases), updatedAt: Date.now(), order: nextLibraryOrder() };
     library.unshift(entry);
     currentLibraryId = id;
     renderLibraryList();
-    window.__fb.saveEntry(teamId, id, { name: entry.name, phases: entry.phases, updatedAt: entry.updatedAt }).catch(reportSyncError);
+    window.__fb.saveEntry(teamId, id, { name: entry.name, phases: entry.phases, updatedAt: entry.updatedAt, order: entry.order }).catch(reportSyncError);
   }
 
   function saveCurrentToLibrary(){
@@ -980,7 +1029,7 @@ function startApp(teamId, initialLibrary, meta){
     entry.phases = clone(currentPlay.phases);
     entry.updatedAt = Date.now();
     renderLibraryList();
-    window.__fb.saveEntry(teamId, entry.id, { name: entry.name, phases: entry.phases, updatedAt: entry.updatedAt }).catch(reportSyncError);
+    window.__fb.saveEntry(teamId, entry.id, { name: entry.name, phases: entry.phases, updatedAt: entry.updatedAt, order: entry.order }).catch(reportSyncError);
   }
 
   function loadLibraryEntry(id){
@@ -1049,10 +1098,33 @@ function startApp(teamId, initialLibrary, meta){
       wrap.appendChild(empty);
       return;
     }
-    const sorted = library.slice().sort((a,b)=> b.updatedAt - a.updatedAt);
+    const sorted = library.slice().sort((a,b)=> a.order - b.order);
     sorted.forEach(entry=>{
       const row = document.createElement('div');
       row.className = 'lib-item' + (entry.id === currentLibraryId ? ' active' : '');
+
+      if (isCoach){
+        const handle = document.createElement('span');
+        handle.className = 'lib-handle';
+        handle.textContent = '⠿';
+        handle.title = 'Glisser pour réordonner';
+        row.appendChild(handle);
+        row.draggable = true;
+        row.addEventListener('dragstart', (e)=>{
+          e.dataTransfer.effectAllowed = 'move';
+          e.dataTransfer.setData('text/plain', entry.id);
+          row.classList.add('dragging');
+        });
+        row.addEventListener('dragend', ()=> row.classList.remove('dragging'));
+        row.addEventListener('dragover', (e)=>{ e.preventDefault(); row.classList.add('drag-over'); });
+        row.addEventListener('dragleave', ()=> row.classList.remove('drag-over'));
+        row.addEventListener('drop', (e)=>{
+          e.preventDefault();
+          row.classList.remove('drag-over');
+          const draggedId = e.dataTransfer.getData('text/plain');
+          reorderLibrary(draggedId, entry.id);
+        });
+      }
 
       const loadBtn = document.createElement('button');
       loadBtn.className = 'lib-load';
@@ -1324,8 +1396,39 @@ function startApp(teamId, initialLibrary, meta){
       b.className = 'phase-item' + (i===currentPhase ? ' active' : '');
       b.innerHTML = '<span class="num">'+(i+1)+'</span><span>'+ (ph.label.replace(/^Phase \d+\s*[-–]\s*/,'')) +'</span>';
       b.addEventListener('click', ()=>{ goToPhase(i); });
+      if (editMode && isCoach){
+        b.draggable = true;
+        b.addEventListener('dragstart', (e)=>{
+          e.dataTransfer.effectAllowed = 'move';
+          e.dataTransfer.setData('text/plain', String(i));
+          b.classList.add('dragging');
+        });
+        b.addEventListener('dragend', ()=> b.classList.remove('dragging'));
+        b.addEventListener('dragover', (e)=>{ e.preventDefault(); b.classList.add('drag-over'); });
+        b.addEventListener('dragleave', ()=> b.classList.remove('drag-over'));
+        b.addEventListener('drop', (e)=>{
+          e.preventDefault();
+          b.classList.remove('drag-over');
+          const from = parseInt(e.dataTransfer.getData('text/plain'), 10);
+          movePhase(from, i);
+        });
+      }
       wrap.appendChild(b);
     });
+  }
+
+  function movePhase(from, to){
+    if (isNaN(from) || from === to || !currentPlay.phases[from]) return;
+    const activeObj = currentPlay.phases[currentPhase];
+    const [item] = currentPlay.phases.splice(from, 1);
+    currentPlay.phases.splice(to, 0, item);
+    currentPhase = currentPlay.phases.indexOf(activeObj);
+    resolved = resolvePhases(currentPlay);
+    renderTrajectories(Math.max(0,currentPhase-1), currentPhase);
+    renderState(currentPhase, currentPhase, 0);
+    updateCaption(currentPhase);
+    updatePhaseList();
+    syncEditorFields();
   }
 
   function goToPhase(i){
@@ -1512,6 +1615,8 @@ function startApp(teamId, initialLibrary, meta){
     if (editMode){ editModeAnchor.appendChild(editModePanel); }
     else { editModeHome.after(editModePanel); clearFormationSelection(); }
     syncEditorFields();
+    updatePhaseList();
+    document.getElementById('phaseReorderHint').style.display = (editMode && isCoach) ? '' : 'none';
   }
   document.getElementById('toggleEdit').addEventListener('change', (e)=>{
     editMode = e.target.checked;
