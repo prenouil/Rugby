@@ -907,27 +907,30 @@ function startApp(teamId, initialLibrary, meta){
     2:pt(580,20), 7:pt(580,55), 4:pt(580,85), 5:pt(580,115),
     6:pt(580,145), 8:pt(580,175), 1:pt(580,205), 3:pt(580,235)
   };
-  // Ligne de 3/4 (hors 9) : attaque en profondeur (diagonale, 15 en suite du 13), défense alignée
-  // à plat, à 20m des 10 (10m réglementaires de recul par rapport à l'action, de chaque côté).
+  // Ligne de 3/4 (hors 9) : côté ouvert = ligne d'attaque en profondeur (10-12-13-15-ailier),
+  // côté non ouvert (fermé) = l'ailier reste au même niveau que le 10. 15 est équidistant du 13
+  // et de l'ailier ouvert, aussi bien en attaque qu'en défense (pas de jeu au pied chez les
+  // vétérans : le 15 défensif reste dans la ligne plate au lieu de couvrir en profondeur).
   // 14 (ailier droit) reste du côté droit de son équipe : en bas chez le bleu, en haut chez le rouge
-  // (les deux équipes attaquent en sens opposé). 11 est symétrique. Comme les 11/14 se retrouvent
-  // sur des côtés opposés selon l'équipe, le 11/14 défensif de chaque côté est lui aussi replacé
-  // à 20m de son vis-à-vis offensif (14 chez le bleu / 11 chez le rouge, et inversement).
+  // (les deux équipes attaquent en sens opposé). 11 est symétrique.
+  // Règle des 20m (recul réglementaire par rapport à l'action) : uniquement respectée côté fermé,
+  // entre l'ailier défensif et son vis-à-vis. Côté ouvert, l'ailier défensif suit la ligne plate de
+  // ses coéquipiers plutôt que d'être tiré à 20m de l'ailier adverse, qui est lui en profondeur.
   const BACKS_UP_ATTACK = {
-    10:pt(525,310), 12:pt(480,260), 13:pt(435,205), 15:pt(410,175),
+    10:pt(525,310), 12:pt(480,260), 13:pt(435,205), 15:pt(413,168),
     11:pt(390,130), 14:pt(580,650)
   };
   const BACKS_UP_DEFENSE = {
-    10:pt(725,310), 12:pt(725,260), 13:pt(725,205),
-    14:pt(590,130), 11:pt(780,650)
+    10:pt(725,310), 12:pt(725,260), 13:pt(725,205), 15:pt(725,168),
+    14:pt(725,130), 11:pt(780,650)
   };
   const BACKS_DOWN_ATTACK = {
-    10:pt(525,390), 12:pt(480,440), 13:pt(435,495), 15:pt(410,525),
+    10:pt(525,390), 12:pt(480,440), 13:pt(435,495), 15:pt(413,533),
     14:pt(390,570), 11:pt(580,50)
   };
   const BACKS_DOWN_DEFENSE = {
-    10:pt(725,390), 12:pt(725,440), 13:pt(725,495),
-    11:pt(590,570), 14:pt(780,50)
+    10:pt(725,390), 12:pt(725,440), 13:pt(725,495), 15:pt(725,533),
+    11:pt(725,570), 14:pt(780,50)
   };
 
   // ---------- State ----------
