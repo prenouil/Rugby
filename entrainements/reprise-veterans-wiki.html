@@ -1,0 +1,557 @@
+<title>Reprise Vétérans</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+  :root{
+    --bg:#F1F4EA;
+    --surface:#FCFDF9;
+    --surface-alt:#E7EEDD;
+    --ink:#182219;
+    --ink-soft:#48584B;
+    --ink-faint:#7C8B78;
+    --line:#D2DCC4;
+    --accent:#2F6B3C;
+    --accent-strong:#1E4C28;
+    --accent-2:#C77F1F;
+    --accent-2-strong:#8F5B16;
+    --accent-2-soft:#FBEEDA;
+    --shadow: rgba(24,34,25,0.12);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#111A10;
+      --surface:#182219;
+      --surface-alt:#202B1D;
+      --ink:#ECF1E5;
+      --ink-soft:#B6C2AC;
+      --ink-faint:#7C8B78;
+      --line:#2B3626;
+      --accent:#72C17F;
+      --accent-strong:#98DB9F;
+      --accent-2:#E9AC52;
+      --accent-2-strong:#F4C888;
+      --accent-2-soft:#2E2717;
+      --shadow: rgba(0,0,0,0.4);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#111A10;
+    --surface:#182219;
+    --surface-alt:#202B1D;
+    --ink:#ECF1E5;
+    --ink-soft:#B6C2AC;
+    --ink-faint:#7C8B78;
+    --line:#2B3626;
+    --accent:#72C17F;
+    --accent-strong:#98DB9F;
+    --accent-2:#E9AC52;
+    --accent-2-strong:#F4C888;
+    --accent-2-soft:#2E2717;
+    --shadow: rgba(0,0,0,0.4);
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  @media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto;} }
+
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Source Serif 4', Georgia, 'Times New Roman', serif;
+    font-size:16.5px;
+    line-height:1.62;
+    background-image:
+      repeating-linear-gradient(90deg, var(--line) 0, var(--line) 1px, transparent 1px, transparent 96px);
+    background-attachment:local;
+  }
+
+  a{color:var(--accent-strong);}
+  a:focus-visible, button:focus-visible{outline:2px solid var(--accent-2); outline-offset:3px;}
+
+  h1,h2,h3,h4{
+    font-family:'Big Shoulders Display', 'Arial Narrow', sans-serif;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:0.01em;
+    color:var(--ink);
+    text-wrap:balance;
+    margin:0;
+  }
+
+  .mono{font-family:'IBM Plex Mono','Courier New',monospace;}
+
+  .page{
+    max-width:1180px;
+    margin:0 auto;
+    padding:clamp(28px,4vw,56px) clamp(16px,4vw,40px) 80px;
+    display:grid;
+    grid-template-columns:220px minmax(0,1fr);
+    gap:clamp(20px,3vw,48px);
+    align-items:start;
+  }
+
+  .masthead{grid-column:1 / -1; max-width:760px; margin-bottom:8px;}
+  .eyebrow{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:0.78rem;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--accent-strong);
+    margin:0 0 10px;
+  }
+  h1{font-size:clamp(2.4rem,6vw,3.6rem); line-height:0.98; margin-bottom:14px;}
+  .meta{
+    display:flex; flex-wrap:wrap; align-items:center; gap:10px;
+    font-family:'IBM Plex Mono',monospace; font-size:0.88rem; color:var(--ink-soft);
+    margin:0 0 18px;
+  }
+  .badge{
+    display:inline-block; background:var(--accent-2-soft); color:var(--accent-2-strong);
+    border:1px solid var(--accent-2); border-radius:3px;
+    padding:3px 9px; font-weight:600; letter-spacing:0.02em; font-size:0.82rem;
+  }
+  .lede{font-size:1.14rem; color:var(--ink-soft); max-width:66ch; margin:0;}
+
+  .railnav{
+    grid-row:2 / 8;
+    position:sticky; top:24px;
+    display:flex; flex-direction:column; gap:2px;
+    border-left:2px dashed var(--line);
+    padding-left:14px;
+  }
+  .railnav a{
+    display:flex; flex-direction:column; gap:1px;
+    padding:8px 6px; text-decoration:none; border-radius:2px;
+    color:var(--ink-soft);
+  }
+  .railnav a:hover{background:var(--surface-alt); color:var(--ink);}
+  .railnav .n{font-family:'Big Shoulders Display',sans-serif; font-weight:700; font-size:1.05rem; color:var(--accent-strong);}
+  .railnav .t{font-family:'IBM Plex Mono',monospace; font-size:0.72rem; color:var(--ink-faint);}
+
+  main.content{display:flex; flex-direction:column; gap:34px; min-width:0;}
+
+  .panel{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:6px;
+    padding:clamp(16px,3vw,26px);
+    box-shadow:0 1px 0 var(--shadow);
+  }
+
+  .note p{margin:0; color:var(--ink-soft); max-width:70ch;}
+  .note strong{color:var(--ink);}
+
+  h2.section-title{font-size:1rem; letter-spacing:0.1em; color:var(--accent-strong); margin-bottom:14px;}
+
+  table.overview{width:100%; border-collapse:collapse; font-family:'IBM Plex Mono',monospace; font-size:0.86rem;}
+  table.overview th{
+    text-align:left; text-transform:uppercase; letter-spacing:0.06em; font-size:0.72rem;
+    color:var(--ink-faint); font-weight:600; padding:0 10px 8px; border-bottom:1px solid var(--line);
+  }
+  table.overview td{padding:9px 10px; border-bottom:1px solid var(--line); vertical-align:top; font-variant-numeric:tabular-nums;}
+  table.overview tr:last-child td{border-bottom:none;}
+  table.overview td.name{font-family:'Source Serif 4',serif; font-weight:600; font-size:0.95rem;}
+  table.overview a{text-decoration:none;}
+  table.overview a:hover{text-decoration:underline;}
+  .overview-wrap{overflow-x:auto;}
+
+  .materiel-list{
+    margin-top:16px; padding-top:16px; border-top:1px dashed var(--line);
+    display:flex; flex-wrap:wrap; gap:8px 22px; font-size:0.92rem; color:var(--ink-soft);
+  }
+  .materiel-list span.k{color:var(--ink-faint); font-family:'IBM Plex Mono',monospace; font-size:0.72rem; text-transform:uppercase; letter-spacing:0.06em; display:block;}
+
+  .bloc{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:6px;
+    overflow:hidden;
+    scroll-margin-top:24px;
+  }
+  .bloc-head{
+    display:flex; align-items:baseline; gap:16px;
+    padding:20px clamp(16px,3vw,26px);
+    border-bottom:2px dashed var(--line);
+    background:var(--surface-alt);
+  }
+  .bloc-num{
+    font-family:'Big Shoulders Display',sans-serif; font-weight:800; font-size:2.6rem;
+    color:var(--accent); line-height:1;
+  }
+  .bloc-headtext{flex:1; min-width:0;}
+  .bloc-headtext h3{font-size:1.5rem; letter-spacing:0.005em;}
+  .bloc-time{font-family:'IBM Plex Mono',monospace; font-size:0.82rem; color:var(--ink-soft); margin-top:4px;}
+  .bloc-body{padding:clamp(16px,3vw,26px); display:flex; flex-direction:column; gap:18px;}
+
+  .field{display:flex; flex-direction:column; gap:5px;}
+  .field h4{
+    font-family:'IBM Plex Mono',monospace; text-transform:uppercase; letter-spacing:0.08em;
+    font-size:0.75rem; color:var(--accent-strong); font-weight:600;
+  }
+  .field p, .field li{color:var(--ink); font-size:0.99rem;}
+  .field ol, .field ul{margin:0; padding-left:1.3em; display:flex; flex-direction:column; gap:6px;}
+
+  blockquote.callout{
+    margin:0; padding:12px 16px; border-left:3px solid var(--accent);
+    background:var(--surface-alt); border-radius:0 4px 4px 0;
+    font-family:'IBM Plex Mono',monospace; font-size:0.86rem; color:var(--ink-soft);
+    font-style:normal;
+  }
+  blockquote.callout .who{display:block; font-size:0.68rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--accent-strong); margin-bottom:4px;}
+
+  .rule-box{
+    background:var(--accent-2-soft); border:1px solid var(--accent-2);
+    border-radius:4px; padding:12px 16px;
+  }
+  .rule-box h4{color:var(--accent-2-strong); font-family:'IBM Plex Mono',monospace; text-transform:uppercase; letter-spacing:0.08em; font-size:0.75rem; margin:0 0 6px;}
+  .rule-box p, .rule-box li{margin:0; color:var(--ink);}
+
+  .score-box{
+    background:var(--accent-2-soft); border:1px dashed var(--accent-2);
+    border-radius:4px; padding:14px 16px;
+  }
+  .score-box h4{color:var(--accent-2-strong); font-family:'Big Shoulders Display',sans-serif; text-transform:uppercase; letter-spacing:0.03em; font-size:1rem; margin:0 0 6px; font-weight:700;}
+  .score-box p{margin:0; color:var(--ink);}
+
+  .two-col{display:grid; grid-template-columns:1fr 1fr; gap:18px;}
+
+  .interlude{
+    display:flex; align-items:center; gap:12px;
+    color:var(--ink-faint); font-size:0.8rem; padding:2px 4px;
+  }
+  .interlude::before, .interlude::after{content:""; flex:1 1 auto; border-top:1px dashed var(--line);}
+  .interlude-time{font-family:'IBM Plex Mono',monospace; color:var(--accent-strong); white-space:nowrap; font-weight:600;}
+  .interlude-label{white-space:nowrap; font-family:'IBM Plex Mono',monospace; letter-spacing:0.02em;}
+
+  .precautions{
+    background:var(--surface); border:1px solid var(--line); border-radius:6px;
+    padding:clamp(16px,3vw,26px);
+  }
+  .precautions ul{margin:14px 0 0; padding-left:1.2em; display:flex; flex-direction:column; gap:10px;}
+  .precautions li{color:var(--ink);}
+  .precautions li strong{color:var(--accent-strong);}
+
+  footer.foot{
+    grid-column:1 / -1;
+    text-align:left; color:var(--ink-faint); font-family:'IBM Plex Mono',monospace;
+    font-size:0.78rem; padding-top:10px; border-top:1px dashed var(--line);
+  }
+
+  @media (max-width:820px){
+    .page{grid-template-columns:1fr;}
+    .railnav{
+      position:sticky; top:0; z-index:5; grid-row:auto;
+      flex-direction:row; overflow-x:auto; border-left:none; border-bottom:2px dashed var(--line);
+      padding:10px 4px; background:var(--bg); margin:0 -16px; padding-left:16px;
+      gap:4px;
+    }
+    .railnav a{flex:0 0 auto; flex-direction:row; gap:6px; white-space:nowrap;}
+    .two-col{grid-template-columns:1fr;}
+    .interlude{flex-wrap:wrap; justify-content:center;}
+    .interlude::before, .interlude::after{flex:0 0 12px;}
+  }
+</style>
+
+<div class="page">
+
+  <header class="masthead">
+    <p class="eyebrow">Programme d'entraînement</p>
+    <h1>Reprise&nbsp;Vétérans</h1>
+    <p class="meta">
+      <span>Jeudi 27 août 2026</span>
+      <span>·</span>
+      <span>20h00 – 21h30</span>
+      <span>·</span>
+      <span class="badge">Zéro contact avant octobre</span>
+    </p>
+    <p class="lede">Six blocs enchaînés pour remettre les organismes en route sans plaquage : footing en forêt, jeux d'évitement ludifiés, gainage en musique plutôt qu'en corvée, jeu à touché — le plaisir sert de fil rouge sur toute la séance, pas seulement de récompense à la fin.</p>
+  </header>
+
+  <nav class="railnav" aria-label="Blocs de la séance">
+    <a href="#vue-ensemble"><span class="n">·</span><span class="t">Vue d'ensemble</span></a>
+    <a href="#bloc-1"><span class="n">01</span><span class="t">20h00 · Footing &amp; mobilisation</span></a>
+    <a href="#bloc-2"><span class="n">02</span><span class="t">20h20 · Le Carré</span></a>
+    <a href="#bloc-3"><span class="n">03</span><span class="t">20h33 · Chasse aux Plots</span></a>
+    <a href="#bloc-4"><span class="n">04</span><span class="t">20h48 · Gainage</span></a>
+    <a href="#bloc-5"><span class="n">05</span><span class="t">21h03 · Touché</span></a>
+    <a href="#bloc-6"><span class="n">06</span><span class="t">21h21 · Tour de terrain</span></a>
+    <a href="#precautions"><span class="n">·</span><span class="t">Précautions</span></a>
+  </nav>
+
+  <main class="content">
+
+    <section class="panel note">
+      <p><strong>Pourquoi cet ordre :</strong> le footing en forêt ouvre la séance avec un tout petit sas articulaire avant de partir sur terrain naturel, puis l'intensité monte par paliers via le jeu plutôt qu'en un seul effort maximal. Le bloc de jambes intense initialement prévu (relais navette) a été retiré au profit d'un bloc gainage / haut du corps : ça répartit la fatigue sur des groupes musculaires différents au lieu d'empiler trois blocs de jambes d'affilée, et ça ramène la charge cardio cumulée des blocs 1 à 4 à un niveau raisonnable pour une toute première séance de saison.</p>
+    </section>
+
+    <section class="overview" id="vue-ensemble">
+      <h2 class="section-title">Vue d'ensemble — groupe repère : 16 joueurs</h2>
+      <div class="overview-wrap">
+        <table class="overview">
+          <thead>
+            <tr><th>Horaire</th><th>Durée</th><th>Bloc</th><th>Objectif</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>20h00–20h20</td><td>20 min</td><td class="name"><a href="#bloc-1">Footing forêt &amp; mobilisation</a></td><td>Réveiller le corps, plaisir de courir à l'ombre</td></tr>
+            <tr><td>20h20–20h33</td><td>13 min</td><td class="name"><a href="#bloc-2">Le Carré</a></td><td>Coordination, passes, transition en douceur</td></tr>
+            <tr><td>20h33–20h46</td><td>13 min</td><td class="name"><a href="#bloc-3">Chasse aux Plots</a></td><td>Cardio progressif, changements de direction, stratégie</td></tr>
+            <tr><td>20h46–20h48</td><td>2 min</td><td class="name">Coupure hydratation</td><td>Souffler avant le bloc gainage</td></tr>
+            <tr><td>20h48–21h03</td><td>15 min</td><td class="name"><a href="#bloc-4">Gainage &amp; montée en régime</a></td><td>Haut du corps / abdos, ludifié</td></tr>
+            <tr><td>21h03–21h21</td><td>18 min</td><td class="name"><a href="#bloc-5">Jeu à touché</a></td><td>Cardio en situation, plaisir, zéro contact</td></tr>
+            <tr><td>21h21–21h30</td><td>9 min</td><td class="name"><a href="#bloc-6">Tour de terrain &amp; étirements</a></td><td>Redescendre, étirer, debrief</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="materiel-list">
+        <div><span class="k">Plots</span>~20 (petits + grands)</div>
+        <div><span class="k">Chasubles</span>3 couleurs, min. 4/couleur</div>
+        <div><span class="k">Ballons</span>8–10 (jusqu'à 1/binôme)</div>
+        <div><span class="k">Chrono</span>téléphone</div>
+        <div><span class="k">Sifflet</span>recommandé</div>
+      </div>
+    </section>
+
+    <!-- BLOC 1 -->
+    <article class="bloc" id="bloc-1">
+      <div class="bloc-head">
+        <span class="bloc-num">01</span>
+        <div class="bloc-headtext">
+          <h3>Footing forêt &amp; mobilisation</h3>
+          <p class="bloc-time">20h00 – 20h20 · 20 min · Groupe entier, pas de sous-groupes</p>
+        </div>
+      </div>
+      <div class="bloc-body">
+        <div class="field"><h4>Matériel</h4><p>Aucun. Un espace dégagé pour le réveil articulaire, puis le chemin forestier habituel.</p></div>
+        <div class="field">
+          <h4>Déroulement</h4>
+          <ol>
+            <li><strong>Réveil articulaire minimal (3 min)</strong>, sur place, avant de partir en forêt : rotations chevilles (10 chaque sens), rotations genoux, flexions-extensions des hanches. Juste de quoi sécuriser les appuis sur un sol irrégulier — pas besoin de la mobilisation complète ici.</li>
+            <li><strong>Footing en forêt (10 à 12 min cette semaine)</strong>, allure conversation, en groupe, personne ne force. Une durée plus large (jusqu'à 20 min) sera possible aux séances suivantes, une fois qu'on aura vu comment le groupe encaisse.</li>
+            <li><strong>Retour au terrain : mobilisation complète raccourcie (5 min)</strong> — le groupe revenant déjà chaud, quelques traversées suffisent : montées de genoux, talons-fesses, pas chassés, fentes marchées.</li>
+          </ol>
+        </div>
+        <blockquote class="callout"><span class="who">Coach dit</span>« On fait 3 minutes de chevilles/genoux avant de partir, le sol de la forêt ne pardonne pas une cheville endormie. Ensuite, footing tranquille, on discute, personne ne force. »</blockquote>
+        <div class="rule-box">
+          <h4>Vigilance terrain naturel</h4>
+          <p>Racines, dénivelé léger, lumière qui baisse fin août à 20h : le réveil articulaire de 3 min avant le départ n'est pas facultatif, c'est ce qui évite l'entorse de la 3<sup>e</sup> minute.</p>
+        </div>
+        <div class="field"><h4>Variante</h4><p>Groupe qui a l'air à l'aise après 10 min : monter jusqu'à 15–18 min. Groupe raide ou essoufflé : arrêter à 10 min pile et enchaîner sur le retour au terrain.</p></div>
+      </div>
+    </article>
+
+    <!-- BLOC 2 -->
+    <article class="bloc" id="bloc-2">
+      <div class="bloc-head">
+        <span class="bloc-num">02</span>
+        <div class="bloc-headtext">
+          <h3>Le Carré</h3>
+          <p class="bloc-time">20h20 – 20h33 · 13 min · 4 lignes · Activation technique ballon</p>
+        </div>
+      </div>
+      <div class="bloc-body">
+        <div class="two-col">
+          <div class="field"><h4>Effectif</h4><p>16 → 4 lignes de 4. 12 → 4 lignes de 3 (garder la forme carrée plutôt qu'un triangle). 20 → 4 lignes de 5.</p></div>
+          <div class="field"><h4>Matériel</h4><p>4 plots (un par coin). 4 ballons — toujours un par ligne, pas un par joueur.</p></div>
+        </div>
+        <div class="field"><h4>Mise en place</h4><p>Carré de 5 m x 5 m, un plot à chaque coin. Chaque ligne en file indienne le long d'un côté, face vers l'extérieur, ballon en main du premier joueur.</p></div>
+        <div class="field">
+          <h4>Déroulement</h4>
+          <ol>
+            <li>Les 4 lignes s'éloignent simultanément sur 20 m, en se passant le ballon uniquement à l'intérieur de leur ligne.</li>
+            <li>Demi-tour au bout des 20 m, retour vers le carré en continuant les passes.</li>
+            <li>Arrivée au carré : « Mélange ! » — tous les joueurs trottinent librement 15–20 secondes autour et dans le carré, en se passant les 4 ballons entre tous, peu importe la ligne d'origine.</li>
+            <li>Coup de sifflet : chacun regagne sa ligne d'origine, l'objectif collectif étant que chaque ligne reparte avec un ballon (pas forcément le même qu'au départ).</li>
+            <li>2–3 allers-retours, pause de 30–45 secondes, cycle complet répété 3 fois.</li>
+          </ol>
+        </div>
+        <blockquote class="callout"><span class="who">Coach dit</span>« Vous vous éloignez en vous passant le ballon, demi-tour à 20 m, retour. Au carré : mélange, tout le monde trottine et se passe les ballons librement. Sifflet : chacun retrouve sa ligne avec un ballon. »</blockquote>
+        <div class="field"><h4>Règles</h4><p>Passes dans la ligne uniquement pendant les allers-retours ; passes libres pendant le mélange ; au sifflet, on scanne et on marche/trottine vers sa ligne — pas de sprint désordonné qui ferait se percuter les joueurs.</p></div>
+        <div class="field"><h4>Variantes</h4><p>Trop facile : mélange réduit à 10 secondes (scan plus rapide). Trop confus : mélange allongé à 25–30 secondes, rythme général ralenti.</p></div>
+      </div>
+    </article>
+
+    <!-- BLOC 3 -->
+    <article class="bloc" id="bloc-3">
+      <div class="bloc-head">
+        <span class="bloc-num">03</span>
+        <div class="bloc-headtext">
+          <h3>La Chasse aux Plots</h3>
+          <p class="bloc-time">20h33 – 20h46 · 13 min · 2 équipes · Remplace l'épervier</p>
+        </div>
+      </div>
+      <div class="bloc-body">
+        <div class="two-col">
+          <div class="field"><h4>Effectif</h4><p>16 → 2 équipes de 8. 12 → 2 équipes de 6. 20 → 2 équipes de 10, ou 2 mini-matchs 5c5 sur zones séparées si le terrain semble trop chargé.</p></div>
+          <div class="field"><h4>Matériel</h4><p>4 grands plots pour les coins, 12–16 petits plots (« trésors »), chasubles 2 couleurs.</p></div>
+        </div>
+        <div class="field"><h4>Mise en place</h4><p>Rectangle de 30 m x 20 m, coupé en deux moitiés. Dans chaque moitié, à 3–4 m du fond, disperser 6–8 petits plots — le trésor de chaque équipe. Chaque équipe dans sa moitié, sa couleur de chasuble.</p></div>
+        <div class="field">
+          <h4>Déroulement</h4>
+          <ol>
+            <li>Manche de 4–5 minutes : chaque équipe va chercher les plots dans le camp adverse pour les ramener dans le sien, un plot à la fois.</li>
+            <li>Touché à deux mains pendant qu'on porte un plot en territoire adverse → on le lâche sur place, n'importe qui peut le reprendre.</li>
+            <li>Fin de manche : on compte les plots ramenés par équipe, score annoncé à voix haute.</li>
+            <li>Plots remis en place, 2–3 manches au total, équipes rééquilibrées si besoin entre les manches.</li>
+          </ol>
+        </div>
+        <blockquote class="callout"><span class="who">Coach dit</span>« Allez chercher un plot dans le camp adverse, un seul à la fois. Touché à deux mains avec un plot en main → vous le lâchez sur place, on continue. »</blockquote>
+        <div class="rule-box">
+          <h4>Zéro contact</h4>
+          <p>Toucher = deux mains posées sur le porteur. Jamais de saisie du plot dans les mains de l'adversaire, jamais de blocage physique — on intercepte en touchant, c'est tout.</p>
+        </div>
+        <div class="score-box">
+          <h4>L'enjeu</h4>
+          <p>Classement cumulé sur les 2–3 manches, annoncé après chacune : <em>« Manche 1 terminée, les rouges ont 5 plots, les bleus 3 — ça se resserre pour la manche 2 ! »</em></p>
+        </div>
+        <div class="field"><h4>Variantes</h4><p>Trop facile : moins de plots disponibles, ou terrain élargi. Trop essoufflant : rotation d'une partie de l'effectif, ou pause entre manches allongée à 1 min 30.</p></div>
+      </div>
+    </article>
+
+    <div class="interlude">
+      <span class="interlude-time mono">20h46–20h48 · 2 min</span>
+      <span class="interlude-label">Coupure hydratation, avant le bloc gainage</span>
+    </div>
+
+    <!-- BLOC 4 -->
+    <article class="bloc" id="bloc-4">
+      <div class="bloc-head">
+        <span class="bloc-num">04</span>
+        <div class="bloc-headtext">
+          <h3>Gainage &amp; montée en régime</h3>
+          <p class="bloc-time">20h48 – 21h03 · 15 min · Haut du corps / abdos, ludifié · Remplace le Grand Prix des Capitaines</p>
+        </div>
+      </div>
+      <div class="bloc-body">
+
+        <div class="field"><h4>Sous-bloc A — Le Duel des Épaules · 7 min</h4></div>
+        <div class="two-col">
+          <div class="field"><h4>Effectif</h4><p>16 → 8 binômes. 12 → 6 binômes. 20 → 10 binômes.</p></div>
+          <div class="field"><h4>Matériel</h4><p>1 ballon par binôme (6 à 10 ballons selon effectif). N'importe quel ballon de rugby fait l'affaire.</p></div>
+        </div>
+        <div class="field"><h4>Mise en place</h4><p>Binômes espacés de 2–3 m entre eux. Face à face, à 80 cm–1 m de distance, chacun en planche haute (mains sous les épaules, corps aligné tête-bassin-talons, orteils au sol). Le ballon posé au sol entre les deux, à mi-distance.</p></div>
+        <div class="field">
+          <h4>Déroulement</h4>
+          <ol>
+            <li>En planche, une main reste au sol pour stabiliser, l'autre pousse le ballon vers le partenaire, qui le repousse à son tour d'une main.</li>
+            <li>Série de 30 secondes : on compte le nombre d'échanges réussis, hanches basses et stables tout du long.</li>
+            <li>30 secondes de repos, genoux au sol, relâchement complet.</li>
+            <li>5 à 6 séries de 30 s travail / 30 s repos (1 min de mise en place et d'explication au départ — total 7 min).</li>
+          </ol>
+        </div>
+        <blockquote class="callout"><span class="who">Coach dit</span>« Une main au sol, l'autre pousse le ballon vers votre partenaire. Hanches basses, on ne s'affaisse pas. Go, 30 secondes ! »</blockquote>
+        <div class="rule-box">
+          <h4>Zéro contact</h4>
+          <p>Seul le ballon touche les deux joueurs. La distance de 80 cm–1 m est calée pour qu'aucune main ne puisse toucher l'autre joueur, même en poussant le ballon.</p>
+        </div>
+        <div class="score-box">
+          <h4>L'enjeu</h4>
+          <p>Chaque binôme cumule ses échanges sur les 5–6 séries. Répartis en 2 équipes comme pour le Cercle Increvable, scores additionnés : <em>« Après 3 séries, l'équipe rouge cumule 47 échanges, la bleue 41 — ça se joue sur les 2 dernières séries ! »</em></p>
+        </div>
+        <div class="field"><h4>Variantes</h4><p>Trop facile : distance portée à 1 m20–1 m30 pour forcer un déplacement du buste plus marqué. Trop dur (joueurs qui s'effondrent avant la fin) : position genoux au sol autorisée, ou séries réduites à 20 s travail / 40 s repos.</p></div>
+
+        <div class="field" style="margin-top:4px;"><h4>Sous-bloc B — Le Cercle Increvable · 7 min</h4></div>
+        <div class="two-col">
+          <div class="field"><h4>Effectif</h4><p>16 → 2 cercles de 8. 12 → 2 cercles de 6. 20 → 2 cercles de 10, ou 3 cercles de 6–7.</p></div>
+          <div class="field"><h4>Matériel</h4><p>1 ballon par cercle (2–3 ballons selon nombre de cercles).</p></div>
+        </div>
+        <div class="field"><h4>Mise en place</h4><p>Chaque équipe assise en cercle serré, genoux fléchis, pieds à plat, buste incliné en arrière à ~45°. Environ 1 m entre chaque joueur pour se faire des passes sans se gêner.</p></div>
+        <div class="field">
+          <h4>Déroulement</h4>
+          <ol>
+            <li>Position gainée tenue en continu : buste penché en arrière tout le temps de l'exercice.</li>
+            <li>Le ballon part d'un joueur et fait le tour du cercle le plus vite possible, chacun le reçoit et le repasse immédiatement.</li>
+            <li>On compte le nombre de tours complets en 30 secondes.</li>
+            <li>Pause 30–40 secondes (relâchement complet), on relance dans l'autre sens. 4–5 séries au total, en alternant le sens.</li>
+          </ol>
+        </div>
+        <blockquote class="callout"><span class="who">Coach dit</span>« Buste penché en arrière, vous tenez la position tout le long. Le ballon fait le tour le plus vite possible, on ne le lâche pas. »</blockquote>
+        <div class="rule-box">
+          <h4>Zéro contact</h4>
+          <p>Aucun contact entre joueurs, seule la balle circule. Ballon tombé : on le ramasse et on continue, sans pénalité de temps — on chronomètre l'effort, pas la maladresse.</p>
+        </div>
+        <div class="score-box">
+          <h4>L'enjeu</h4>
+          <p>Nombre de tours annoncé après chaque série : <em>« Cercle rouge, 4 tours en 30 secondes. Cercle bleu, 5 tours, ils mènent ! »</em> Cumul sur les 4–5 séries, vainqueur annoncé à la fin.</p>
+        </div>
+        <div class="field"><h4>Variantes</h4><p>Trop facile : espacement réduit, ou passe « en touch » (ballon touché à deux mains avant de le relâcher) pour forcer la rotation du buste. Trop dur : pause de 5 secondes buste relâché toutes les 15 secondes autorisée, ou 3 séries au lieu de 4–5.</p></div>
+      </div>
+    </article>
+
+    <!-- BLOC 5 -->
+    <article class="bloc" id="bloc-5">
+      <div class="bloc-head">
+        <span class="bloc-num">05</span>
+        <div class="bloc-headtext">
+          <h3>Jeu à touché</h3>
+          <p class="bloc-time">21h03 – 21h21 · 18 min · 2 équipes · Zéro contact</p>
+        </div>
+      </div>
+      <div class="bloc-body">
+        <div class="two-col">
+          <div class="field"><h4>Effectif</h4><p>16 → 2 équipes de 8 (5c5 ou 6c6, rotations). 12 → 2 de 6, tout le monde joue. 20 → 2 de 10, vagues de 6–7 c 6–7.</p></div>
+          <div class="field"><h4>Matériel</h4><p>8–10 plots pour délimiter un terrain de 40 m sur 25–30 m. 2–3 ballons pour relancer vite après une touche.</p></div>
+        </div>
+        <div class="field"><h4>Mise en place</h4><p>Plots aux 4 coins (et milieux de touche si besoin). Chaque équipe sur sa moitié, ballon au centre pour l'entame.</p></div>
+        <div class="field">
+          <h4>Déroulement</h4>
+          <ol>
+            <li>Coup d'envoi au centre.</li>
+            <li>3 périodes de 5–6 min, pause de 1–2 min entre chaque pour boire et faire tourner l'effectif si le groupe est grand.</li>
+          </ol>
+        </div>
+        <blockquote class="callout"><span class="who">Coach dit</span>« On joue normalement, sauf qu'il n'y a pas de plaquage. Deux mains pour arrêter le porteur, une seconde suffit. Dès qu'il est touché, passe obligatoire dans les 3 secondes, le jeu continue tout de suite. »</blockquote>
+        <div class="rule-box">
+          <h4>Zéro contact</h4>
+          <p><strong>Interdit :</strong> plaquer, pousser, s'agripper, aller au sol volontairement, jouer au pied.<br><strong>Autorisé :</strong> courir, éviter, changer de direction, toucher à deux mains pour arrêter le porteur.<br>Ballon non relâché sous 3 s après un toucher → turnover simple, sifflé sans polémique.</p>
+        </div>
+        <div class="score-box">
+          <h4>L'enjeu</h4>
+          <p>Un essai = ballon posé en zone adverse après une série de touchés-passes réussie. Score annoncé après chaque essai : <em>« 3 à 2 pour les rouges, ça continue ! »</em></p>
+        </div>
+        <div class="field"><h4>Variantes</h4><p>Trop d'essais faciles : terrain plus étroit, ou « 2 touchés minimum avant de marquer ». Trop d'essoufflement : terrain raccourci, pauses à 2–3 min, ou 6c6 avec rotations plus fréquentes.</p></div>
+        <div class="field"><h4>À affiner</h4><p>Règles précises à poser pour un jeu moins chaotique que d'habitude — en cours de discussion avec le coach, mise à jour à venir sur cette page.</p></div>
+      </div>
+    </article>
+
+    <!-- BLOC 6 -->
+    <article class="bloc" id="bloc-6">
+      <div class="bloc-head">
+        <span class="bloc-num">06</span>
+        <div class="bloc-headtext">
+          <h3>Tour de terrain &amp; étirements</h3>
+          <p class="bloc-time">21h21 – 21h30 · 9 min · Groupe entier, en formation serrée</p>
+        </div>
+      </div>
+      <div class="bloc-body">
+        <div class="field"><h4>Principe</h4><p>Plutôt que d'imposer une phase structurée que le groupe ne suit jamais dans les faits, on s'appuie sur le tour de terrain groupé qu'il fait déjà spontanément — il coche déjà deux cases (redescente cardio, clôture sociale), il manque juste un peu d'étirement glissé dedans.</p></div>
+        <div class="field">
+          <h4>Déroulement</h4>
+          <ol>
+            <li>Le groupe part en tour de terrain, serré, à un rythme de footing léger qui ralentit naturellement en deuxième moitié — on laisse le groupe gérer ça lui-même.</li>
+            <li>3–4 arrêts en chemin (par exemple à chaque coin ou plot déjà en place) : « Stop, 20 secondes ! » — tout le monde s'arrête groupé sans casser la formation. Étirement quadriceps (talon-fesse, appui sur l'épaule du voisin pour l'équilibre) à un arrêt, ischios à un autre, mollets au dernier.</li>
+            <li>Le groupe termine le tour au point de départ.</li>
+            <li>Debrief de 2 minutes directement en cercle, là où le groupe est déjà rassemblé — pas besoin de le regrouper ailleurs.</li>
+          </ol>
+        </div>
+        <blockquote class="callout"><span class="who">Coach dit</span>« Comme d'habitude, on fait le tour ensemble, groupés. On s'arrête juste 3 fois en chemin, 20 secondes, pour étirer les jambes, puis on repart. »</blockquote>
+        <div class="field"><h4>Pourquoi ça marche</h4><p>Ça ne remplace pas leur rituel, ça l'enrichit légèrement sans donner l'impression de suivre une consigne de coach — ça reste « leur » tour de terrain, juste avec 3 pauses utiles dedans.</p></div>
+      </div>
+    </article>
+
+    <section class="precautions" id="precautions">
+      <h2 class="section-title">Précautions vétéran</h2>
+      <ul>
+        <li><strong>Terrain naturel :</strong> racines, dénivelé, lumière qui baisse fin août — le réveil articulaire de 3 min avant le footing forêt n'est pas facultatif.</li>
+        <li><strong>Progressivité :</strong> aucun sprint à pleine vitesse en semaine 1 — la Chasse aux Plots et le Cercle Increvable montent en intensité par manches, jamais à 100 % sur organisme froid.</li>
+        <li><strong>Gainage, première séance :</strong> le lendemain d'un travail abdo un peu poussé, ce sont souvent les lombaires qui parlent chez les joueurs plus âgés — respecter les séries indiquées, ne pas les prolonger.</li>
+        <li><strong>Hydratation :</strong> dès l'accueil, à la coupure avant le bloc gainage, et à chaque pause du jeu à touché — pas seulement en fin de séance.</li>
+        <li><strong>Ischios / mollets :</strong> zone la plus exposée en reprise — talons-fesses et montées de genoux à vitesse contrôlée avant tout changement de direction.</li>
+        <li><strong>Protections :</strong> genouillères/chevillères habituelles remises dès ce premier entraînement, pas « quand ça commence à tirer ».</li>
+        <li><strong>Douleur ≠ courbature :</strong> à rappeler en début de séance — on lève la main et on sort si besoin, sans jugement. Particulièrement utile en semaine 1, où chacun veut « montrer qu'il est encore capable ».</li>
+      </ul>
+    </section>
+
+    <footer class="foot">Reprise Vétérans · saison à venir</footer>
+
+  </main>
+</div>
