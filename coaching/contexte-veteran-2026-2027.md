@@ -2,7 +2,7 @@
 
 Fichier de mémoire persistante pour agent_coach. À relire en début de toute nouvelle session portant sur l'entraînement de l'équipe vétéran, indépendamment de l'app "animateur de stratégies" présente dans ce même dossier (index.html, .claude/, _bmad/, git) — ce fichier n'a aucun lien avec cette app, il est stocké ici uniquement à la demande de l'utilisateur.
 
-Dernière mise à jour : 24 août 2026.
+Dernière mise à jour : 27 août 2026.
 
 ## 1. L'équipe
 
@@ -29,6 +29,9 @@ Dernière mise à jour : 24 août 2026.
 
 Construite comme exemple de séance type, réutilisable comme modèle pour les prochaines séances de reprise.
 
+**Document terrain (feuille de séance) :** `C:\Claude\Rugby\coaching\seances\reprise-tamalou-27-aout.pdf` — emplacement stable, fichier confirmé présent sur disque le 27 août 2026 (copié depuis Downloads à la demande du coach).
+Une copie subsiste aussi dans `C:\Users\user\Downloads\reprise-tamalou-27-aout.pdf` (original, pas encore supprimé à ce jour) — à considérer comme obsolète/temporaire ; se référer désormais au chemin stable ci-dessus comme adresse de référence pour cette séance.
+
 | Horaire approx. | Durée | Bloc |
 |---|---|---|
 | 20h00 | 20 min | Footing forêt & mobilisation |
@@ -53,3 +56,4 @@ Fixées par le coach pour la séance du 27 août, à titre de modèle de progres
 3. Puis, en cours de séance : obligation de 2 passes minimum dans le même sens après un touché avant de pouvoir revenir à l'intérieur ou chercher le contact — sauf si le receveur arrive lancé tout droit avec un espace libre devant lui (exception pour ne pas casser une action favorable).
 
 Ces règles sont annoncées et introduites progressivement par le coach pendant la séance, pas données en bloc au début.
+</content>
