@@ -2,7 +2,7 @@
 
 Fichier de mémoire persistante pour agent_coach. À relire en début de toute nouvelle session portant sur l'entraînement de l'équipe vétéran, indépendamment de l'app "animateur de stratégies" présente dans ce même dossier (index.html, .claude/, _bmad/, git) — ce fichier n'a aucun lien avec cette app, il est stocké ici uniquement à la demande de l'utilisateur.
 
-Dernière mise à jour : 27 août 2026 (soir) — feuille de séance du 3 septembre éditée directement par le coach : sections "Footing forêt" et "Jeu à touché" réduites à leur titre/horaire (plus de puces détaillées), "Bronco" renommé "Bronco variante" partout dans le document.
+Dernière mise à jour : 2 septembre 2026 — trois corrections apportées par le coach à la feuille du 3 septembre (voir section 7, révision 4) : 3 distances de plots au lieu de 2 pour le Bronco variante, atelier "Transport du sac de plaquage" renommé "Lever/retourner du sac", jeu à touché démarré à 4 équipes sur demi-terrain.
 
 ## 1. L'équipe
 
@@ -87,7 +87,7 @@ Demande initiale du coach suite aux retours du 27 août : construire un bloc en 
 
 1. **Sprint des Portes** — individuel, chaque joueur part décalé de quelques secondes par rapport au précédent. Slalom de plots + accélération finale ballon en main à l'aller ; petite foulée de récupération au retour. Pas de chrono, pas de classement.
 2. **Pompes / Abdos alternés** — 45s pompes / 15s repos / 45s abdos / 15s repos, répété une fois (4 min pile). Exécution stricte et propre, chacun à son rythme, pas de scoring.
-3. **Transport du sac de plaquage** — individuel, chacun son sac, aller en portage puis retour marché/relâché (garde-fou confirmé par le coach — pas d'effort continu sur les 4 min). Consigne sécurité dos obligatoire : prise ferme, dos droit, pas de torsion en le soulevant.
+3. **Lever/retourner du sac** *(renommé le 2 septembre, anciennement "Transport du sac de plaquage")* — individuel, chacun son sac au sol. Répéter : lever le sac en squat (dos droit) puis le retourner, en alternant les côtés. Consigne sécurité dos obligatoire : prise ferme, dos droit, pas de torsion.
 4. **Résistance en binôme (sprint retenu par le short)** — un joueur tente d'avancer/sprinter sur 5-8m pendant que son binôme le retient par le short/la ceinture avec une résistance progressive (pas de blocage brutal), 10-15s d'effort ; puis inversion des rôles ; 15-20s de repos entre les deux passages ; 2-3 répétitions selon récupération. Pas de scoring.
 5. **Corde à sauter en alternance avec sprint (binôme)** — un joueur fait de la corde à sauter pendant que l'autre fait des allers-retours sprint courts (5-10m) ; inversion des rôles à mi-temps ou toutes les 30-40s. Pas de comptage/score annoncé.
 6. **Gainage en intervalles** — 30s effort / 15s repos, enchaînement squats / fentes / planche / mountain climbers sur les 4 min. Focus qualité d'exécution et respiration, pas de scoring.
@@ -106,10 +106,15 @@ Cet ordre alterne complètement les ateliers à jambes continues et intenses (1,
 **Historique des révisions de la feuille** :
 - Révision 1 (agent) : footing 20 → 15 min ; Bronco : abandon du format progressif (Option 1, 30/40/50s) au profit d'un format uniforme 1 min d'effort / 30s de repos, 6 répétitions (9 min) ; jeu à touché allongé de 45 à 48 min pour compenser et garder la fin de séance à 22h00 pile.
 - Révision 2 (agent) : suppression complète du bloc "Tour de terrain & étirements" en fin de séance — la séance se termine directement après le jeu à touché. Jeu à touché réallongé de 48 à 55 min pour combler le temps libéré et conserver une séance de 20h00 à 22h00.
-- **Révision 3 (coach, édition directe du fichier — version actuelle sur disque)** :
+- **Révision 3 (coach, édition directe du fichier)** :
   - Section "Footing forêt" : les puces de détail (réveil articulaire, footing allure libre) supprimées — ne reste que le titre et l'horaire (15 min), comme les blocs "Repos boisson".
   - Section "Jeu à touché" : les puces sur les règles progressives, la vigilance fatigue et la fin de séance sans retour au calme supprimées — ne reste que "Priorité au jeu, sans consigne au départ."
   - "Bronco" renommé **"Bronco variante"** partout dans le document (tableau récapitulatif et titre de section).
+- **Révision 4 (coach, 2 septembre 2026 — version actuelle sur disque)** :
+  - Bronco variante : passage de 2 à **3 distances de plots** : 5-20-60m, 5-15-50m, 5-10-40m (les distances ne sont plus assignées par poste — l'association 3/4 vs avants a été retirée).
+  - Atelier du circuit training renommé **"Transport du sac de plaquage" → "Lever/retourner du sac"** (individuel, chacun son sac au sol : lever le sac en squat dos droit puis le retourner, alterner les côtés ; consigne dos droit/prise ferme/pas de torsion conservée) — mis à jour dans l'ordre de rotation et le détail des ateliers (feuille et section 6 ci-dessous).
+  - Jeu à touché : démarrage à **4 équipes** (au lieu de 2), **sur demi-terrain**. On rassemble en équipes complètes sur terrain entier quand le rythme faiblit, pour passer à des consignes plus précises (transition prévue mais non chronométrée à l'avance — au ressenti du coach sur le terrain).
+  - PDF `seance-2026-09-03.pdf` régénéré depuis la version HTML mise à jour pour refléter ces trois changements.
 
 **Structure finale (actuelle, telle que sur le fichier) :**
 
@@ -137,7 +142,7 @@ Cet ordre alterne complètement les ateliers à jambes continues et intenses (1,
 Historique : l'Option 1 (temps fixe croissant 30/40/50s, repos fixe 45s) avait été validée dans un premier temps pour corriger l'effet pervers du format à boucle fixe (pénalisation des joueurs les plus lents en temps de repos). Le coach a ensuite remplacé ce format par une version plus simple, et a renommé l'exercice **"Bronco variante"**.
 
 **Format définitif, intégré à la feuille de séance du 3 septembre :**
-- Plots posés aux distances repères : 5-20-60m (3/4), 5-15-50m (avants) — utilisés comme parcours d'allers-retours continus.
+- Plots posés aux distances repères (mis à jour le 2 septembre, 3 distances au lieu de 2, plus d'association par poste) : 5-20-60m, 5-15-50m, 5-10-40m — utilisés comme parcours d'allers-retours continus.
 - **Même temps pour toutes les répétitions : 1 min d'effort / 30s de repos fixe pour tous, répété 6 fois (9 min au total).**
 - Signal collectif au sifflet pour départ/arrêt de chaque répétition, identique pour tout le groupe (note conservée par l'agent, non détaillée dans la feuille écrite du 3 septembre après les dernières éditions du coach).
 - Le principe de repos fixe indépendant de la vitesse individuelle (hérité de l'Option 1) est conservé : chacun couvre la distance qu'il peut/veut dans la minute donnée, le repos de 30s reste rigoureusement identique pour tous.
