@@ -2,7 +2,7 @@
 
 Fichier de mémoire persistante pour agent_coach. À relire en début de toute nouvelle session portant sur l'entraînement de l'équipe vétéran, indépendamment de l'app "animateur de stratégies" présente dans ce même dossier (index.html, .claude/, _bmad/, git) — ce fichier n'a aucun lien avec cette app, il est stocké ici uniquement à la demande de l'utilisateur.
 
-Dernière mise à jour : 2 septembre 2026 — trois corrections apportées par le coach à la feuille du 3 septembre (voir section 7, révision 4) : 3 distances de plots au lieu de 2 pour le Bronco variante, atelier "Transport du sac de plaquage" renommé "Lever/retourner du sac", jeu à touché démarré à 4 équipes sur demi-terrain.
+Dernière mise à jour : 6 septembre 2026 (3e révision du jour) — la feuille du jeudi 10 septembre 2026 finalisée (voir section 9, révision 3) : Bronco variante réduit à **1 seule répétition** (1 min 30, format paliers 3 groupes de niveau conservé mais sans ascenseur up/down écrit ni signal sifflet détaillé sur la feuille) ; circuit training réordonné pour rétablir l'alternance jambes/récupération (exercices inchangés, effectif corrigé à **36 joueurs** en 6 groupes de 6, mentions scoring/trio tournant retirées) ; touché en séparé avants/3-quarts allégé à un simple titre/horaire (comme les autres blocs minimalistes) ; ceinturé avec soutien inchangé.
 
 ## 1. L'équipe
 
@@ -10,14 +10,18 @@ Dernière mise à jour : 2 septembre 2026 — trois corrections apportées par l
 - Pas de jeu au pied habituellement en match/entraînement.
 - Public plus âgé : gestion fine de l'intensité et de la récupération, progressivité, prévention des blessures, aspect convivial prioritaire sur la performance pure.
 - Groupe repère utilisé pour dimensionner tous les exercices : **16 joueurs**, avec adaptations réfléchies pour 12 et pour 20 sur chaque exercice (effectifs, nombre d'équipes/binômes, matériel).
-- **Effectif réel très variable d'une séance à l'autre** : la séance du 27 août a réuni 26 joueurs (bien au-delà du repère de 16). À prévoir systématiquement une adaptation "grand groupe" (sous-groupes multiples, ateliers en parallèle) en plus des adaptations 12/16/20 déjà réfléchies.
+- **Effectif réel très variable d'une séance à l'autre, et en forte hausse depuis le début de saison** : 26 joueurs le 27 août, puis **38 joueurs le 3 septembre** (chiffre corrigé le 6 septembre — la feuille du 3 septembre et la première version de celle du 10 septembre avaient été dimensionnées sur l'hypothèse erronée de ~26, reconduite par défaut de l'agent faute de nouveau chiffre communiqué). À prévoir systématiquement une adaptation "grand groupe" (sous-groupes multiples, ateliers en parallèle) en plus des adaptations 12/16/20 déjà réfléchies — et à partir de maintenant, **toujours demander/confirmer l'effectif attendu avant de dimensionner une nouvelle feuille de séance plutôt que de reconduire par défaut le chiffre de la séance précédente**, vu l'ampleur de la variation observée (+46% entre le 27 août et le 3 septembre).
+- **Repère de dimensionnement des groupes retenu le 6 septembre** : viser des sous-groupes de **6 à 7 joueurs** (plutôt que 4-5) quand l'effectif dépasse ~30-36, en répartissant l'excédent au-delà de 36 sur des groupes de 7 plutôt que d'ajouter un 7e groupe (ex. 38 joueurs → 6 groupes, 2 de 7 + 4 de 6). Pour les ateliers en binôme au sein d'un groupe de 7, prévoir un trio tournant (3 passages) plutôt qu'un binôme classique.
 
 ## 2. Règle de contact (évolutive dans la saison)
 
 - Règle actuelle : **pas de contact violent avant octobre** (plaquage, percussion, ruck avec impact interdits jusqu'à début octobre).
 - Historique : cette règle a été assouplie en cours d'échange depuis une version initiale plus stricte ("zéro contact avant octobre"). Le contact non-violent est donc autorisé dès maintenant — à garder en tête pour construire les prochaines séances, ne pas revenir par erreur à la version "zéro contact strict".
 - À partir d'octobre : le contact plein devient possible, à réintroduire progressivement.
-- Exemples validés de contact non-violent/résistance contrôlée compatibles avec la règle actuelle : poussée épaule contre épaule ou sur bouclier/sac, résistance en binôme (un joueur retenu par le short/la ceinture pendant qu'il tente d'avancer/sprinter) — pas de plaquage, pas d'impact brutal.
+- Exemples validés de contact non-violent/résistance contrôlée compatibles avec la règle actuelle : poussée épaule contre épaule ou sur bouclier/sac, résistance en binôme (un joueur retenu par le short/la ceinture ou par les mains sur les hanches pendant qu'il tente d'avancer/sprinter) — pas de plaquage, pas d'impact brutal.
+- **Nouveau cas clarifié le 6 septembre 2026, pour la séance du 10 septembre** : "ceinturer" (saisir le porteur du ballon à la ceinture/au tronc) est autorisé **sans amener au sol** — le porteur doit alors passer ou libérer le ballon rapidement. C'est une étape distincte du plaquage réel (qui reste réservé à partir d'octobre) : à garder comme repère de vocabulaire si le coach reparle de "ceinturé" dans une future séance.
+- **Règles complémentaires du "ceinturé" précisées par le coach le 6 septembre (2e révision)** : au-delà de 4 ceinturés sur une même possession, le ballon est rendu à l'équipe adverse (règle de turnover, à rapprocher du principe des 6 tacles en touch rugby mais fixée ici à 4) ; les défenseurs n'ont pas le droit de jouer/disputer le ballon après un ceinturé (pas de lutte pour la balle au sol, seulement la course pour venir en soutien du porteur) — cohérent avec l'absence de mise au sol et l'esprit "pas de contact violent avant octobre".
+- **Contact bouclier ajouté le 6 septembre comme nouvel exemple validé de contact non-violent** : un joueur tient un bouclier de plaquage, l'autre vient percuter dessus après un léger élan (burpee + sprint 3m) — le bouclier absorbe/résiste au contact, pas de mise au sol, similaire dans l'esprit à la poussée sur sac déjà en place.
 
 ## 3. Préférences pédagogiques fortes du coach (utilisateur), à réappliquer systématiquement
 
@@ -152,4 +156,60 @@ Historique : l'Option 1 (temps fixe croissant 30/40/50s, repos fixe 45s) avait �
 ## 8. Matériel à prévoir pour la séance du 3 septembre
 
 Plots, ballons, sac(s) de plaquage, cordes à sauter, chasubles/repères pour identifier les 6 groupes de rotation, sifflet, chronomètre.
+
+## 9. Séance complète du jeudi 10 septembre 2026, 20h00-21h39 (3e séance de la saison) — FINALISÉE
+
+**Feuille de séance terrain :** `C:\Claude\Rugby\coaching\seances\seance-2026-09-10.md` (+ PDF associé) — produite le 6 septembre 2026, révisée trois fois le même jour (voir historique ci-dessous). Révision 3 = version actuelle sur disque.
+
+**Retour du coach déclencheur** : après la séance du 3 septembre, l'effort physique a été jugé bon — il faut maintenant monter encore en intensité/puissance (pas seulement en volume/cardio comme lors de la transition 27 août → 3 septembre).
+
+**Historique des révisions :**
+- Révision 1 (agent, matin) : redimensionnement pour 38 joueurs (circuit à 6 groupes de 6-7, touché à 6 équipes de 6-7, Bronco avec couloirs multiples) — largement remplacée par la suite.
+- Révision 2 (coach, soir) : redéfinition complète du Bronco (format paliers), du circuit (consignes chiffrées précises + nouvel atelier bouclier) et du bloc touché (séparation avants/3-quarts, puis ceinturé avec règle de turnover).
+- **Révision 3 (coach, même soir — version actuelle sur disque)** : simplifications et corrections demandées par le coach après relecture de la révision 2 :
+  - Bronco ramené à **1 seule répétition** (au lieu de 6, chiffre que l'agent avait reconduit par défaut faute de précision — leçon retenue : ne pas supposer un nombre de répétitions non donné explicitement, le redemander plutôt).
+  - Bullet "Objectif par répétition" simplifié en "Objectif" (cohérent avec le passage à une seule répétition).
+  - Les 3 bullets décrivant l'ascenseur de groupe (up si trop facile / down si non atteint) et le signal sifflet collectif ont été retirés de la feuille écrite — le principe reste dans l'esprit de la conception (format paliers auto-régulé), mais n'est plus détaillé noir sur blanc.
+  - **Effectif corrigé à 36 joueurs** (au lieu de 38) pour cette séance précise — chiffre donné directement par le coach, à traiter comme la donnée de référence pour le 10 septembre plutôt que le 38 du 3 septembre. Circuit training repassé à **6 groupes de 6 joueurs** (uniforme, plus de groupes de 7 ni de trio tournant).
+  - Bullets "aucun scoring/chrono cumulé/classement" et "trio tournant pour les groupes de 7" retirés du circuit (devenus sans objet avec des groupes uniformes de 6, et le coach ne souhaite plus ce rappel écrit sur cette feuille).
+  - **Ordre de rotation du circuit changé pour rétablir l'alternance jambes/récupération**, à la demande explicite du coach suite à la remarque de l'agent sur l'enchaînement 5→6→1 (trois ateliers à jambes explosives d'affilée) — les 6 exercices eux-mêmes n'ont pas changé, seul l'ordre a été revu : 1. Poussée du sac au sol (jambes) → 2. Passes de puissance (haut du corps) → 3. Fentes/squats sautés avec ballon (jambes) → 4. Résistance en binôme (modéré) → 5. Contact bouclier (jambes) → 6. Rotation de tronc au ballon (tronc) → retour à 1 (jambes). Alternance parfaite jambes/non-jambes sur tout le cycle, y compris au rebouclage.
+  - Bullet de détail "Séparation par poste : avants d'un côté, 3/4 de l'autre" retiré du bloc "Touché en séparé" — le bloc est désormais réduit à son titre/horaire seul (même traitement minimaliste que "Footing forêt" et d'autres blocs des séances précédentes, cohérent avec la préférence du coach pour des feuilles épurées, section 3).
+
+**Structure finale (révision 3) :**
+
+| Horaire | Durée | Bloc |
+|---|---|---|
+| 20h00 | 15 min | Footing forêt |
+| 20h15 | 3 min | Repos boisson |
+| 20h18 | 2 min | Bronco variante — format paliers (1 répétition) |
+| 20h20 | 5 min | Repos boisson |
+| 20h25 | 21 min | Circuit training (6 ateliers) |
+| 20h46 | 3 min | Repos boisson |
+| 20h49 | 20 min | Touché en séparé — avants / 3/4 *(titre/horaire seul)* |
+| 21h09 | 30 min | Ceinturé avec soutien (tout l'effectif) |
+
+**Bronco variante — format paliers, 1 répétition (1 min 30)** :
+- 3 groupes de niveau, chacun sur une distance différente : Groupe A (difficile) 5-20-60m, Groupe B (intermédiaire) 5-15-45m, Groupe C (facile) 5-10-30m.
+- Objectif : effectuer 2 fois le circuit de plots (6 allers-retours) dans le temps imparti (1 min 30). Une seule tentative cette séance — pas de mécanisme d'ascenseur de groupe visible sur la feuille (voir révision 3 ci-dessus), même si l'esprit paliers/auto-régulation reste la logique de conception si le coach veut la rappeler oralement.
+- Répartition initiale des joueurs entre les 3 groupes : laissée à l'appréciation du coach sur le terrain (non précisée).
+
+**Circuit training — 6 ateliers, 3 min effort + 30s transition = 21 min, 6 groupes de 6 joueurs (36 au total)** :
+1. **Poussée du sac au sol** — position basse sur 10m, retour en portage marché, 6 passages chacun.
+2. **Passes de puissance** — binôme à 3-4m, 20 passes d'un côté / petit repos / 20 passes de l'autre, alternance vrillées/droites.
+3. **Fentes/squats sautés avec ballon** — 20 fentes sautées puis 20 squats sautés (5s de respiration entre les deux), comptage collectif à voix haute si possible.
+4. **Résistance en binôme** — mains sur le torse accrochées au maillot, course sur 10m, 3 passages chacun.
+5. **Contact bouclier** — burpee + sprint 3m + contact appuyé sur bouclier tenu par le partenaire, retour dynamique, 10 passages puis inversion des rôles. Exemple de contact non-violent validé (voir section 2).
+6. **Rotation de tronc au ballon** — position assise façon abdo, 50 mouvements/15s repos, comptage collectif à voix haute si possible.
+
+(Ordre choisi pour alterner jambes-intensif (1, 3, 5) et faible sollicitation des jambes (2, 4, 6) sur tout le cycle, y compris au rebouclage 6→1 — corrige le problème identifié dans la révision 2.)
+
+**Touché scindé en deux blocs** :
+1. **Touché en séparé — avants / 3/4 (20 min)** — titre/horaire seul sur la feuille ; dans l'esprit de la conception, séparation par poste (avants d'un côté, 3/4 de l'autre), touché classique, priorité au jeu.
+2. **Ceinturé avec soutien, tout l'effectif (30 min)** — le défenseur peut ceinturer/saisir le porteur du ballon (sans l'amener au sol), le porteur doit alors passer ou libérer rapidement le ballon ; soutien des coéquipiers ; turnover au 4e ceinturé ; interdiction de jouer/disputer le ballon au point de ceinturé (voir section 2).
+
+**Leçon retenue pour l'agent** : ne pas reconduire par défaut un paramètre non précisé par le coach (ex. nombre de répétitions) sans le signaler clairement comme une hypothèse à confirmer — ici le défaut de 6 répétitions choisi par l'agent était trop élevé, corrigé à 1 par le coach.
+
+**Matériel pour cette séance** : plots, ballons, sac(s) de plaquage, bouclier(s) de plaquage, chasubles/repères (6 groupes + équipes ceinturé), sifflet, chronomètre. Cordes à sauter toujours retirées.
+
+**À vérifier après la séance du 10 septembre** : effectif réel du jour (36 attendu, à comparer à la tendance à la hausse observée depuis fin août), ressenti sur le Bronco à 1 répétition (suffisant comme mise en jambes ou trop court ?), fonctionnement du nouvel ordre de circuit, clarté et application de la règle de turnover à 4 ceinturés.
 </content>
