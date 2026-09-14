@@ -2,7 +2,7 @@
 
 Fichier de mémoire persistante pour agent_coach. À relire en début de toute nouvelle session portant sur l'entraînement de l'équipe vétéran, indépendamment de l'app "animateur de stratégies" présente dans ce même dossier (index.html, .claude/, _bmad/, git) — ce fichier n'a aucun lien avec cette app, il est stocké ici uniquement à la demande de l'utilisateur.
 
-Dernière mise à jour : 6 septembre 2026 (4e révision du jour) — la feuille du jeudi 10 septembre 2026 finalisée (voir section 9, révision 4) : Bronco variante = **6 répétitions** de 1 min 30 d'effort / 30s de repos (12 min), format paliers à 3 groupes de niveau conservé, objectif par répétition = boucler 2 fois le circuit de plots (une clarification intermédiaire avait fait passer ce nombre à tort à "1 répétition", corrigé le jour même) ; circuit training réordonné pour rétablir l'alternance jambes/récupération (exercices inchangés, effectif corrigé à **36 joueurs** en 6 groupes de 6, mentions scoring/trio tournant retirées) ; touché en séparé avants/3-quarts allégé à un simple titre/horaire (comme les autres blocs minimalistes) ; ceinturé avec soutien inchangé.
+Dernière mise à jour : 14 septembre 2026 — feuille du jeudi 17 septembre 2026 finalisée (section 11), 1re séance avec plaquage réel (calendrier de contact avancé, voir section 2) : échauffement réduit à 2 tours de terrain (footing forêt abandonné), diagonales (nouveau bloc d'endurance, remplace le Bronco pour cette séance, 4 groupes/2 niveaux, 2 séquences de 10 répétitions), plaquage/courses-passes en parallèle (2×20 min avec bascule), tournoi à plaquer 3 équipes (60 min, format retenu par l'agent — à confirmer par le coach face à l'alternative 4 équipes en parallèle qu'il a évoquée). Retours du 10 septembre également enregistrés (section 9) et nouvelles contraintes de fond pour la suite de la saison (section 10 : débutants, équilibre jeunes/vieux, effectif ~40).
 
 ## 1. L'équipe
 
@@ -15,9 +15,9 @@ Dernière mise à jour : 6 septembre 2026 (4e révision du jour) — la feuille 
 
 ## 2. Règle de contact (évolutive dans la saison)
 
-- Règle actuelle : **pas de contact violent avant octobre** (plaquage, percussion, ruck avec impact interdits jusqu'à début octobre).
-- Historique : cette règle a été assouplie en cours d'échange depuis une version initiale plus stricte ("zéro contact avant octobre"). Le contact non-violent est donc autorisé dès maintenant — à garder en tête pour construire les prochaines séances, ne pas revenir par erreur à la version "zéro contact strict".
-- À partir d'octobre : le contact plein devient possible, à réintroduire progressivement.
+- **Règle actuelle (mise à jour le 14 septembre 2026) : le calendrier a été avancé délibérément par le coach — le plaquage réel (opposition franche, matchs à plaquer) est autorisé dès la séance du 17 septembre 2026, avant la date d'octobre initialement prévue.** Décision explicite du coach, motivée par le succès et la discipline observés sur les premiers contacts "ceinturé" du 10 septembre (voir section 9). Ne pas revenir par erreur à "pas de contact avant octobre" dans une future séance — la référence à "octobre" ci-dessous est désormais un historique, plus la règle en vigueur.
+- Historique : la règle est passée par plusieurs étapes — d'abord "zéro contact avant octobre", puis assouplie à "contact non-violent autorisé, plaquage réel réservé à octobre", puis (14 septembre) avancée à "plaquage réel autorisé dès le 17 septembre" suite aux bons retours sur le ceinturé.
+- Progressivité toujours de mise malgré l'avancée du calendrier : introduire le plaquage avec une progression dans la séance elle-même (échauffement du haut du corps → technique/physique sans opposition réelle → opposition franche), pas un plongeon direct dans le contact plein — voir section 11 pour la construction retenue le 17 septembre.
 - Exemples validés de contact non-violent/résistance contrôlée compatibles avec la règle actuelle : poussée épaule contre épaule ou sur bouclier/sac, résistance en binôme (un joueur retenu par le short/la ceinture ou par les mains sur les hanches pendant qu'il tente d'avancer/sprinter) — pas de plaquage, pas d'impact brutal.
 - **Nouveau cas clarifié le 6 septembre 2026, pour la séance du 10 septembre** : "ceinturer" (saisir le porteur du ballon à la ceinture/au tronc) est autorisé **sans amener au sol** — le porteur doit alors passer ou libérer le ballon rapidement. C'est une étape distincte du plaquage réel (qui reste réservé à partir d'octobre) : à garder comme repère de vocabulaire si le coach reparle de "ceinturé" dans une future séance.
 - **Règles complémentaires du "ceinturé" précisées par le coach le 6 septembre (2e révision)** : au-delà de 4 ceinturés sur une même possession, le ballon est rendu à l'équipe adverse (règle de turnover, à rapprocher du principe des 6 tacles en touch rugby mais fixée ici à 4) ; les défenseurs n'ont pas le droit de jouer/disputer le ballon après un ceinturé (pas de lutte pour la balle au sol, seulement la course pour venir en soutien du porteur) — cohérent avec l'absence de mise au sol et l'esprit "pas de contact violent avant octobre".
@@ -221,4 +221,63 @@ Plots, ballons, sac(s) de plaquage, cordes à sauter, chasubles/repères pour id
 **Matériel pour cette séance** : plots, ballons, sac(s) de plaquage, bouclier(s) de plaquage, chasubles/repères (6 groupes + équipes ceinturé), sifflet, chronomètre. Cordes à sauter toujours retirées.
 
 **À vérifier après la séance du 10 septembre** : effectif réel du jour (36 attendu, à comparer à la tendance à la hausse observée depuis fin août), ressenti sur le Bronco à 6 répétitions de 1 min 30 (charge adaptée en ce début de saison), fonctionnement du nouvel ordre de circuit, clarté et application de la règle de turnover à 4 ceinturés.
+
+### Retours du coach après la séance du 10 septembre (14 septembre 2026)
+
+- **Séance jugée très intense physiquement** : les joueurs ont souffert mais ont beaucoup apprécié, "ils en avaient besoin". **Aucun blessé.**
+- **Bronco variante** : le format retravaillé (6 répétitions, 1 min 30/30s, paliers) a bien fonctionné — "à continuer" (le coach compte le refaire évoluer, voir section 10).
+- **Circuit training (6 ateliers)** : beaucoup de succès. Le coach hésite à le refaire tel quel ou à le renouveler — pas encore tranché.
+- **Touché en séparé** : **a atteint ses limites** — le coach considère qu'il faut maintenant passer à du "vrai rugby" plutôt que de répéter ce format. Ne pas reproposer le touché en séparé par défaut dans les prochaines séances sans que le coach le redemande explicitement.
+- **Ceinturé avec soutien** : premiers contacts jugés **productifs et très disciplinés** — "un bon exercice". Signal positif fort pour la progression vers le contact réel (voir section 10 sur l'avancée possible du calendrier de contact).
+
+## 10. Contraintes et orientations pour les séances suivantes (à partir du 14 septembre 2026)
+
+Nouvelles contraintes identifiées par le coach, à prendre en compte systématiquement pour concevoir les prochaines séances :
+
+- **Beaucoup de nouveaux joueurs qui ne connaissent rien au rugby.** Le coach veut mettre en place des exercices dédiés aux fondamentaux pour ce public. Il envisage un **groupe dédié débutants**, encadré par un joueur expérimenté. **Timing explicitement laissé au jugement de l'agent le 14 septembre** ("je ne sais pas, ça dépend si ça rentre... à tester ou à reporter") — décision de l'agent : reporter au 24 septembre plutôt que surcharger le 17 septembre (déjà dense en nouveautés : diagonales, plaquage réel, tournoi 3 équipes). Le coach reste libre de tester dès le 17 si l'occasion se présente naturellement sur le terrain (ex. un ancien volontaire spontanément) — voir section 11.
+- **Beaucoup de jeunes très énergiques, à équilibrer avec les joueurs plus âgés.** Attention accrue à la gestion de l'hétérogénéité (déjà une préoccupation forte du coach, section 3) — cette fois avec une composante générationnelle explicite en plus de la forme physique.
+- **Effectif très nombreux (~40 joueurs)**, jugé "trop de monde pour des exercices classiques" par le coach lui-même. Les formats à privilégier : ateliers en parallèle, grands groupes scindés en sous-groupes multiples plutôt que des exercices pensés pour un groupe unique de 15-20. Cohérent avec le repère de dimensionnement de groupes déjà établi (section 1), à pousser encore plus loin pour cet effectif.
+- **Passage annoncé vers le "vrai rugby"** : le coach veut maintenant introduire des exercices de plaquage réel (échauffement → technique sans opposition → opposition franche) et des matchs à plaquer (tournoi 3 équipes) dès la séance du 17 septembre — confirmé le 14 septembre comme une avancée délibérée du calendrier de contact (voir section 2).
+
+## 11. Séance complète du jeudi 17 septembre 2026, 20h00-22h16 (4e séance de la saison)
+
+**Feuille de séance terrain :** `C:\Claude\Rugby\coaching\seances\seance-2026-09-17.md` (+ PDF associé) — produite le 14 septembre 2026. Première séance avec plaquage réel (voir section 2) et premier abandon du footing forêt (remplacé par des tours de terrain courts).
+
+**Contexte de conception** : séance construite à partir du bilan très positif du 10 septembre (section 9) et des nouvelles contraintes de la section 10 (débutants, jeunes/vieux, effectif ~40). Le touché en séparé n'est pas reconduit (jugé dépassé par le coach) ; le circuit à 6 ateliers du 10 septembre n'est pas repris cette semaine non plus (le coach hésitait à le refaire tel quel, a préféré une séance entièrement nouvelle) ; le groupe débutants est reporté au 24 septembre (décision de l'agent, timing explicitement laissé à son jugement par le coach — voir section 10).
+
+**Échauffement (nouveau format)** : le footing forêt est abandonné au profit de 2 tours de terrain sur place (1 normal + 1 actif : pas chassés, montées de genoux, talons-fesses, accélérations progressives), 5 min seulement — le coach a explicitement choisi de ne pas fatiguer le groupe avant le bloc de diagonales qui suit ("pas besoin de les crever si tôt"). Un 3e tour reste possible selon le ressenti du coach sur le terrain (décision prise en direct, pas figée à l'avance).
+
+**Diagonales — nouveau bloc d'endurance intense, remplace le Bronco pour cette séance** (l'idée du coach est d'alterner Bronco et diagonales d'une séance à l'autre pour varier le stimulus) :
+- Définition donnée par le coach (14 septembre) : sprint en diagonale sur demi-terrain à ~70%, alternant avec une récupération active en footing/marche, effort et récupération de durée égale (~10-15s). L'agent a fait une recherche web pour affiner : le format "15/15" (15s effort/15s récupération) est un standard classique du travail VMA/résistance intermittente en rugby, avec des diagonales de terrain habituellement chronométrées à 10-15s selon le poste — cohérent avec la description du coach. Sources : [techxv.org/Circuit-Multi-Filiere](https://www.techxv.org/Circuit-Multi-Filiere), [prepa-physique.net/travail-vma-resistance-rugby](https://www.prepa-physique.net/travail-vma-resistance-rugby/).
+- Format retenu pour le 17 septembre : **4 groupes sur 2 demi-terrains** (2 groupes opposés par demi-terrain, diagonales qui se croisent, pour utiliser l'espace efficacement avec un effectif de ~40). 2 niveaux de distance (un par demi-terrain, pas 3 groupes de niveau comme pour le Bronco) : demi-terrain A = diagonale plus longue, demi-terrain B = diagonale plus courte. Distances réelles non fixées par l'agent (dépendent des dimensions du terrain réel) — à positionner par le coach sur place.
+- **10 répétitions = 1 séquence** (vocabulaire du coach, différent de celui du Bronco — bien distinguer les deux formats). **2 séquences** prévues cette séance, avec une courte pause entre les deux. Durée totale du bloc : 15-20 min.
+- **Progression prévue pour les prochaines séances** (comme pour le Bronco) : augmenter le nombre de répétitions par séquence, puis le nombre de séquences, au fil de la saison.
+
+**Plaquage / Courses-passes en parallèle, 2 × 20 min avec bascule** :
+- Effectif scindé en 2 groupes, chacun fait les deux ateliers (20 min chacun, dans l'ordre inverse pour le second groupe).
+- **Plaquage**, première introduction du plaquage réel pour la saison : progression en 3 temps (échauffement haut du corps → technique sur bouclier/sac sans opposition réelle → opposition franche en 1 contre 1 dans une grille réduite). Le coach a choisi de garder les rappels de sécurité **à l'oral plutôt que sur la feuille écrite** — cohérent avec la préférence générale pour des feuilles épurées (section 3), mais point de vigilance de l'agent à signaler si pertinent : c'est la toute première séance de contact réel, les rappels de sécurité (position de tête, hauteur de plaquage, enroulement) ne sont donc nulle part par écrit — acceptable si le coach les couvre bien à l'oral sur le terrain, comme il l'a indiqué vouloir faire.
+- **Courses/passes** : courses droites rentrantes → 2 contre 1 → 3 contre 2, avec un **roulement dynamique des rôles** demandé explicitement par le coach pour que chacun passe par tous les postes en continu (pas de rotation figée par sous-groupe statique).
+
+**Matchs à plaquer — tournoi 3 équipes, 60 min** :
+- Le coach a lui-même identifié le calcul : 6 matchs (chaque équipe rencontre les 2 autres 2 fois) × 10 min = 1h, la séance pouvant déborder au-delà de 22h00 (accepté explicitement par le coach).
+- Le coach a évoqué une alternative : **4 équipes en parallèle sur 2 demi-terrains** plutôt que 3 équipes séquentielles, pour raccourcir le temps total. **Analyse de l'agent, retenue pour la feuille finale** : avec 3 équipes séquentielles, une équipe se repose naturellement à chaque match (rotation de repos) ; avec 4 équipes en parallèle, tout le monde joue en continu sans repos intégré. Comme c'est la toute première séance de plaquage réel de la saison, avec déjà un volume de contact conséquent avant même le tournoi (opposition franche du bloc plaquage), l'agent a recommandé de garder la **version 3 équipes avec repos tournant**, plus prudente pour absorber le premier vrai contact — quitte à déborder après 22h comme le coach l'accepte. **Le coach n'a pas encore confirmé explicitement ce choix** au moment de la construction de la feuille — à vérifier/ajuster s'il préfère finalement les 4 équipes en parallèle.
+- Format retenu sur la feuille : 3 équipes, 6 matchs de 10 min, une équipe au repos par match.
+
+**Structure finale :**
+
+| Horaire | Durée | Bloc |
+|---|---|---|
+| 20h00 | 5 min | Échauffement — 2 tours (1 normal + 1 actif) |
+| 20h05 | 3 min | Repos boisson |
+| 20h08 | 15-20 min | Diagonales (2 séquences) |
+| 20h28 | 5 min | Repos boisson |
+| 20h33 | 20 min | Plaquage (groupe 1) / Courses-passes (groupe 2) |
+| 20h53 | 20 min | Bascule — Courses-passes (groupe 1) / Plaquage (groupe 2) |
+| 21h13 | 3 min | Repos boisson |
+| 21h16 | 60 min | Matchs à plaquer — tournoi 3 équipes |
+| 22h16 | — | Fin |
+
+**Matériel pour cette séance** : plots, ballons, sac(s) de plaquage, bouclier(s) de plaquage, chasubles/repères (4 groupes diagonales + 3 équipes match), sifflet, chronomètre.
+
+**À vérifier après la séance du 17 septembre** : confirmation du format de tournoi (3 équipes retenu par l'agent vs 4 équipes en parallèle évoqué par le coach), ressenti sur le premier plaquage réel (charge cumulée du jour : diagonales + plaquage technique/opposition + 40 min de courses-passes/plaquage + jusqu'à 40 min de plaquage réel en match — volume important pour une 1re séance de contact), fonctionnement des diagonales à 4 groupes/2 niveaux, efficacité du roulement dynamique des rôles sur courses-passes, et si le format court d'échauffement (5 min) était suffisant ou s'il faudra remettre un 3e tour par défaut.
 </content>
