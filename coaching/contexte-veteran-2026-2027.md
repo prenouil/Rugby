@@ -2,7 +2,9 @@
 
 Fichier de mémoire persistante pour agent_coach. À relire en début de toute nouvelle session portant sur l'entraînement de l'équipe vétéran, indépendamment de l'app "animateur de stratégies" présente dans ce même dossier (index.html, .claude/, _bmad/, git) — ce fichier n'a aucun lien avec cette app, il est stocké ici uniquement à la demande de l'utilisateur.
 
-Dernière mise à jour : 14 septembre 2026 — feuille du jeudi 17 septembre 2026 finalisée (section 11), 1re séance avec plaquage réel (calendrier de contact avancé, voir section 2) : échauffement réduit à 2 tours de terrain (footing forêt abandonné), diagonales (nouveau bloc d'endurance, remplace le Bronco pour cette séance, 4 groupes/2 niveaux, 2 séquences de 10 répétitions), plaquage/courses-passes en parallèle (2×20 min avec bascule), tournoi à plaquer 3 équipes (60 min, format retenu par l'agent — à confirmer par le coach face à l'alternative 4 équipes en parallèle qu'il a évoquée). Retours du 10 septembre également enregistrés (section 9) et nouvelles contraintes de fond pour la suite de la saison (section 10 : débutants, équilibre jeunes/vieux, effectif ~40).
+Dernière mise à jour : 29 octobre 2026 — feuille du jeudi 29 octobre 2026 construite (section 13) : échauffement en touché organisé, Bronco classique (6 répétitions 45s/30s), échauffement spécifique plaquage par 2 (7 mini-exercices), exercice multi-ateliers enchaînés à 3 plateaux progressifs (5v4 → 4v6 → 6v9, 15 joueurs en flux continu), séparation avants/3-quarts (touches/combinaisons), match 30 min. Aucun bilan reçu entre le 1er octobre et cette date (4 séances potentiellement non documentées, dont celle où "Cubi" devait compléter le bloc bord du ruck) — à combler si le coach transmet des retours a posteriori.
+
+Dernière mise à jour précédente : 29 septembre 2026 (révision 3 du jour) — feuille du jeudi 1er octobre 2026 finalisée (section 12) : plus de blocs "Repos boisson" séparés (temps absorbé dans le bloc précédent, arrondi à la dizaine — nouvelle règle standard pour toutes les futures feuilles, voir section 3) ; jeux d'échauffement remplacés par 4 exercices donnés par le coach lui-même (ligne de 6, passes) ; attitude au plaquage redétaillée en 4 ateliers chiffrés par le coach (groupe de 10) ; **bord du ruck entièrement vidé, "A compléter par Cubi"** — contenu à récupérer auprès d'un tiers, pas à reconstruire soi-même ; match à 15 réduit à "Vrai match avec structure". Bilan du 24 septembre également enregistré (très bon entraînement, sol très dur — voir section 9), contrainte à l'origine du tapis souple dédié au plaquage complet.
 
 ## 1. L'équipe
 
@@ -31,6 +33,7 @@ Dernière mise à jour : 14 septembre 2026 — feuille du jeudi 17 septembre 202
 - **Documents de travail destinés à l'usage terrain** : préférer des feuilles de séance épurées, sans jargon non expliqué, sans commentaires méta sur le pourquoi des choix pédagogiques — uniquement l'opérationnel (effectif, matériel, mise en place, déroulement pas à pas, ce que le coach annonce, règles, score/ludification, variantes). Les explications de fond (pourquoi tel choix, avis de coach) sont utiles en conversation de préparation, mais à ne pas mettre dans le document final destiné au terrain. **Confirmé et poussé plus loin le 27 août pour la feuille du 3 septembre** : format "wiki" demandé, garde-fous de sécurité d'abord intégrés directement dans le déroulement opérationnel, puis le coach a lui-même épuré davantage en éditant le fichier directement — certains blocs (footing, jeu à touché) ont été réduits à leur titre/horaire seul, sans puces de détail. À retenir : le coach peut préférer une feuille encore plus minimaliste que ce que l'agent propose par défaut, y compris au prix de retirer des consignes opérationnelles que l'agent jugeait utiles (ex. réveil articulaire, vigilance fatigue) — ne pas les réintroduire de sa propre initiative sur cette feuille sans qu'il le redemande.
 - **Les règles de jeu évoluent en cours de séance/match plutôt que d'être figées** — introduites progressivement par le coach, notamment pour le jeu à touché (voir section 5).
 - **Gérer l'hétérogénéité de forme physique du groupe** (âges différents, été plus ou moins sérieux) en laissant chacun s'auto-réguler sur les ateliers physiques individuels (ex. "maximum de répétitions en X secondes, à son rythme") plutôt que d'imposer une charge identique à tous. Cette préoccupation s'étend explicitement aux formats à chrono/boucle fixe (type Bronco) — voir section 7bis pour le format retenu.
+- **Ne plus faire apparaître de bloc "Repos boisson" séparé dans le déroulé d'une feuille de séance** (règle posée le 29 septembre 2026, pour la feuille du 1er octobre) : intégrer son temps dans le bloc/exercice qui le précède immédiatement, puis arrondir la durée obtenue à la dizaine de minutes la plus proche. Les temps de récupération continuent d'exister dans les faits sur le terrain, mais ne sont plus détaillés comme un bloc à part sur le document — cohérent avec la préférence générale pour des feuilles épurées (voir plus bas). Appliquer cette règle par défaut à toutes les prochaines feuilles de séance, sans qu'il soit besoin de le redemander.
 - **Le coach affine et remplace des exercices/structures de séance proposés au fil de la discussion, en plusieurs itérations successives, y compris après une feuille de séance déjà produite, et parfois en éditant directement le fichier lui-même plutôt qu'en repassant par l'agent** (voir historique circuit training section 6 et historique des révisions de la feuille du 3 septembre en section 7) — les propositions de l'agent et les feuilles de séance déjà livrées restent modifiables, pas figées tant que la séance n'a pas eu lieu. Quand le coach édite le fichier lui-même, resynchroniser la mémoire pour qu'elle reflète fidèlement l'état réel du fichier sur disque (vérifier le fichier plutôt que de se fier uniquement à la description transmise). Le coach demande explicitement un avis sincère de l'agent (pas un simple acquiescement) quand il pose une question de type "qu'en penses-tu" — à traiter comme une vraie demande d'analyse critique, y compris sur ses propres choix (charge cumulée, timing de réintroduction d'exercices, etc.), tout en respectant sa décision finale.
 
 ## 4. Séance de référence — Jeudi 27 août 2026, 20h00-21h38 (première séance de la saison)
@@ -292,4 +295,101 @@ Nouvelles contraintes identifiées par le coach, à prendre en compte systémati
 **Matériel pour cette séance** : plots, ballons, sac(s) de plaquage, bouclier(s) de plaquage, chasubles/repères (4 groupes diagonales + 3 équipes match), sifflet, chronomètre.
 
 **À vérifier après la séance du 17 septembre** : confirmation du format de tournoi (3 équipes retenu par l'agent vs 4 équipes en parallèle évoqué par le coach), ressenti sur le premier plaquage réel (charge cumulée du jour : diagonales + plaquage technique/opposition + 40 min de courses-passes/plaquage + jusqu'à 40 min de plaquage réel en match — volume important pour une 1re séance de contact), fonctionnement des diagonales à 4 groupes/2 niveaux, efficacité du roulement dynamique des rôles sur courses-passes, et si le format court d'échauffement (5 min) était suffisant ou s'il faudra remettre un 3e tour par défaut.
+
+### Retours du coach après la séance du 24 septembre (29 septembre 2026)
+
+- **Très bon entraînement**, malgré la chaleur et un **sol très dur** ce jour-là.
+- Aucun détail de contenu transmis par le coach pour cette séance (pas de feuille construite avec l'agent pour le 24 septembre — probablement gérée directement par le coach, ou improvisée sur la base des séances précédentes).
+- **Point important retenu pour la suite** : le "sol très dur" est devenu une contrainte explicite de conception dès la séance suivante (1er octobre) — le coach a demandé de réserver la mise au sol en plaquage à un tapis souple/épais dédié, et de garder le travail sur boudins/boucliers (sans aller au sol) partout ailleurs sur le terrain dur. À garder en tête pour toutes les futures séances avec plaquage/chute tant que l'état du terrain n'est pas mentionné comme meilleur.
+
+## 12. Séance complète du jeudi 1er octobre 2026, 20h00-22h05 (6e séance de la saison)
+
+**Feuille de séance terrain :** `C:\Claude\Rugby\coaching\seances\seance-2026-10-01.md` (+ PDF associé) — produite le 29 septembre 2026, révisée trois fois le même jour (voir révisions ci-dessous). Révision 3 = version actuelle sur disque.
+
+**Révision 2 (coach, 29 septembre, même jour)** :
+- **Repos boisson supprimés de la feuille écrite** : leur temps est désormais absorbé dans l'exercice précédent, arrondi à la dizaine de minutes la plus proche (ex. 20 min + 5 min de repos → 25 → arrondi à 30 min). Nouveau principe à retenir pour toutes les prochaines feuilles de séance : **ne plus faire apparaître de bloc "Repos boisson" séparé**, intégrer son temps dans le bloc qui précède avant d'arrondir. Conséquence pratique : les deux moitiés d'un bloc en parallèle avec bascule peuvent devenir asymétriques (ex. ici 15 min puis 20 min) quand seule la seconde moitié était suivie d'un repos avant le bloc suivant — ce n'est pas une erreur, juste un effet mécanique de la règle d'arrondi.
+- **Jeux d'échauffement au ballon (section précédente) rejetés** : les 5 propositions initiales de l'agent comportaient un rôle d'adversité (intercepteur/chasseur). Le coach voulait des **jeux de groupe purement collectifs, sans adversité**. 5 nouvelles propositions fournies : Passes en cercle chronométrées, La ola du ballon, Slalom collectif, Jonglage à touches courtes, Transmission et mouvement — toutes retenues cette fois (contre 3 sur 5 la fois précédente).
+- **Bord du ruck retravaillé** : l'exercice "Position basse en poussée guidée" (technique pure, sans opposition, en binôme) est supprimé. Remplacé par un format entièrement différent demandé par le coach : **groupes de 4-5**, exercices **dynamiques avec opposition par bouclier** (pas de résistance "légère" ou de technique sans opposition comme avant). Nouvel exercice ajouté : **"Montée sur le 9"** — les joueurs au bord du ruck montent ensemble de façon coordonnée dès le signal du 9 (travail de timing collectif plutôt que de technique individuelle). Les deux autres exercices (ruck à 2 contre 1, vagues de nettoyage) sont conservés mais reformulés avec une vraie opposition par bouclier tenu par un partenaire, au lieu d'une résistance légère ou d'un porteur passif.
+- **Match à 15 contre 15** : la mention "Équipe type : à compléter" retirée de la feuille écrite — cohérent avec la préférence générale pour des feuilles épurées (section 3) ; le coach gère la composition réelle de son côté, en dehors du document.
+
+**Révision 3 (coach, 29 septembre, même jour — version actuelle sur disque)** : le coach a lui-même fourni le contenu détaillé de deux blocs, remplaçant les propositions de l'agent :
+- **Jeux d'échauffement au ballon** : les 5 propositions collectives de la révision 2 (jamais testées) sont remplacées par **4 exercices donnés directement par le coach**, tous basés sur une ligne de 6 joueurs qui se font des passes en restant proches les uns des autres : passe et va se replacer en bout de ligne ; même chose en redoublant chaque joueur un par un ; ramassage au sol puis passe ; ballon roulé au sol puis ramassage et passe. Pattern à retenir : quand le coach donne un thème de départ précis ("en ligne de 6, on se fait des passes"), les variantes suivent souvent une logique de progression proche (même dispositif, règle qui se complexifie à chaque exercice) plutôt que des jeux totalement différents les uns des autres.
+- **Attitude au plaquage** : passage de "groupes de 8-10" à **groupe de 10** fixe. Les deux bullets génériques (boudins/boucliers, tapis) remplacés par **4 ateliers détaillés et chiffrés en sous-groupes** donnés par le coach : atelier 1 (percussion bouclier + déblayage + relevé de balle en boucle, 2 groupes de 4 + 2 boucliers tournants) ; atelier 2 (plaquage complet chute contrôlée, 5 groupes de 2 — équivalent du "tapis" de la révision précédente, sans le nommer explicitement) ; atelier 3 (pompe + montée + plaquage sur boudin, 4 répétitions dont 2 par épaule) ; atelier 4 (2 contre 1 avec croisée/redoublement obligatoire, 4 groupes de 2 + 1 défenseur tournant). La mention "(sol dur, pas de mise au sol)" est retirée — elle n'est plus nécessaire, chaque atelier précise déjà implicitement son support (bouclier/boudin au sol dur, plaquage complet réservé en pratique au tapis).
+- **Bord du ruck** : **tout le contenu proposé par l'agent est retiré**, remplacé par le placeholder **"A compléter par Cubi"** — un tiers (Cubi, probablement un autre membre du staff/coach adjoint) doit fournir le contenu de cet atelier séparément. À ne pas essayer de reconstruire ce bloc soi-même tant que Cubi n'a pas transmis son contenu ; si le coach en reparle, vérifier d'abord si le contenu de Cubi est arrivé plutôt que de proposer une nouvelle version.
+- **Match à 15 contre 15** : la phrase détaillée "Structure de match : coup d'envoi, mêlées/touches/relances..." simplifiée en une seule ligne **"Vrai match avec structure."** — encore un cran plus minimaliste que la révision précédente.
+
+**Contexte de conception** : le coach a donné un brief détaillé en plusieurs morceaux (texte + deux images identiques montrant les mêmes 2 exercices de positionnement défensif). Séance construite directement pour le 1er octobre, sans étape intermédiaire de clarification lourde comme pour le 17 septembre — la plupart des paramètres ont été donnés ou tranchés en une passe.
+
+**Effectif** : 35-40 joueurs (cohérent avec la tendance à la hausse déjà notée, voir section 1).
+
+**Contrainte "sol dur" du 24 septembre directement intégrée** (voir bilan ci-dessus) : le bloc plaquage sépare explicitement le travail sur boudins/boucliers (pas de mise au sol, praticable sur le terrain dur) du travail de plaquage complet avec chute, réservé exclusivement au grand tapis souple apporté pour l'occasion.
+
+**1. Échauffement (8 min)** : 2 tours de terrain, 1 normal + 1 dynamique (pas chassés, montées de genoux, talons-fesses, accélérations) — format proche de celui du 17 septembre mais avec 2 tours pleins au lieu d'une version raccourcie.
+
+**2. Jeux d'échauffement au ballon (15 min), nouveauté** : le coach a demandé 5 propositions de jeux ludiques en groupes de 5-6 avec un ballon. L'agent en a proposé 5 :
+1. Rondo intercepté (cercle, 1 intercepteur au centre)
+2. Épervier ballon en main (traversée de couloir en se passant le ballon)
+3. Carré à 4 coins (passes rapides entre 4 coins, 1-2 intercepteurs au centre)
+4. Chenille passe-et-suis (file indienne, passe arrière puis replacement en courant) — **non retenu pour le 1er octobre, gardé en réserve**
+5. Chaise musicale au ballon (déplacement + passes, gage au signal d'arrêt) — **non retenu pour le 1er octobre, gardé en réserve**
+
+Seuls les 3 premiers ont été retenus pour cette séance (~5 min chacun) ; les 2 derniers sont un **stock réutilisable pour varier les prochaines séances** plutôt que de refaire toujours les 3 mêmes.
+
+**3. Attitude au plaquage (20 min), groupes de 8-10** : sur boudins/boucliers (sans aller au sol, terrain dur) puis un exercice dédié sur le tapis (plaquage complet avec chute contrôlée, seule zone souple du terrain) — voir contrainte "sol dur" ci-dessus.
+
+**4. Bord du ruck / Positionnement défensif en ligne, 2 ateliers en parallèle (2 × 15 min avec bascule)** :
+- **Positionnement défensif en ligne** : contenu donné explicitement par le coach (texte + image), 2 exercices :
+  1. Montée en ligne — poursuite de ballon : une ligne attaque et tente d'amener le ballon à l'aile, l'équipe qui défend monte dessus le plus vite possible et tente de toucher l'adversaire avec le ballon. Dynamique, assez cardio.
+  2. Cohésion défense en ligne : défense à 3 contre 4 attaquants (puis 4 contre 6), les défenseurs se touchent les mains en montant/glissant pour éviter trous et quinconces.
+- **Bord du ruck** : atelier demandé par le coach mais **laissé au jugement de l'agent** pour le contenu (le coach a explicitement demandé une proposition plutôt que de le décrire lui-même, à la différence des diagonales par exemple). Trois exercices proposés, en progression : position basse en poussée guidée (technique pure, sans opposition) → ruck à 2 contre 1 dirigé (résistance légère) → vagues de nettoyage (rythme, plusieurs points enchaînés). **Non encore validé par le coach** — à ajuster après retour d'expérience du 1er octobre.
+
+**5. Match à 15 contre 15 (30 min), nouveauté de format** : première fois de la saison avec un vrai format de match complet (15v15, structure de match : coup d'envoi, mêlées/touches/relances, 2 mi-temps de 15 min, changement de camp à la mi-temps) plutôt qu'un format dérivé (touché, ceinturé, tournoi à équipes réduites). Le coach voulait une **"équipe type"** = la vraie composition du jour avec les noms des joueurs à chaque poste (pas un modèle générique) — **le coach n'a pas pu la fournir au moment de la construction de la feuille, il la complètera de son côté**. La feuille actuelle laisse un espace "à compléter" — **ne pas inventer de noms de joueurs**, la composition réelle doit être ajoutée par le coach lui-même ou transmise explicitement avant la séance.
+
+**Structure finale (révision 3) :**
+
+| Horaire | Durée | Bloc |
+|---|---|---|
+| 20h00 | 10 min | Échauffement — 2 tours (1 normal + 1 dynamique) |
+| 20h10 | 20 min | Jeux d'échauffement au ballon (ligne de 6) |
+| 20h30 | 30 min | Attitude au plaquage — 4 ateliers (groupe de 10) |
+| 21h00 | 15 min | Bord du ruck (à compléter par Cubi) / Positionnement défensif en ligne |
+| 21h15 | 20 min | Bascule |
+| 21h35 | 30 min | Match à 15 contre 15 (vrai match avec structure) |
+| 22h05 | — | Fin |
+
+**Matériel pour cette séance** : plots, ballons, boudins de plaquage, bouclier(s) (au moins 2-4 : 2 pour l'atelier 1 du plaquage, plus ceux du bord du ruck une fois le contenu de Cubi connu), **grand tapis de plaquage souple/épais**, chasubles/repères, sifflet, chronomètre.
+
+**Points non validés/en attente, à vérifier avant ou après la séance** : contenu de l'atelier "bord du ruck" **à récupérer auprès de Cubi** (rien sur la feuille pour l'instant) ; composition réelle du match toujours en attente côté coach ; les 4 nouveaux exercices d'échauffement en ligne et les 4 ateliers de plaquage sont tous nouveaux et jamais testés ; effet de l'asymétrie 15/20 min sur les deux moitiés du bloc en parallèle (issue de la règle d'arrondi des repos, section 3).
+
+## 13. Séance complète du jeudi 29 octobre 2026, 20h00-22h00 (saison en cours, numéro de séance non suivi depuis le 1er octobre)
+
+**Feuille de séance terrain :** `C:\Claude\Rugby\coaching\seances\seance-2026-10-29.md` (+ PDF associé) — produite le 29 octobre 2026, le jour même pour la séance du soir (délai de préparation court).
+
+**Contexte** : écart de 4 semaines sans feuille construite avec l'agent depuis le 1er octobre (sessions du 8, 15, 22 octobre non documentées ici — probablement gérées par le coach directement, ou par Cubi pour certains ateliers). Pas de bilan transmis sur cette période. Le coach est arrivé avec un brief très détaillé et quasiment complet (durées et contenu précisés pour presque tous les blocs), contrairement aux séances précédentes où l'agent proposait davantage de contenu.
+
+**Effectif** : non précisé cette fois. Les exercices sont conçus par le coach pour s'adapter nativement à l'effectif réel (ex. le multi-ateliers "groupes à faire tourner en fonction de l'effectif"), donc pas bloquant pour construire la feuille — mais à redemander si une prochaine séance nécessite un dimensionnement précis (groupes de taille fixe, matériel en quantité).
+
+**Format Bronco** : retour à un format "classique" plus simple que le format paliers du 10 septembre — 6 répétitions de 45s d'effort / 30s de repos, sans groupes de niveau ni objectif de boucles. Vocabulaire sans ambiguïté cette fois (contraste avec la confusion de la séance du 10 septembre, section 9) : "aller-retour" utilisé ici comme synonyme clair de "répétition".
+
+**Règle "pas de bloc Repos boisson séparé" appliquée** (voir section 3) : le coach a mentionné un repos de 5 min après le Bronco dans son brief oral ; l'agent l'a fusionné dans le bloc Bronco et arrondi à la dizaine (10 min de Bronco + 5 min de repos = 15 → arrondi à 20 min). **Non confirmé par le coach pour cette séance précise** — à signaler si le coach s'attendait à voir le repos détaillé séparément cette fois.
+
+**Nouveauté : "Exercice multi-ateliers enchaînés" à 3 plateaux progressifs** — un flux continu de petits jeux à effectif croissant (5 contre 4 sur petit espace → 4 contre 6 sur espace plus grand avec mise en jeu au pied → 6 contre 9 sur grand espace avec départ sur une passe du 9), avec des joueurs qui changent de rôle (attaquant → défenseur) en passant d'un plateau à l'autre. 15 joueurs engagés simultanément au démarrage d'un cycle, nouveau groupe relancé en continu (ou repos si effectif insuffisant pour un groupe complet). Exercice complexe à mettre en place (3 espaces adjacents de tailles croissantes) — probablement à clarifier/démontrer sur le terrain la première fois.
+
+**Séparation avants/3-quarts** : fonction double annoncée par le coach — récupération active après le bloc multi-ateliers intense, et travail spécifique (avants → touches, 3-quarts → combinaisons). Durée (15 min) déduite par l'agent du temps restant pour boucler exactement sur 22h00, pas donnée explicitement par le coach — à ajuster si besoin.
+
+**Structure finale :**
+
+| Horaire | Durée | Bloc |
+|---|---|---|
+| 20h00 | 10-15 min | Échauffement — touché organisé |
+| 20h15 | 20 min | Bronco (6 répétitions 45s/30s) |
+| 20h35 | 10 min | Échauffement spécifique plaquage, par 2 |
+| 20h45 | 30 min | Exercice multi-ateliers enchaînés (plateaux 1-2-3) |
+| 21h15 | 15 min | Séparation avants / 3-quarts — touches et combinaisons |
+| 21h30 | 30 min | Match |
+| 22h00 | — | Fin |
+
+**Matériel pour cette séance** : plots, ballons, chasubles/repères, sifflet, chronomètre. Pas de boudins/boucliers/tapis mentionnés cette fois (l'échauffement plaquage est à mains nues/par 2, sans équipement de contact) — à vérifier si le coach en veut quand même pour le multi-ateliers ou le match.
+
+**À vérifier après la séance** : fonctionnement concret du multi-ateliers à 3 plateaux (probablement le point le plus délicat à organiser) ; si la fusion Bronco+repos (20 min) convenait ; retours généraux sur les 4 séances non documentées depuis le 1er octobre, à collecter à l'occasion pour combler le trou de suivi.
 </content>
